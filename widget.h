@@ -30,7 +30,7 @@ public:
     explicit Widget(QWidget *parent = 0);
     ~Widget();
 protected:
-    void Widget::paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent *event);
 private:
     QHBoxLayout * centralLayout;
     QVBoxLayout * rightLayout;

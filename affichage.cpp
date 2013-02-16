@@ -98,16 +98,16 @@ myWidget * Affichage::getScrollArea(Item * root_, Controleur *ctrl)
     y=0;
     process(root_,centralLO);
 
-    /*centralWO->setLayout(centralLO);
+    centralWO->setLayout(centralLO);
     vue->setWidget(centralWO);
 
-    monWidgetL->addWidget(vue);*/
+    /*monWidgetL->addWidget(vue);*/
    // monWidget->setLayout(monWidgetL);
 
 
     //monWidget->setLayout(centralLO);
     //monWidgetL->addWidget(monWidget);
-    vue->setLayout(centralLO);
+    //vue->setLayout(centralLO);
     //vue->setBackgroundRole(QPalette::Light);
     //vue->setStyleSheet("background-color:white;");
     return vue;

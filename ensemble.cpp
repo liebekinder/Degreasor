@@ -17,3 +17,8 @@ void Ensemble::ajoutItem(Item *it)
 {
     notreListe_->push_back(it);
 }
+
+QList<Item *> *Ensemble::getNotreListe()
+{
+    return notreListe_;
+}

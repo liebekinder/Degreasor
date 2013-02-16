@@ -2,6 +2,10 @@
 #define TACHE_H
 
 #include <QObject>
+#include <QDate>
+
+#include "item.h"
+
 
 class Tache : public Item
 {

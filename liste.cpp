@@ -17,3 +17,8 @@ void Liste::ajoutItem(Item *it)
 {
     notreListe_->push_back(it);
 }
+
+QList<Item *> * Liste::getNotreList()
+{
+    return notreListe_;
+}

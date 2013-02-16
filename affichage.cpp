@@ -5,7 +5,7 @@ Affichage::Affichage(QObject *parent) :
 {
 }
 
-void Affichage::process(Item * monSet, QGridLayout * layout)
+void Affichage::process(Item * monSet, QGridLayout * layout, Controleur * ctrl)
 {
     //monSet = new Ensemble("Racine", QDate::currentDate(), "La racine de nos problèmes");
 
@@ -23,7 +23,7 @@ void Affichage::process(Item * monSet, QGridLayout * layout)
         x++;
         Item * currentItem = ((Item*)*it);
 
-        Widget * tempW = new Widget();
+        Widget * tempW = new Widget(ctrl);
 
         tempW->setDate(currentItem->getDate());
         tempW->setDescription(currentItem->getDescription());
@@ -45,13 +45,13 @@ void Affichage::process(Item * monSet, QGridLayout * layout)
         if(currentItem->getType()=="ensemble")
         {
             y++;
-            Affichage::process(currentItem,layout);
+            Affichage::process(currentItem,layout,ctrl);
             y--;
         }
         if(currentItem->getType()=="liste")
         {
             y++;
-            Affichage::process(currentItem,layout);
+            Affichage::process(currentItem,layout,ctrl);
             y--;
         }
 
@@ -88,6 +88,8 @@ myWidget * Affichage::getScrollArea(Item * root_, Controleur *ctrl)
 
 
     vue = new myWidget(ctrl);
+    vue->setFrameShape(QFrame::NoFrame);
+
     centralLO = new QGridLayout();
     centralWO = new QWidget();
     //monWidget = new myWidget(ctrl);
@@ -96,7 +98,7 @@ myWidget * Affichage::getScrollArea(Item * root_, Controleur *ctrl)
 
     x=0;
     y=0;
-    process(root_,centralLO);
+    process(root_,centralLO,ctrl);
 
     centralWO->setLayout(centralLO);
     vue->setWidget(centralWO);

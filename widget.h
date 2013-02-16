@@ -8,6 +8,11 @@
 #include <QFrame>
 #include <QPaintEvent>
 #include <QtGui>
+#include <QMouseEvent>
+#include <QMenu>
+#include <QAction>
+
+#include "controleur.h"
 #include "entete.h"
 
 
@@ -27,11 +32,13 @@ public:
     void setDate(QDate dateText);
     void setType(Type typeV);
     void setDescription(QString descriptionText);
-    explicit Widget(QWidget *parent = 0);
+    void mousePressEvent(QMouseEvent *event);
+    explicit Widget(Controleur *control, QWidget *parent = 0);
     ~Widget();
 protected:
     void paintEvent(QPaintEvent *event);
 private:
+    Controleur * controler;
     QHBoxLayout * centralLayout;
     QVBoxLayout * rightLayout;
     QHBoxLayout * subRightLayout;

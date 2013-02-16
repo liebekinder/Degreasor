@@ -34,10 +34,12 @@ void Widget::setType(Type typeV)
     this->repaint();
 }
 
-Widget::Widget(QWidget *parent) :
+Widget::Widget(Controleur *ctrl, QWidget *parent) :
     QWidget(parent)
 {
+    this->controler = ctrl;
     this->setFixedSize(500,100);
+
 
     chiffre = new entete(0,0);
 
@@ -136,8 +138,61 @@ void Widget::paintEvent(QPaintEvent *event)
 
 }
 
+void Widget::mousePressEvent(QMouseEvent *event)
+{
+    if(event->button() == Qt::RightButton){
+        qDebug()<<"bouton droit";
+        QMenu * m = new QMenu();
+            QMenu * a1 = m->addMenu("Ajouter &dans...");
+                //a1->setStatusTip("ajouter un item inclus dans l'item selectionné");
+
+                QAction * a11 = a1->addAction("Ajout d'une nouvelle &tache");
+                connect(a11,SIGNAL(triggered()),controler,SLOT(addTacheApresTache()));
+
+                QAction * a12 = a1->addAction("Ajout d'une &liste");
+                connect(a12,SIGNAL(triggered()),controler,SLOT(addListeApres()));
+                a12->setDisabled(true);
+
+                QAction * a13 = a1->addAction("Ajout d'un en&semble");
+                connect(a13,SIGNAL(triggered()),controler,SLOT(addEnsembleApres()));
+                a13->setDisabled(true);
+
+                QMenu * a14 = a1->addMenu("Ajout à partir d'un &template");
+                //a13->setStatusTip("export de l'item vers un template");
+                a14->setDisabled(true);
+
+                    QAction * a141 = a14->addAction("template &1");
+                    connect(a141,SIGNAL(triggered()),controler,SLOT(addTache()));
+
+                    QAction * a142 = a14->addAction("template &2");
+                    connect(a142,SIGNAL(triggered()),controler,SLOT(addTache()));
+
+                    QAction * a143 = a14->addAction("template &3");
+                    connect(a143,SIGNAL(triggered()),controler,SLOT(addTache()));
+
+                    a141->setDisabled(true);
+                    a142->setDisabled(true);
+                    a143->setDisabled(true);
+
+            QMenu * a2 = m->addMenu("Ajouter &après...");
+                //a2->setStatusTip("ajouter un item après l'item selectionné");
+                a2->setDisabled(true);
+
+            QAction * a3 = m->addAction("&Export vers template...");
+                //a3->setStatusTip("export de l'item vers un template");
+                a3->setDisabled(true);
+
+        m->popup(event->globalPos());
+    }
+    else{
+
+    }
+    return;
+}
+
 Widget::~Widget()
 {
 }
+
 
 

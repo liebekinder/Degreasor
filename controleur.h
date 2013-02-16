@@ -10,7 +10,6 @@
 #include "item.h"
 #include "tache.h"
 #include "liste.h"
-#include "widget.h"
 
 class Controleur : public QObject
 {
@@ -31,6 +30,7 @@ public slots:
     void addEnsembleApres();
     void addListeApres();
     void addTacheApres();
+    void addTacheApresTache();
 };
 
 #endif // CONTROLEUR_H

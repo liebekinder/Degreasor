@@ -25,7 +25,7 @@ public:
     QWidget * centralWO;
     myWidget * monWidget;
     QVBoxLayout * monWidgetL;
-    void process(Item * monSet, QGridLayout *layout);
+    void process(Item * monSet, QGridLayout *layout, Controleur * ctrl);
 private:
     int x;
     int y;

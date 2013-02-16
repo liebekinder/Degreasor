@@ -24,6 +24,11 @@ void Controleur::addTacheApres()
     qDebug()<<"ajout détecté!";
 }
 
+void Controleur::addTacheApresTache()
+{
+    qDebug()<<"[T]ajout détecté!";
+}
+
 void Controleur::addEnsemble()
 {
     qDebug()<<"ajout détecté!";

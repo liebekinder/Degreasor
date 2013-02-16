@@ -17,12 +17,16 @@ SOURCES += main.cpp\
     mywidget.cpp \
     controleur.cpp \
     item.cpp \
-    ensemble.cpp
+    ensemble.cpp \
+    liste.cpp \
+    tache.cpp
 
 HEADERS  += mainwindow.h \
     mywidget.h \
     controleur.h \
     item.h \
-    ensemble.h
+    ensemble.h \
+    liste.h \
+    tache.h
 
 FORMS    +=

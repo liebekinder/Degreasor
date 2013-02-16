@@ -26,6 +26,7 @@ public:
 
 
     void setType(QString t);
+    QString getType();
 
     //accesseur
 
@@ -37,6 +38,8 @@ public:
     void setDate(QDate d);
     void setDateR(DateRelative r);
     void setDescription(QString i);
+
+
 private:
     QString nom_;
     QDate date_;
@@ -45,7 +48,7 @@ private:
     Item * itemAssocie_;
     QList<Item *> precondition_;
 
-
+    QList<Item *>* parents;
     QString TYPE;
 signals:
     

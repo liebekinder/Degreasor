@@ -18,6 +18,11 @@ void Item::setType(QString t)
     }
 }
 
+QString Item::getType()
+{
+    return TYPE;
+}
+
 QString Item::getNom()
 {
     return nom_;

@@ -7,6 +7,17 @@ Item::Item(QObject *parent) :
     date_ = QDate::currentDate();
 }
 
+void Item::setType(QString t)
+{
+    //verification des types
+    if(t != "ensemble" || t != "liste" || t != "tache"){
+        qErrnoWarning(10, "le type crée n'existe pas!");
+    }
+    else{
+        TYPE = t;
+    }
+}
+
 
 Item::Item(QString nom, QDate date, QString description, QObject *parent) :
     QObject(parent)

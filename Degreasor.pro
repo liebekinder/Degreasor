@@ -30,3 +30,6 @@ HEADERS  += mainwindow.h \
     tache.h
 
 FORMS    +=
+
+OTHER_FILES += \
+    FileError.txt

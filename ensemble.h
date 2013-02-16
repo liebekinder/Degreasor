@@ -17,7 +17,6 @@ public:
     void ajoutItem(Item * it);
 
 private:
-    QString TYPE;
     QList<Item *> * notreListe_;
 
 signals:

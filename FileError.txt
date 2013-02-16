@@ -1,0 +1,4 @@
+Codes d'erreur liés à Degreasor
+###############################
+
+10 : "Erreur: le type créé n'existe pas!"

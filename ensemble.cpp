@@ -3,14 +3,14 @@
 Ensemble::Ensemble(QString nom, QDate date, QString description, QObject *parent) :
     Item(nom, date, description, parent)
 {
-    TYPE = "ensemble";
+    setType("ensemble");
     notreListe_ = new QList<Item *>();
 }
 
 Ensemble::Ensemble(QObject *parent):
     Item(parent)
 {
-    TYPE = "ensemble";
+    setType("ensemble");
 }
 
 void Ensemble::ajoutItem(Item *it)

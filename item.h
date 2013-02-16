@@ -22,6 +22,10 @@ public:
         OneWeekAfter = 7,
         TwoWeeksAfter = 14};
     
+    //fonctions
+
+
+    void setType(QString t);
 private:
     QString nom_;
     QDate date_;
@@ -29,6 +33,9 @@ private:
     QString description_;
     Item * itemAssocie_;
     QList<Item *> precondition_;
+
+
+    QString TYPE;
 signals:
     
 public slots:

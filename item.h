@@ -26,6 +26,17 @@ public:
 
 
     void setType(QString t);
+
+    //accesseur
+
+    QString getNom();
+    QDate getDate();
+    DateRelative getDateR();
+    QString getDescription();
+    void setNom(QString n);
+    void setDate(QDate d);
+    void setDateR(DateRelative r);
+    void setDescription(QString i);
 private:
     QString nom_;
     QDate date_;

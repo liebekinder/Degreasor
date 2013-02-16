@@ -44,7 +44,7 @@ void Controleur::affichage(Item * monSet)
     Liste * num2 = new Liste("Liste 2", QDate::currentDate(), "Quelques exécutions");
     Tache * num3 = new Tache("Tache 3", QDate::currentDate(), "Execution du lapin");
     Tache * num4 = new Tache("Tache 4", QDate::currentDate(), "Execution du chat");
-    Ensemble * root = ((Ensemble)monSet);
+    Ensemble * root = ((Ensemble *)monSet);
     root->ajoutItem(num1);
         num2->ajoutItem(num3);
         num2->ajoutItem(num4);

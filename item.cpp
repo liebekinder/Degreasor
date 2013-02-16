@@ -10,12 +10,52 @@ Item::Item(QObject *parent) :
 void Item::setType(QString t)
 {
     //verification des types
-    if(t != "ensemble" || t != "liste" || t != "tache"){
+    if(t != "ensemble" && t != "liste" && t != "tache"){
         qErrnoWarning(10, "le type crée n'existe pas!");
     }
     else{
         TYPE = t;
     }
+}
+
+QString Item::getNom()
+{
+    return nom_;
+}
+
+QDate Item::getDate()
+{
+    return date_;
+}
+
+Item::DateRelative Item::getDateR()
+{
+    return dateR_;
+}
+
+QString Item::getDescription()
+{
+    return description_;
+}
+
+void Item::setNom(QString n)
+{
+    nom_ = n;
+}
+
+void Item::setDate(QDate d)
+{
+    date_ = d;
+}
+
+void Item::setDateR(Item::DateRelative r)
+{
+    dateR_ = r;
+}
+
+void Item::setDescription(QString i)
+{
+    description_ = i;
 }
 
 

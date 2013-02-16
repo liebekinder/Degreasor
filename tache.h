@@ -12,7 +12,7 @@ class Tache : public Item
     Q_OBJECT
 public:
     Tache(QObject *parent = 0);
-    Tache(QString nom, QDate date, QString description, QObject *parent);
+    Tache(QString nom, QDate date, QString description, QObject *parent = 0);
 
 signals:
     

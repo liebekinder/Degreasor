@@ -15,7 +15,7 @@ public:
     Liste(QObject *parent = 0);
 
     void ajoutItem(Item * it);
-    QList<Item *> * getNotreList();
+    QList<Item *> * getNotreListe();
 
 private:
     QList<Item *> * notreListe_;

@@ -36,3 +36,11 @@ void Controleur::addTache()
 {
     qDebug()<<"ajout détecté!";
 }
+
+void Controleur::affichage(Item * monSet)
+{
+    //monSet = new Ensemble("Racine", new QDate::currentDate(), "La racine de nos problèmes");
+
+    //((Ensemble)monSet).ajoutItem();
+    qDebug()<<"Affichage mouhaha !";
+}

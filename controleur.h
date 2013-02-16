@@ -12,6 +12,7 @@ class Controleur : public QObject
     Q_OBJECT
 
 public:
+    void affichage(Item * monSet);
     explicit Controleur(QObject *parent = 0);
     Item * ensemble_;
     

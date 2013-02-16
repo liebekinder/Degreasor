@@ -8,6 +8,7 @@
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QGridLayout>
 #include <QMenu>
 #include <Qlabel>
 #include <QDate>
@@ -19,6 +20,9 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QRadioButton>
+#include <QScrollArea>
+
+#include "widget.h"
 
 class MainWindow : public QMainWindow
 {
@@ -41,7 +45,7 @@ private:
     QVBoxLayout * upperPaneL;
     QWidget * lowerPane;
     QHBoxLayout * lowerPaneL;
-    myWidget * vue;
+    QScrollArea * vue;
     QVBoxLayout * vueL;
     QWidget * info;
     QVBoxLayout * infoL;

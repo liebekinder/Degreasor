@@ -21,9 +21,9 @@ void Widget::setDescription(QString descriptionText)
     description->setText(descriptionText);
 }
 
-void Widget::setDate(QDate *dateText)
+void Widget::setDate(QDate dateText)
 {
-    date->setText(dateText->currentDate().toString("dd/MM/yyyy"));
+    date->setText(dateText.currentDate().toString("dd/MM/yyyy"));
 }
 
 void Widget::setType(Type typeV)

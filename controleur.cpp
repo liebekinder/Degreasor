@@ -4,19 +4,9 @@ Controleur::Controleur(QObject *parent) :
     QObject(parent)
 {
     ensemble_ = new Ensemble("nom",QDate::currentDate(),"");
-    Tache * num1 = new Tache("Tache 1", QDate::currentDate(), "Execution du chien");
-    Liste * num2 = new Liste("Liste 2", QDate::currentDate(), "Quelques exécutions");
-    Tache * num3 = new Tache("Tache 3", QDate::currentDate(), "Execution du lapin");
-    Tache * num4 = new Tache("Tache 4", QDate::currentDate(), "Execution du chat");
-    ((Ensemble*)ensemble_)->ajoutItem(num1);
-        num2->ajoutItem(num3);
-        num2->ajoutItem(num4);
-    ((Ensemble*)ensemble_)->ajoutItem(num2);
+
     //qDebug()<< Item::TwoDaysAfter;
 
-
-    //test code
-    Controleur::affichage(ensemble_,0,0);
 }
 
 void Controleur::addEnsembleApres()
@@ -49,31 +39,89 @@ void Controleur::addTache()
     qDebug()<<"ajout détecté!";
 }
 
-void Controleur::affichage(Item * monSet, int x, int y)
+void Controleur::affichage(Item * monSet, QGridLayout * layout)
 {
     //monSet = new Ensemble("Racine", QDate::currentDate(), "La racine de nos problèmes");
 
-    Ensemble * root = ((Ensemble *)monSet);
+    Item * root;
+    if(monSet->getType()=="ensemble") root = ((Ensemble *)monSet);
+    else root = ((Liste *)monSet);
 
 
     QList<Item *>::iterator it;
-    QList<Item *> * maListe = root->getNotreListe();
+    QList<Item *> * maListe = monSet->getType()=="ensemble" ? ((Ensemble *)root)->getNotreListe() :  ((Liste *)root)->getNotreListe() ;
 
-    QString padd = "";
+    int counter = 1;
     for(it= maListe->begin();it != maListe->end();++it)
     {
-        //if(*it.getType())
+        x++;
         Item * currentItem = ((Item*)*it);
-        qDebug()<<currentItem->getNom();
-        //if(currentItem->getType()=="Ensemble")
 
+        Widget * tempW = new Widget();
+
+        tempW->setDate(currentItem->getDate());
+        tempW->setDescription(currentItem->getDescription());
+        tempW->setTitre(currentItem->getNom());
+        tempW->setEntete(monSet->getType()=="ensemble"?0:counter);
+        counter++;
+
+        if(currentItem->getType() == "tache")
+        {
+            tempW->setType(Widget::ELEMENT);
+        }
+        else
+        {
+            tempW->setType(Widget::LIST);
+        }
+
+        layout->addWidget(tempW,x,y,1,3);
+
+        if(currentItem->getType()=="ensemble")
+        {
+            y++;
+            Controleur::affichage(currentItem,layout);
+            y--;
+        }
+        if(currentItem->getType()=="liste")
+        {
+            y++;
+            Controleur::affichage(currentItem,layout);
+            y--;
+        }
 
     }
+}
+
+QScrollArea * Controleur::getScrollArea()
+{
+    //exp test
+    Tache * num1 = new Tache("Tache 1", QDate::currentDate(), "Execution du chien");
+    Liste * num2 = new Liste("Liste 2", QDate::currentDate(), "Quelques exécutions");
+    Tache * num3 = new Tache("Tache 3", QDate::currentDate(), "Execution du lapin");
+    Ensemble * num4 = new Ensemble("Ensemble 4", QDate::currentDate(), "Execution du chat");
+    Tache * num6 = new Tache("Tache 6", QDate::currentDate(), "Execution du cadet");
+    Tache * num5 = new Tache("Tache 5", QDate::currentDate(), "Execution du ..... du gamin !");
+    ((Ensemble*)ensemble_)->ajoutItem(num1);
+        num2->ajoutItem(num3);
+        num4->ajoutItem(num6);
+        num2->ajoutItem(num4);
+    ((Ensemble*)ensemble_)->ajoutItem(num2);
+    ((Ensemble*)ensemble_)->ajoutItem(num5);
+    //fin exp
 
 
-    //foreach (Item *  s, root.getNotreListe()) qDebug() << s;
+    vue = new QScrollArea();
+    centralLO = new QGridLayout();
+    centralWO = new QWidget();
 
+    x=0;
+    y=0;
+    affichage(ensemble_,centralLO);
 
+    centralWO->setLayout(centralLO);
+    vue->setWidget(centralWO);
+    //vue->setBackgroundRole(QPalette::Light);
+    //vue->setStyleSheet("background-color:white;");
+    return vue;
 
-    //qDebug()<<"Affichage mouhaha !";
 }

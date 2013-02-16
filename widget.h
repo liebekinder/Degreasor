@@ -24,7 +24,7 @@ public:
     void setPercent(int i);
     void setEntete(int i);
     void setTitre(QString title);
-    void setDate(QDate * dateText);
+    void setDate(QDate dateText);
     void setType(Type typeV);
     void setDescription(QString descriptionText);
     explicit Widget(QWidget *parent = 0);

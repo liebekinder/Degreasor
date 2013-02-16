@@ -34,13 +34,19 @@ MainWindow::MainWindow(QWidget *parent) :
         centralL->addWidget(line,1);
         lowerPaneL = new QHBoxLayout();
 
-        vue = new myWidget(controler);
+        //////////////////////////////////////////////////////
+        /*vue = new myWidget(controler);
             vueL = new QVBoxLayout();
                 QLabel * empty = new QLabel("- empty list -");
                 vueL->addWidget(empty);
                 vueL->setAlignment(Qt::AlignCenter);
-            vue->setLayout(vueL);
+            vue->setLayout(vueL);*/
 
+
+            QScrollArea * vue = controler->getScrollArea();
+
+
+        ///////////////////////////////////////////////////////
             line2 = new QFrame();
             line2->setFrameShape(QFrame::VLine);
 

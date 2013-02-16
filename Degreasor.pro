@@ -19,7 +19,9 @@ SOURCES += main.cpp\
     item.cpp \
     ensemble.cpp \
     liste.cpp \
-    tache.cpp
+    tache.cpp \
+    widget.cpp \
+    entete.cpp
 
 HEADERS  += mainwindow.h \
     mywidget.h \
@@ -27,7 +29,9 @@ HEADERS  += mainwindow.h \
     item.h \
     ensemble.h \
     liste.h \
-    tache.h
+    tache.h \
+    widget.h \
+    entete.h
 
 FORMS    +=
 

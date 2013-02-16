@@ -8,8 +8,9 @@ class Item : public QObject
 {
     Q_OBJECT
 public:
-    Item(QString nom, QDate date, QString description, QObject *parent = 0);
-    Item(QObject *parent);
+    Item(QString nom, QDate date, QString description, Item * conteneur, QObject *parent = 0);
+    Item(Item * conteneur, QObject *parent = 0);
+    Item(bool root, QObject *parent = 0);
 
     enum DateRelative{
         TwoWeeksBefore = -14,
@@ -34,10 +35,14 @@ public:
     QDate getDate();
     DateRelative getDateR();
     QString getDescription();
+    QWidget * getVue();
+    Item * getParent();
     void setNom(QString n);
     void setDate(QDate d);
     void setDateR(DateRelative r);
     void setDescription(QString i);
+    void setVue(QWidget * v);
+    void setParent(Item * p);
 
 
 private:
@@ -46,10 +51,11 @@ private:
     DateRelative dateR_;
     QString description_;
     Item * itemAssocie_;
-    QList<Item *> precondition_;
+    QList<Item *> * precondition_;
 
-    QList<Item *>* parents;
+    Item * parent_;
     QString TYPE;
+    QWidget * vue_;
 signals:
     
 public slots:

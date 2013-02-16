@@ -11,8 +11,8 @@ class Liste : public Item
     Q_OBJECT
 public:
 
-    Liste(QString nom, QDate date, QString description, QObject *parent = 0);
-    Liste(QObject *parent = 0);
+    Liste(QString nom, QDate date, QString description, Item * conteneur, QObject *parent = 0);
+    Liste(Item * conteneur, QObject *parent = 0);
 
     void ajoutItem(Item * it);
     QList<Item *> * getNotreListe();

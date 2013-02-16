@@ -3,8 +3,8 @@
 Controleur::Controleur(QObject *parent) :
     QObject(parent)
 {
-    ensemble_ = new Ensemble("nom",QDate::currentDate(),"");
-
+    root_ = new Ensemble(true);
+    //root_ = new Ensemble("nom", QDate::currentDate(),"bla", NULL);
     //qDebug()<< Item::TwoDaysAfter;
 
 }
@@ -74,7 +74,7 @@ void Controleur::affichage(Item * monSet, QGridLayout * layout)
             tempW->setType(Widget::LIST);
         }
 
-        layout->addWidget(tempW,x,y,1,3);
+        layout->addWidget(tempW,x,y,1,5);
 
         if(currentItem->getType()=="ensemble")
         {
@@ -95,18 +95,29 @@ void Controleur::affichage(Item * monSet, QGridLayout * layout)
 QScrollArea * Controleur::getScrollArea()
 {
     //exp test
-    Tache * num1 = new Tache("Tache 1", QDate::currentDate(), "Execution du chien");
-    Liste * num2 = new Liste("Liste 2", QDate::currentDate(), "Quelques exécutions");
-    Tache * num3 = new Tache("Tache 3", QDate::currentDate(), "Execution du lapin");
-    Ensemble * num4 = new Ensemble("Ensemble 4", QDate::currentDate(), "Execution du chat");
-    Tache * num6 = new Tache("Tache 6", QDate::currentDate(), "Execution du cadet");
-    Tache * num5 = new Tache("Tache 5", QDate::currentDate(), "Execution du ..... du gamin !");
-    ((Ensemble*)ensemble_)->ajoutItem(num1);
-        num2->ajoutItem(num3);
-        num4->ajoutItem(num6);
-        num2->ajoutItem(num4);
-    ((Ensemble*)ensemble_)->ajoutItem(num2);
-    ((Ensemble*)ensemble_)->ajoutItem(num5);
+    Tache * num1 = new Tache("Tache 1", QDate::currentDate(), "Execution du chien",(Item *)root_);
+    qDebug()<<"1";
+    Liste * num2 = new Liste("Liste 2", QDate::currentDate(), "Quelques exécutions", (Item *)root_);
+    qDebug()<<"2";
+    Tache * num3 = new Tache("Tache 3", QDate::currentDate(), "Execution du lapin", (Item *)num2);
+    qDebug()<<"1";
+    Ensemble * num4 = new Ensemble("Ensemble 4", QDate::currentDate(), "Execution du chat", (Item *)num2);
+    qDebug()<<"1";
+    Tache * num6 = new Tache("Tache 6", QDate::currentDate(), "Execution du cadet", (Item *)num4);
+    qDebug()<<"1";
+    Tache * num5 = new Tache("Tache 5", QDate::currentDate(), "Execution du ..... du gamin !", (Item *)root_);
+    qDebug()<<"1";
+
+
+    ((Ensemble*)root_)->ajoutItem((Item *)num1);
+    qDebug()<<"ajout n1";
+        num2->ajoutItem((Item *)num3);
+        num4->ajoutItem((Item *)num6);
+        num2->ajoutItem((Item *)num4);
+    ((Ensemble*)root_)->ajoutItem((Item *)num2);
+    ((Ensemble*)root_)->ajoutItem((Item *)num5);
+
+    qDebug()<<"fin example";
     //fin exp
 
 
@@ -116,7 +127,7 @@ QScrollArea * Controleur::getScrollArea()
 
     x=0;
     y=0;
-    affichage(ensemble_,centralLO);
+    affichage(root_,centralLO);
 
     centralWO->setLayout(centralLO);
     vue->setWidget(centralWO);

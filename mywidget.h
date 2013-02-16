@@ -1,13 +1,13 @@
 #ifndef MYWIDGET_H
 #define MYWIDGET_H
 
-#include "controleur.h"
-
 #include <QWidget>
 #include <QDebug>
 #include <QMouseEvent>
 #include <QMenu>
 #include <QAction>
+
+#include "controleur.h"
 
 class myWidget : public QWidget
 {

@@ -3,8 +3,6 @@
 
 #include <QMainWindow>
 #include <QDebug>
-#include "mywidget.h"
-#include "controleur.h"
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -22,6 +20,8 @@
 #include <QRadioButton>
 #include <QScrollArea>
 
+#include "mywidget.h"
+#include "controleur.h"
 #include "widget.h"
 
 class MainWindow : public QMainWindow

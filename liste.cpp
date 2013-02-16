@@ -1,16 +1,17 @@
 #include "liste.h"
 
-Liste::Liste(QString nom, QDate date, QString description, QObject *parent) :
-    Item(nom, date, description, parent)
+Liste::Liste(QString nom, QDate date, QString description, Item * conteneur, QObject *parent) :
+    Item(nom, date, description, conteneur, parent)
 {
     setType("liste");
     notreListe_ = new QList<Item *>();
 }
 
-Liste::Liste(QObject *parent):
-    Item(parent)
+Liste::Liste(Item * conteneur, QObject *parent):
+    Item(conteneur, parent)
 {
     setType("liste");
+    notreListe_ = new QList<Item *>();
 }
 
 void Liste::ajoutItem(Item *it)

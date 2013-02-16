@@ -43,7 +43,7 @@ MainWindow::MainWindow(QWidget *parent) :
             vue->setLayout(vueL);*/
 
 
-            QScrollArea * vue = controler->getScrollArea();
+            vue = controler->getScrollArea();
 
 
         ///////////////////////////////////////////////////////

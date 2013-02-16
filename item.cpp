@@ -1,10 +1,29 @@
 #include "item.h"
 
-Item::Item(QObject *parent) :
+//construction
+Item::Item(Item *conteneur, QObject *parent) :
     QObject(parent)
 {
     nom_ = "Mon nouvel item";
     date_ = QDate::currentDate();
+    setParent(conteneur);
+}
+
+Item::Item(bool root, QObject *parent) :
+    QObject(parent)
+{
+    //root = true; //enlever le warning
+    nom_ = "Root";
+    date_ = QDate::currentDate();
+}
+
+Item::Item(QString nom, QDate date, QString description, Item *conteneur, QObject *parent) :
+    QObject(parent)
+{
+    nom_ = nom;
+    date_ = date;
+    description_ = description;
+    setParent(conteneur);
 }
 
 void Item::setType(QString t)
@@ -43,6 +62,16 @@ QString Item::getDescription()
     return description_;
 }
 
+QWidget *Item::getVue()
+{
+    return vue_;
+}
+
+Item *Item::getParent()
+{
+    return parent_;
+}
+
 void Item::setNom(QString n)
 {
     nom_ = n;
@@ -63,11 +92,12 @@ void Item::setDescription(QString i)
     description_ = i;
 }
 
-
-Item::Item(QString nom, QDate date, QString description, QObject *parent) :
-    QObject(parent)
+void Item::setVue(QWidget *v)
 {
-    nom_ = nom;
-    date_ = date;
-    description_ = description;
+    vue_ = v;
+}
+
+void Item::setParent(Item *p)
+{
+    parent_ = p;
 }

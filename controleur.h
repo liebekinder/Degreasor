@@ -12,7 +12,6 @@
 #include "item.h"
 #include "tache.h"
 #include "liste.h"
-
 #include "widget.h"
 
 class Controleur : public QObject
@@ -26,7 +25,7 @@ public:
     QWidget * centralWO;
     void affichage(Item * monSet, QGridLayout *layout);
     explicit Controleur(QObject *parent = 0);
-    Item * ensemble_;
+    Item * root_;
 
 private:
     int x;

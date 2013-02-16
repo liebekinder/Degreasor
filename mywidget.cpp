@@ -1,7 +1,7 @@
 #include "mywidget.h"
 
 myWidget::myWidget(Controleur *control, QWidget *parent) :
-    QWidget(parent)
+    QScrollArea(parent)
 {
     this->controler = control;
 }

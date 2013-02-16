@@ -5,8 +5,6 @@
 #include <QDebug>
 #include <QList>
 #include <QListIterator>
-#include <QScrollArea>
-#include <QGridLayout>
 
 #include "ensemble.h"
 #include "item.h"
@@ -19,17 +17,11 @@ class Controleur : public QObject
     Q_OBJECT
 
 public:
-    QScrollArea * getScrollArea();
-    QScrollArea * vue;
-    QGridLayout * centralLO;
-    QWidget * centralWO;
-    void affichage(Item * monSet, QGridLayout *layout);
+    Item * getRoot();
     explicit Controleur(QObject *parent = 0);
     Item * root_;
 
 private:
-    int x;
-    int y;
 signals:
 
 public slots:

@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     liste.cpp \
     tache.cpp \
     widget.cpp \
-    entete.cpp
+    entete.cpp \
+    affichage.cpp
 
 HEADERS  += mainwindow.h \
     mywidget.h \
@@ -31,7 +32,8 @@ HEADERS  += mainwindow.h \
     liste.h \
     tache.h \
     widget.h \
-    entete.h
+    entete.h \
+    affichage.h
 
 FORMS    +=
 

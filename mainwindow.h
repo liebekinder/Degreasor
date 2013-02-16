@@ -23,6 +23,7 @@
 #include "mywidget.h"
 #include "controleur.h"
 #include "widget.h"
+#include "affichage.h"
 
 class MainWindow : public QMainWindow
 {
@@ -35,6 +36,8 @@ public:
     
 private:
 
+    Affichage * affichage;
+
     Controleur * controler;
     QWidget * central;
     QVBoxLayout * centralL;
@@ -45,7 +48,7 @@ private:
     QVBoxLayout * upperPaneL;
     QWidget * lowerPane;
     QHBoxLayout * lowerPaneL;
-    QScrollArea * vue;
+    myWidget * vue;
     QVBoxLayout * vueL;
     QWidget * info;
     QVBoxLayout * infoL;

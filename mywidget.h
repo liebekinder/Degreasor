@@ -6,10 +6,11 @@
 #include <QMouseEvent>
 #include <QMenu>
 #include <QAction>
+#include <QScrollArea>
 
 #include "controleur.h"
 
-class myWidget : public QWidget
+class myWidget : public QScrollArea
 {
     Q_OBJECT
 

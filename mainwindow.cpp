@@ -42,8 +42,8 @@ MainWindow::MainWindow(QWidget *parent) :
                 vueL->setAlignment(Qt::AlignCenter);
             vue->setLayout(vueL);*/
 
-
-            vue = controler->getScrollArea();
+        affichage = new Affichage();
+            vue = affichage->getScrollArea(controler->getRoot(), controler);
 
 
         ///////////////////////////////////////////////////////

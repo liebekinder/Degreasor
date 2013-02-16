@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QDebug>
+#include <QList>
+#include <QListIterator>
 
 #include "ensemble.h"
 #include "item.h"
@@ -14,12 +16,12 @@ class Controleur : public QObject
     Q_OBJECT
 
 public:
-    void affichage(Item * monSet);
+    void affichage(Item * monSet, int x, int y);
     explicit Controleur(QObject *parent = 0);
     Item * ensemble_;
-    
+
 signals:
-    
+
 public slots:
     void addEnsemble();
     void addListe();

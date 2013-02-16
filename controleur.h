@@ -6,6 +6,8 @@
 
 #include "ensemble.h"
 #include "item.h"
+#include "tache.h"
+#include "liste.h"
 
 class Controleur : public QObject
 {

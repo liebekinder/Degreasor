@@ -128,7 +128,19 @@ Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
     subRightLayout= new QHBoxLayout();
 
                 rightLayoutHight->addWidget(titre,5);
-                if(this->imageOf->getType()=="tache") rightLayoutHight->addWidget(dragZone,1);
+                if(this->imageOf->getType()=="tache")
+                {
+                    rightLayoutHight->addWidget(dragZone,1);
+                }
+                else if(!this->imageOf->getVisible())
+                {
+                    rightLayoutHight->addWidget(new QLabel("Liste repliée"),1);
+                }
+                else
+                {
+                    rightLayoutHight->addWidget(new QLabel("Liste dépliée"),1);
+                }
+
             rightLayoutHightContainer->setLayout(rightLayoutHight);
 
             subRightLayout->addWidget(date,1);

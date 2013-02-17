@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QDebug>
+#include <QListWidget>
 
 QT_BEGIN_NAMESPACE
 class QDragEnterEvent;
@@ -13,7 +14,9 @@ class DropArea : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DropArea(QWidget *parent = 0);
+    explicit DropArea(QListWidget * listeGeree, QWidget *parent = 0);
+private:
+    QListWidget * listeGeree;
 protected:
     void dragEnterEvent(QDragEnterEvent *event);
     void dragMoveEvent(QDragMoveEvent *event);

@@ -27,6 +27,8 @@
 #include "affichage.h"
 #include <QStackedWidget>
 
+#include <QListWidget>
+
 #include "droparea.h"
 
 class MainWindow : public QMainWindow
@@ -41,6 +43,9 @@ public:
     ~MainWindow();
     
 private:
+
+    QListWidget * dropListe;
+    QVBoxLayout * dropListeL;
 
     Affichage * affichage;
     QStackedWidget *stackedWidget;

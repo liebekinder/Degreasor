@@ -3,7 +3,7 @@
 #include "item.h"
 #include <QtWidgets>
 
-DropArea::DropArea(QWidget *parent) :
+DropArea::DropArea(QListWidget *listeGeree, QWidget *parent) :
     QWidget(parent)
 {
      QPalette cpalette3 = palette();
@@ -12,7 +12,7 @@ DropArea::DropArea(QWidget *parent) :
      cpalette3.setBrush(QPalette::Active, QPalette::Window, brush3);
      this->setPalette(cpalette3);
      this->setAutoFillBackground(true);
-
+     this->listeGeree=listeGeree;
      this->setAcceptDrops(true);
 }
 
@@ -58,6 +58,7 @@ void DropArea::dropEvent(QDropEvent *event)
         dataStream >> itemEnvoye;
 
         qDebug()<< "T'as drop "+itemEnvoye;
+        listeGeree->addItem(new QListWidgetItem(itemEnvoye));
 
         QLabel *newIcon = new QLabel(this);
         newIcon->setPixmap(pixmap);

@@ -135,7 +135,16 @@ QWidget *MainWindow::setInfoPanel(bool b){
         cbb2 = new QComboBox();
 
         te = new QTextEdit();
-        widg = new DropArea();
+        ///////////////////////////
+
+        dropListe = new QListWidget;
+        widg = new DropArea(dropListe);
+        dropListeL = new QVBoxLayout();
+
+        dropListeL->addWidget(dropListe);
+        widg->setLayout(dropListeL);
+
+        //////////////////////////////
         widg->setMinimumHeight(75);
 
         b1 = new QPushButton("Annuler");

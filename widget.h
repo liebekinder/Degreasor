@@ -77,7 +77,7 @@ signals:
     void addListeALaSuiteDeTacheSignal(Item *);
     void addEnsembleALaSuiteDeTacheSignal(Item *);
 private:
-    DragZone * dragZone;
+    QWidget * dragZone;
     QHBoxLayout *rightLayoutHight;
     QWidget * rightLayoutHightContainer;
 

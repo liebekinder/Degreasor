@@ -56,7 +56,7 @@ int Affichage::process(Item * monSet, QGridLayout * layout, Controleur * ctrl, I
 
         layout->addWidget(tempW,x,y,1,5);
 
-        if(currentItem->getType()=="ensemble")
+        if(currentItem->getType()=="ensemble" && currentItem->getVisible())
         {
             y++;
             int perc = Affichage::process(currentItem,layout,ctrl,centerOn);
@@ -64,7 +64,7 @@ int Affichage::process(Item * monSet, QGridLayout * layout, Controleur * ctrl, I
             moyenne+=perc;
             y--;
         }
-        if(currentItem->getType()=="liste")
+        if(currentItem->getType()=="liste" && currentItem->getVisible())
         {
             y++;
             int perc = Affichage::process(currentItem,layout,ctrl,centerOn);

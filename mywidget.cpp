@@ -11,7 +11,7 @@ void myWidget::mousePressEvent(QMouseEvent *event)
     if(event->button() == Qt::RightButton){
         qDebug()<<"bouton droit";
         QMenu * m = new QMenu();
-            QMenu * a1 = m->addMenu("Ajouter &dans...");
+            QMenu * a1 = m->addMenu("Ajouter &après...");
                 //a1->setStatusTip("ajouter un item inclus dans l'item selectionné");
 
                 QAction * a11 = a1->addAction("Ajout d'une nouvelle &tache");
@@ -39,7 +39,7 @@ void myWidget::mousePressEvent(QMouseEvent *event)
                     a142->setDisabled(true);
                     a143->setDisabled(true);
 
-            QMenu * a2 = m->addMenu("Ajouter &après...");
+            QMenu * a2 = m->addMenu("Ajouter &dans...");
                 //a2->setStatusTip("ajouter un item après l'item selectionné");
                 a2->setDisabled(true);
 

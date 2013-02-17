@@ -149,6 +149,9 @@ void Controleur::addTacheApresTache(Item *test)
     Item * yeah = new Tache("Default_Tache",QDate::currentDate(),"", test); //on set le parent quand on le connais
     //((Ensemble*)root_)->ajoutItem(yeah);
 
+    //rendre la liste visible
+    test->setVisible(true);
+
     if(test->getType()=="ensemble")
     {
         ((Ensemble*) test)->ajoutItem(yeah);
@@ -168,6 +171,9 @@ void Controleur::addListeApresTache(Item *test)
     Item * yeah = new Liste("Default_Liste",QDate::currentDate(),"", test); //on set le parent quand on le connais
     //((Ensemble*)root_)->ajoutItem(yeah);
 
+    //rendre la liste visible
+    test->setVisible(true);
+
     if(test->getType()=="ensemble")
     {
         ((Ensemble*) test)->ajoutItem(yeah);
@@ -186,6 +192,9 @@ void Controleur::addEnsembleApresTache(Item *test)
     qDebug()<<test->getNom();
     Item * yeah = new Ensemble("Default_Ensemble",QDate::currentDate(),"", test); //on set le parent quand on le connais
     //((Ensemble*)root_)->ajoutItem(yeah);
+
+    //rendre la liste visible
+    test->setVisible(true);
 
     if(test->getType()=="ensemble")
     {

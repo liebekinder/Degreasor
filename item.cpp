@@ -20,6 +20,7 @@ Item::Item(bool root, QObject *parent) :
 Item::Item(QString nom, QDate date, QString description, Item *conteneur, QObject *parent) :
     QObject(parent)
 {
+    visible = true;
     nom_ = nom;
     date_ = date;
     description_ = description;
@@ -35,6 +36,16 @@ void Item::setType(QString t)
     else{
         TYPE = t;
     }
+}
+
+void Item::setVisible(bool b)
+{
+    visible=b;
+}
+
+bool Item::getVisible()
+{
+    return visible;
 }
 
 QString Item::getType()

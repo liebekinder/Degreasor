@@ -11,18 +11,23 @@
 #include "tache.h"
 #include "liste.h"
 
+
+class MainWindow;
+
+
 class Controleur : public QObject
 {
     Q_OBJECT
 
 public:
     Item * getRoot();
-    explicit Controleur(QObject *parent = 0);
+    void parseAndAddAfter(Item * currentList, Item *elementPere, Item * elementToAdd);
+    explicit Controleur(MainWindow *theControlledWindow, QObject *parent = 0);
     Item * root_;
 
 private:
+    MainWindow * theControlledWindow;
 signals:
-
 public slots:
     void addEnsemble();
     void addListe();
@@ -30,7 +35,12 @@ public slots:
     void addEnsembleApres();
     void addListeApres();
     void addTacheApres();
-    void addTacheApresTache();
+    void addTacheApresTache(Item *);
+    void addListeApresTache(Item *);
+    void addEnsembleApresTache(Item *);
+    void addTacheALaSuiteDeTache(Item *);
+    void addListeALaSuiteDeTache(Item *);
+    void addEnsembleALaSuiteDeTache(Item *);
 };
 
 #endif // CONTROLEUR_H

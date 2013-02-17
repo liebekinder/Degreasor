@@ -24,6 +24,7 @@
 #include "controleur.h"
 #include "widget.h"
 #include "affichage.h"
+#include <QStackedWidget>
 
 class MainWindow : public QMainWindow
 {
@@ -32,12 +33,13 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = 0);
     MainWindow(bool b, QWidget *parent = 0);
+    void refresh();
     ~MainWindow();
     
 private:
 
     Affichage * affichage;
-
+    QStackedWidget *stackedWidget;
     Controleur * controler;
     QWidget * central;
     QVBoxLayout * centralL;

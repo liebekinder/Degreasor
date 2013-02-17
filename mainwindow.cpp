@@ -4,7 +4,7 @@ MainWindow::MainWindow(bool b, QWidget * parent) :
     QMainWindow(parent){
     qDebug()<<"mode console "<<b;
 
-    Controleur * c = new Controleur();
+    Controleur * c = new Controleur(this);
 
 }
 
@@ -14,7 +14,31 @@ MainWindow::MainWindow(QWidget *parent) :
     setMinimumSize(920,480);
     setWindowTitle(tr("Degreasor!"));
 
-    controler = new Controleur();
+    controler = new Controleur(this);
+
+    ///////////////////////////////////
+    //exp test
+    Item * root_ = controler->getRoot();
+    Tache * num1 = new Tache("Tache 1", QDate::currentDate(), "Execution du chien",(Item *)root_);
+    Liste * num2 = new Liste("Liste 2", QDate::currentDate(), "Quelques exécutions", (Item *)root_);
+    Tache * num3 = new Tache("Tache 3", QDate::currentDate(), "Execution du lapin", (Item *)num2);
+    Ensemble * num4 = new Ensemble("Ensemble 4", QDate::currentDate(), "Execution du chat", (Item *)num2);
+    Tache * num6 = new Tache("Tache 6", QDate::currentDate(), "Execution du cadet", (Item *)num4);
+    Tache * num5 = new Tache("Tache 5", QDate::currentDate(), "Execution du ..... du gamin !", (Item *)root_);
+
+    ((Ensemble*)root_)->ajoutItem((Item *)num1);
+    qDebug()<<"ajout n1";
+        num2->ajoutItem((Item *)num3);
+        num4->ajoutItem((Item *)num6);
+        num2->ajoutItem((Item *)num4);
+    ((Ensemble*)root_)->ajoutItem((Item *)num2);
+    ((Ensemble*)root_)->ajoutItem((Item *)num5);
+
+    qDebug()<<"fin exemple";
+    //fin exp
+
+
+    ///////////////////////////////////
 
     central = new QWidget();
     centralL = new QVBoxLayout();
@@ -35,6 +59,7 @@ MainWindow::MainWindow(QWidget *parent) :
         lowerPaneL = new QHBoxLayout();
 
         //////////////////////////////////////////////////////
+
         /*vue = new myWidget(controler);
             vueL = new QVBoxLayout();
                 QLabel * empty = new QLabel("- empty list -");
@@ -43,7 +68,10 @@ MainWindow::MainWindow(QWidget *parent) :
             vue->setLayout(vueL);*/
 
         affichage = new Affichage();
-            vue = affichage->getScrollArea(controler->getRoot(), controler);
+        vue = affichage->getScrollArea(controler->getRoot(), controler);
+
+        stackedWidget = new QStackedWidget();
+             stackedWidget->addWidget(vue);
 
 
         ///////////////////////////////////////////////////////
@@ -52,7 +80,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
             info = setInfoPanel(true);
 
-            lowerPaneL->addWidget(vue,7);
+            //lowerPaneL->addWidget(vue,7);
+            lowerPaneL->addWidget(stackedWidget,7);
             lowerPaneL->addWidget(line2);
             lowerPaneL->addWidget(info,3);
 
@@ -142,6 +171,20 @@ QWidget *MainWindow::setInfoPanel(bool b){
 
     info->setLayout(infoL);
     return info;
+}
+
+void MainWindow::refresh()
+{
+    qDebug()<<"refresh";
+
+    stackedWidget->removeWidget(vue);
+
+    delete vue;
+    vue = affichage->getScrollArea(controler->getRoot(), controler);
+
+    stackedWidget->addWidget(vue);
+    //stackedWidget->setCurrentIndex(0);
+
 }
 
 MainWindow::~MainWindow()

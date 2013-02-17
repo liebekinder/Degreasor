@@ -14,6 +14,7 @@
 
 #include "controleur.h"
 #include "entete.h"
+#include "item.h"
 
 
 class Widget : public QWidget
@@ -33,11 +34,26 @@ public:
     void setType(Type typeV);
     void setDescription(QString descriptionText);
     void mousePressEvent(QMouseEvent *event);
-    explicit Widget(Controleur *control, QWidget *parent = 0);
+    explicit Widget(Controleur *control, Item * caller, QWidget *parent = 0);
     ~Widget();
 protected:
     void paintEvent(QPaintEvent *event);
+public slots:
+    void addTacheApresTache();
+    void addListeApresTache();
+    void addEnsembleApresTache();
+    void addTacheALaSuiteDeTache();
+    void addListeALaSuiteDeTache();
+    void addEnsembleALaSuiteDeTache();
+signals:
+    void addTacheApresTacheSignal(Item *);
+    void addListeApresTacheSignal(Item *);
+    void addEnsembleApresTacheSignal(Item *);
+    void addTacheALaSuiteDeTacheSignal(Item *);
+    void addListeALaSuiteDeTacheSignal(Item *);
+    void addEnsembleALaSuiteDeTacheSignal(Item *);
 private:
+    Item * imageOf;
     Controleur * controler;
     QHBoxLayout * centralLayout;
     QVBoxLayout * rightLayout;

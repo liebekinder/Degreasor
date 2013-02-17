@@ -23,13 +23,15 @@ void Affichage::process(Item * monSet, QGridLayout * layout, Controleur * ctrl)
         x++;
         Item * currentItem = ((Item*)*it);
 
-        Widget * tempW = new Widget(ctrl);
+        Widget * tempW = new Widget(ctrl,currentItem);
 
         tempW->setDate(currentItem->getDate());
         tempW->setDescription(currentItem->getDescription());
         tempW->setTitre(currentItem->getNom());
         tempW->setEntete(monSet->getType()=="ensemble"?0:counter);
         counter++;
+
+        qDebug()<<"add to screen "+currentItem->getNom();
 
         if(currentItem->getType() == "tache")
         {
@@ -60,32 +62,6 @@ void Affichage::process(Item * monSet, QGridLayout * layout, Controleur * ctrl)
 
 myWidget * Affichage::getScrollArea(Item * root_, Controleur *ctrl)
 {
-    //exp test
-    Tache * num1 = new Tache("Tache 1", QDate::currentDate(), "Execution du chien",(Item *)root_);
-    qDebug()<<"1";
-    Liste * num2 = new Liste("Liste 2", QDate::currentDate(), "Quelques exécutions", (Item *)root_);
-    qDebug()<<"2";
-    Tache * num3 = new Tache("Tache 3", QDate::currentDate(), "Execution du lapin", (Item *)num2);
-    qDebug()<<"1";
-    Ensemble * num4 = new Ensemble("Ensemble 4", QDate::currentDate(), "Execution du chat", (Item *)num2);
-    qDebug()<<"1";
-    Tache * num6 = new Tache("Tache 6", QDate::currentDate(), "Execution du cadet", (Item *)num4);
-    qDebug()<<"1";
-    Tache * num5 = new Tache("Tache 5", QDate::currentDate(), "Execution du ..... du gamin !", (Item *)root_);
-    qDebug()<<"1";
-
-
-    ((Ensemble*)root_)->ajoutItem((Item *)num1);
-    qDebug()<<"ajout n1";
-        num2->ajoutItem((Item *)num3);
-        num4->ajoutItem((Item *)num6);
-        num2->ajoutItem((Item *)num4);
-    ((Ensemble*)root_)->ajoutItem((Item *)num2);
-    ((Ensemble*)root_)->ajoutItem((Item *)num5);
-
-    qDebug()<<"fin example";
-    //fin exp
-
 
     vue = new myWidget(ctrl);
     vue->setFrameShape(QFrame::NoFrame);

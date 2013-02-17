@@ -1,6 +1,5 @@
 #include "widget.h"
 
-
 void Widget::setPercent(int i)
 {
     chiffre->setPercent(i);
@@ -34,11 +33,20 @@ void Widget::setType(Type typeV)
     this->repaint();
 }
 
-Widget::Widget(Controleur *ctrl, QWidget *parent) :
+Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
     QWidget(parent)
 {
+    this->imageOf = caller;
     this->controler = ctrl;
     this->setFixedSize(500,100);
+
+    connect(this, SIGNAL(addTacheALaSuiteDeTacheSignal(Item *)), controler, SLOT(addTacheALaSuiteDeTache(Item *)));
+    connect(this, SIGNAL(addListeALaSuiteDeTacheSignal(Item *)), controler, SLOT(addListeALaSuiteDeTache(Item *)));
+    connect(this, SIGNAL(addEnsembleALaSuiteDeTacheSignal(Item *)), controler, SLOT(addEnsembleALaSuiteDeTache(Item *)));
+
+    connect(this, SIGNAL(addTacheApresTacheSignal(Item *)), controler, SLOT(addTacheApresTache(Item *)));
+    connect(this, SIGNAL(addListeApresTacheSignal(Item *)), controler, SLOT(addListeApresTache(Item *)));
+    connect(this, SIGNAL(addEnsembleApresTacheSignal(Item *)), controler, SLOT(addEnsembleApresTache(Item *)));
 
 
     chiffre = new entete(0,0);
@@ -147,15 +155,16 @@ void Widget::mousePressEvent(QMouseEvent *event)
                 //a1->setStatusTip("ajouter un item inclus dans l'item selectionné");
 
                 QAction * a11 = a1->addAction("Ajout d'une nouvelle &tache");
-                connect(a11,SIGNAL(triggered()),controler,SLOT(addTacheApresTache()));
+                //connect(a11,SIGNAL(triggered()),controler,SLOT(addTacheApresTache()));
+                connect(a11,SIGNAL(triggered()),this,SLOT(addTacheALaSuiteDeTache()));
 
                 QAction * a12 = a1->addAction("Ajout d'une &liste");
-                connect(a12,SIGNAL(triggered()),controler,SLOT(addListeApres()));
-                a12->setDisabled(true);
+                connect(a12,SIGNAL(triggered()),this,SLOT(addListeALaSuiteDeTache()));
+                //a12->setDisabled(true);
 
                 QAction * a13 = a1->addAction("Ajout d'un en&semble");
-                connect(a13,SIGNAL(triggered()),controler,SLOT(addEnsembleApres()));
-                a13->setDisabled(true);
+                connect(a13,SIGNAL(triggered()),this,SLOT(addEnsembleALaSuiteDeTache()));
+                //a13->setDisabled(true);
 
                 QMenu * a14 = a1->addMenu("Ajout à partir d'un &template");
                 //a13->setStatusTip("export de l'item vers un template");
@@ -176,7 +185,20 @@ void Widget::mousePressEvent(QMouseEvent *event)
 
             QMenu * a2 = m->addMenu("Ajouter &après...");
                 //a2->setStatusTip("ajouter un item après l'item selectionné");
-                a2->setDisabled(true);
+                QAction * a21 = a2->addAction("...une nouvelle &tache");
+                //connect(a11,SIGNAL(triggered()),controler,SLOT(addTacheApresTache()));
+                connect(a21,SIGNAL(triggered()),this,SLOT(addTacheApresTache()));
+
+                QAction * a22 = a2->addAction("...une nouvelle &liste");
+                connect(a22,SIGNAL(triggered()),this,SLOT(addListeApresTache()));
+                //a12->setDisabled(true);
+
+                QAction * a23 = a2->addAction("...un nouvel en&semble");
+                connect(a23,SIGNAL(triggered()),this,SLOT(addEnsembleApresTache()));
+                //a13->setDisabled(true);
+
+                if(imageOf->getType()=="tache") a2->setDisabled(true);
+
 
             QAction * a3 = m->addAction("&Export vers template...");
                 //a3->setStatusTip("export de l'item vers un template");
@@ -188,6 +210,42 @@ void Widget::mousePressEvent(QMouseEvent *event)
 
     }
     return;
+}
+
+void Widget::addTacheALaSuiteDeTache()
+{
+    qDebug()<<"test1";
+    emit addTacheALaSuiteDeTacheSignal(this->imageOf);
+}
+
+void Widget::addListeALaSuiteDeTache()
+{
+    qDebug()<<"test2";
+    emit addListeALaSuiteDeTacheSignal(this->imageOf);
+}
+
+void Widget::addEnsembleALaSuiteDeTache()
+{
+    qDebug()<<"test3";
+    emit addEnsembleALaSuiteDeTacheSignal(this->imageOf);
+}
+
+void Widget::addTacheApresTache()
+{
+    qDebug()<<"test11";
+    emit addTacheApresTacheSignal(this->imageOf);
+}
+
+void Widget::addListeApresTache()
+{
+    qDebug()<<"test21";
+    emit addListeApresTacheSignal(this->imageOf);
+}
+
+void Widget::addEnsembleApresTache()
+{
+    qDebug()<<"test31";
+    emit addEnsembleApresTacheSignal(this->imageOf);
 }
 
 Widget::~Widget()

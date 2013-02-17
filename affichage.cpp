@@ -10,7 +10,7 @@ Widget * Affichage::getCenterElem()
     return this->centerOn;
 }
 
-int Affichage::process(Item * monSet, QGridLayout * layout, Controleur * ctrl, Item * centerOn)
+int Affichage::process(Item * monSet, QGridLayout * layout, Controleur * ctrl, Item * centerOn, bool afficher)
 {
     //monSet = new Ensemble("Racine", QDate::currentDate(), "La racine de nos problèmes");
 
@@ -27,48 +27,58 @@ int Affichage::process(Item * monSet, QGridLayout * layout, Controleur * ctrl, I
     for(it= maListe->begin();it != maListe->end();++it)
     {
         x++;
+        counter++;
         Item * currentItem = ((Item*)*it);
+
+        //qDebug()<<"add to screen "+currentItem->getNom();
+        //qDebug()<<(afficher==true?1:0);
+
+
 
         Widget * tempW = new Widget(ctrl,currentItem);
 
-        if(centerOn==currentItem)
+        if(currentItem->getType() == "tache") moyenne+=((Tache *)currentItem)->getPercentage();
+        if(afficher)
         {
-            this->centerOn = tempW;
+
+            if(centerOn==currentItem)
+            {
+                this->centerOn = tempW;
+            }
+            tempW->setDate(currentItem->getDate());
+            tempW->setDescription(currentItem->getDescription());
+            tempW->setTitre(currentItem->getNom());
+            tempW->setEntete(monSet->getType()=="ensemble"?0:counter);
+
+            if(currentItem->getType() == "tache")
+            {
+                tempW->setType(Widget::ELEMENT);
+                tempW->setPercent(((Tache *)currentItem)->getPercentage());
+
+            }
+            else
+            {
+                tempW->setType(Widget::LIST);
+            }
+
+            layout->addWidget(tempW,x,y,1,5);
         }
-        tempW->setDate(currentItem->getDate());
-        tempW->setDescription(currentItem->getDescription());
-        tempW->setTitre(currentItem->getNom());
-        tempW->setEntete(monSet->getType()=="ensemble"?0:counter);
-        counter++;
 
-        qDebug()<<"add to screen "+currentItem->getNom();
 
-        if(currentItem->getType() == "tache")
-        {
-            tempW->setType(Widget::ELEMENT);
-            tempW->setPercent(((Tache *)currentItem)->getPercentage());
-            moyenne+=((Tache *)currentItem)->getPercentage();
-        }
-        else
-        {
-            tempW->setType(Widget::LIST);
-        }
 
-        layout->addWidget(tempW,x,y,1,5);
-
-        if(currentItem->getType()=="ensemble" && currentItem->getVisible())
+        if(currentItem->getType()=="ensemble" )
         {
             y++;
-            int perc = Affichage::process(currentItem,layout,ctrl,centerOn);
-            tempW->setPercent(perc);
+            int perc = Affichage::process(currentItem,layout,ctrl,centerOn,currentItem->getVisible() && afficher);
+            if(afficher) tempW->setPercent(perc);
             moyenne+=perc;
             y--;
         }
-        if(currentItem->getType()=="liste" && currentItem->getVisible())
+        if(currentItem->getType()=="liste")
         {
             y++;
-            int perc = Affichage::process(currentItem,layout,ctrl,centerOn);
-            tempW->setPercent(perc);
+            int perc = Affichage::process(currentItem,layout,ctrl,centerOn,currentItem->getVisible() && afficher);
+            if(afficher) tempW->setPercent(perc);
             moyenne+=perc;
             y--;
         }
@@ -93,7 +103,7 @@ myWidget * Affichage::getScrollArea(Item * root_, Controleur *ctrl, Item *center
 
     x=0;
     y=0;
-    process(root_,centralLO,ctrl,centerOn);
+    process(root_,centralLO,ctrl,centerOn,true);
 
     centralWO->setLayout(centralLO);
     vue->setWidget(centralWO);

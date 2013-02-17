@@ -13,9 +13,17 @@
 #include <QMenu>
 #include <QAction>
 
+#include <QPixmap>
+
 #include "controleur.h"
 #include "entete.h"
 #include "item.h"
+
+
+QT_BEGIN_NAMESPACE
+class QDragEnterEvent;
+class QDropEvent;
+QT_END_NAMESPACE
 
 
 class Widget : public QWidget
@@ -42,9 +50,14 @@ public:
     ~Widget();
 protected:
     void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
     void mouseDoubleClickEvent(QMouseEvent *event);
     bool eventFilter( QObject *, QEvent *e);
     void paintEvent(QPaintEvent *event);
+
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dragMoveEvent(QDragMoveEvent *event);
+    void dropEvent(QDropEvent *event);
 public slots:
     void addTacheApresTache();
     void addListeApresTache();

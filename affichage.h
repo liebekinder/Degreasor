@@ -26,7 +26,7 @@ public:
     myWidget * monWidget;
     QVBoxLayout * monWidgetL;
     Widget * centerOn;
-    int process(Item * monSet, QGridLayout *layout, Controleur * ctrl, Item *centerOn);
+    int process(Item * monSet, QGridLayout *layout, Controleur * ctrl, Item *centerOn, bool afficher);
     Widget * getCenterElem();
 private:
     int x;

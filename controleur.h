@@ -21,7 +21,8 @@ class Controleur : public QObject
 
 public:
     Item * getRoot();
-    void parseAndAddAfter(Item * currentList, Item *elementPere, Item * elementToAdd);
+    void callRefreshWithoutMoveScreen();
+    //void parseAndAddAfter(Item * currentList, Item *elementPere, Item * elementToAdd);
     explicit Controleur(MainWindow *theControlledWindow, QObject *parent = 0);
     Item * root_;
 

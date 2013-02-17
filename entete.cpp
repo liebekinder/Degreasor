@@ -33,6 +33,7 @@ void entete::setType(int typeV)
 void entete::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing, true);
     //painter.setRenderHint(QPainter::Antialiasing, true);
 
     //painter.setRenderHint(QPainter::Antialiasing, true);
@@ -55,8 +56,9 @@ void entete::paintEvent(QPaintEvent *event)
     double padding = (1.-percent/100.)*size().height();
     if(type==0)
     {
+        padding = 0;
         double rayonAngles = 20;
-        for(int i = 0;i<2*size().height()*percent/100.;i++)
+        for(int i = 0;i<100;i++)//2*size().height()*percent/100.;i++)
         {
             //qDebug()<<qPow(rayonAngles-(i+padding),2);
             //if(i+padding<rayonAngles) painter.drawLine(qPow(qPow(rayonAngles,2)-qPow((i+padding),2),0.5),i+padding,size().width(),i+padding);

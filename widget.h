@@ -34,6 +34,7 @@ public:
     void setType(Type typeV);
     void setDescription(QString descriptionText);
     void mousePressEvent(QMouseEvent *event);
+    void mouseDoubleClickEvent(QMouseEvent *event);
     explicit Widget(Controleur *control, Item * caller, QWidget *parent = 0);
     ~Widget();
 protected:
@@ -53,6 +54,7 @@ signals:
     void addListeALaSuiteDeTacheSignal(Item *);
     void addEnsembleALaSuiteDeTacheSignal(Item *);
 private:
+    int currentPercent;
     Item * imageOf;
     Controleur * controler;
     QHBoxLayout * centralLayout;

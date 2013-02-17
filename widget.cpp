@@ -2,6 +2,7 @@
 
 void Widget::setPercent(int i)
 {
+    this->currentPercent = i;
     chiffre->setPercent(i);
 }
 
@@ -36,6 +37,7 @@ void Widget::setType(Type typeV)
 Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
     QWidget(parent)
 {
+    this->currentPercent = 0;
     this->imageOf = caller;
     this->controler = ctrl;
     this->setFixedSize(500,100);
@@ -146,9 +148,20 @@ void Widget::paintEvent(QPaintEvent *event)
 
 }
 
+void Widget::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    qDebug()<<"Double ! &&&&&&&&&&&&&&&&&&&&&&&&&&&";
+}
+
 void Widget::mousePressEvent(QMouseEvent *event)
 {
-    if(event->button() == Qt::RightButton){
+    qDebug() <<event->type();
+    if(event->type()==QEvent::MouseButtonDblClick)
+    {
+        qDebug() << "uiydsuigfdsuohfdfds";
+    }
+    if(event->button() == Qt::RightButton)
+    {
         qDebug()<<"bouton droit";
         QMenu * m = new QMenu();
             QMenu * a1 = m->addMenu("Ajouter &dans...");
@@ -206,11 +219,21 @@ void Widget::mousePressEvent(QMouseEvent *event)
 
         m->popup(event->globalPos());
     }
-    else{
+    else if(event->button() == Qt::LeftButton && type==Widget::ELEMENT)
+    {
+        this->currentPercent=this->currentPercent==0?100:0;
+        this->setPercent(this->currentPercent);
+        ((Tache*)this->imageOf)->setPercentage(currentPercent);
+        controler->callRefreshWithoutMoveScreen();
+    }
+    else
+    {
 
     }
     return;
 }
+
+
 
 void Widget::addTacheALaSuiteDeTache()
 {

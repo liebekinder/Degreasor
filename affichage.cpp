@@ -5,7 +5,12 @@ Affichage::Affichage(QObject *parent) :
 {
 }
 
-void Affichage::process(Item * monSet, QGridLayout * layout, Controleur * ctrl)
+Widget * Affichage::getCenterElem()
+{
+    return this->centerOn;
+}
+
+int Affichage::process(Item * monSet, QGridLayout * layout, Controleur * ctrl, Item * centerOn)
 {
     //monSet = new Ensemble("Racine", QDate::currentDate(), "La racine de nos problèmes");
 
@@ -17,6 +22,7 @@ void Affichage::process(Item * monSet, QGridLayout * layout, Controleur * ctrl)
     QList<Item *>::iterator it;
     QList<Item *> * maListe = monSet->getType()=="ensemble" ? ((Ensemble *)root)->getNotreListe() :  ((Liste *)root)->getNotreListe() ;
 
+    int moyenne = 0;
     int counter = 1;
     for(it= maListe->begin();it != maListe->end();++it)
     {
@@ -25,6 +31,10 @@ void Affichage::process(Item * monSet, QGridLayout * layout, Controleur * ctrl)
 
         Widget * tempW = new Widget(ctrl,currentItem);
 
+        if(centerOn==currentItem)
+        {
+            this->centerOn = tempW;
+        }
         tempW->setDate(currentItem->getDate());
         tempW->setDescription(currentItem->getDescription());
         tempW->setTitre(currentItem->getNom());
@@ -36,6 +46,8 @@ void Affichage::process(Item * monSet, QGridLayout * layout, Controleur * ctrl)
         if(currentItem->getType() == "tache")
         {
             tempW->setType(Widget::ELEMENT);
+            tempW->setPercent(((Tache *)currentItem)->getPercentage());
+            moyenne+=((Tache *)currentItem)->getPercentage();
         }
         else
         {
@@ -47,21 +59,28 @@ void Affichage::process(Item * monSet, QGridLayout * layout, Controleur * ctrl)
         if(currentItem->getType()=="ensemble")
         {
             y++;
-            Affichage::process(currentItem,layout,ctrl);
+            int perc = Affichage::process(currentItem,layout,ctrl,centerOn);
+            tempW->setPercent(perc);
+            moyenne+=perc;
             y--;
         }
         if(currentItem->getType()=="liste")
         {
             y++;
-            Affichage::process(currentItem,layout,ctrl);
+            int perc = Affichage::process(currentItem,layout,ctrl,centerOn);
+            tempW->setPercent(perc);
+            moyenne+=perc;
             y--;
         }
 
     }
+    return counter==1?0:moyenne/(counter-1);
 }
 
-myWidget * Affichage::getScrollArea(Item * root_, Controleur *ctrl)
+myWidget * Affichage::getScrollArea(Item * root_, Controleur *ctrl, Item *centerOn)
 {
+
+
 
     vue = new myWidget(ctrl);
     vue->setFrameShape(QFrame::NoFrame);
@@ -74,7 +93,7 @@ myWidget * Affichage::getScrollArea(Item * root_, Controleur *ctrl)
 
     x=0;
     y=0;
-    process(root_,centralLO,ctrl);
+    process(root_,centralLO,ctrl,centerOn);
 
     centralWO->setLayout(centralLO);
     vue->setWidget(centralWO);

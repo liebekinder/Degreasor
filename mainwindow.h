@@ -19,6 +19,7 @@
 #include <QPushButton>
 #include <QRadioButton>
 #include <QScrollArea>
+#include <QScrollBar>
 
 #include "mywidget.h"
 #include "controleur.h"
@@ -31,9 +32,10 @@ class MainWindow : public QMainWindow
     Q_OBJECT
     
 public:
+    void callRefreshWithoutMoveScreen();
     MainWindow(QWidget *parent = 0);
     MainWindow(bool b, QWidget *parent = 0);
-    void refresh();
+    void refresh(Item *centerOn = NULL);
     ~MainWindow();
     
 private:

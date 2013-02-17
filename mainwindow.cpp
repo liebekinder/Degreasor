@@ -173,19 +173,53 @@ QWidget *MainWindow::setInfoPanel(bool b){
     return info;
 }
 
-void MainWindow::refresh()
+void MainWindow::refresh(Item * centerOn)
 {
     qDebug()<<"refresh";
 
     stackedWidget->removeWidget(vue);
 
     delete vue;
-    vue = affichage->getScrollArea(controler->getRoot(), controler);
+    vue = affichage->getScrollArea(controler->getRoot(), controler, centerOn);
 
     stackedWidget->addWidget(vue);
+
+    //Centrer la vue sur le dernier widget ajouté.
+    if(centerOn!=NULL)
+    {
+        qDebug()<< affichage->getCenterElem()->geometry().y();
+        int cPosy = affichage->getCenterElem()->geometry().y()- (vue->size().height())/2+affichage->getCenterElem()->size().height()/2;
+        int cPosx = affichage->getCenterElem()->geometry().x()- (vue->size().width())/2+affichage->getCenterElem()->size().width()/2;
+        vue->verticalScrollBar()->setValue(cPosy>0?cPosy:0);
+        vue->horizontalScrollBar()->setValue(cPosx>0?cPosx:0);
+        //qDebug()<< centerOn->geometry().x() + " "+ centerOn->geometry().y();
+    }
+
+
     //stackedWidget->setCurrentIndex(0);
 
 }
+
+void MainWindow::callRefreshWithoutMoveScreen()
+{
+    qDebug()<<"refresh sans move";
+
+    stackedWidget->removeWidget(vue);
+
+    int cPosy = vue->verticalScrollBar()->value();
+    int cPosx = vue->horizontalScrollBar()->value();
+
+
+    delete vue;
+    vue = affichage->getScrollArea(controler->getRoot(), controler, NULL);
+
+    stackedWidget->addWidget(vue);
+
+    vue->verticalScrollBar()->setValue(cPosy>0?cPosy:0);
+    vue->horizontalScrollBar()->setValue(cPosx>0?cPosx:0);
+
+}
+
 
 MainWindow::~MainWindow()
 {

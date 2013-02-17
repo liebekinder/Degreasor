@@ -19,13 +19,15 @@ class Affichage : public QObject
     Q_OBJECT
 public:
     explicit Affichage(QObject *parent = 0);
-    myWidget * getScrollArea(Item * root_, Controleur * ctrl);
+    myWidget * getScrollArea(Item * root_, Controleur * ctrl, Item * centerOn = NULL);
     myWidget * vue;
     QGridLayout * centralLO;
     QWidget * centralWO;
     myWidget * monWidget;
     QVBoxLayout * monWidgetL;
-    void process(Item * monSet, QGridLayout *layout, Controleur * ctrl);
+    Widget * centerOn;
+    int process(Item * monSet, QGridLayout *layout, Controleur * ctrl, Item *centerOn);
+    Widget * getCenterElem();
 private:
     int x;
     int y;

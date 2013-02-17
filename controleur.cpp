@@ -13,13 +13,7 @@ Controleur::Controleur(MainWindow * theControlledWindow,QObject *parent) :
 
 }
 
-void Controleur::addEnsembleApres()
-{
-    ((Ensemble *)root_)->ajoutItem(new Ensemble("Default_Ensemble",QDate::currentDate(),"",root_));
-    qDebug()<<"ajout détecté! Ensemble avant";
-}
-
-void Controleur::parseAndAddAfter(Item * currentList, Item * elementPere ,Item * elementToAdd)
+/*void Controleur::parseAndAddAfter(Item * currentList, Item * elementPere ,Item * elementToAdd)
 {
     Item * root;
     if(currentList->getType()=="ensemble") root = ((Ensemble *)currentList);
@@ -62,59 +56,97 @@ void Controleur::parseAndAddAfter(Item * currentList, Item * elementPere ,Item *
         }
 
     }
+}*/
+
+void Controleur::addEnsembleApres()
+{
+    Item * yeah = new Ensemble("Default_Tache",QDate::currentDate(),"",root_);
+    ((Ensemble *)root_)->ajoutItem(yeah);
+    qDebug()<<"ajout détecté! Ensemble avant";
+    theControlledWindow->refresh(yeah);
 }
 
 void Controleur::addListeApres()
 {
+    Item * yeah = new Liste("Default_Tache",QDate::currentDate(),"",root_);
+    ((Ensemble *)root_)->ajoutItem(yeah);
     qDebug()<<"ajout détecté!";
+    theControlledWindow->refresh(yeah);
 }
 
 void Controleur::addTacheApres()
 {
+    Item * yeah = new Tache("Default_Tache",QDate::currentDate(),"",root_);
+    ((Ensemble *)root_)->ajoutItem(yeah);
     qDebug()<<"ajout détecté!";
+    theControlledWindow->refresh(yeah);
 
 }
 
 void Controleur::addTacheALaSuiteDeTache(Item *test)
 {
     qDebug()<<test->getNom();
-    Item * yeah = new Tache("Yeah",QDate::currentDate(),"Yeah bis", NULL); //on set le parent quand on le connais
+    Item * yeah = new Tache("Default_Tache",QDate::currentDate(),"", test->getParent()); //on set le parent quand on le connais
     //((Ensemble*)root_)->ajoutItem(yeah);
 
-    Controleur::parseAndAddAfter(root_, test ,yeah);
+    if(test->getParent()->getType()=="ensemble")
+    {
+        ((Ensemble*) test->getParent())->ajoutItem(yeah);
+    }
+    else
+    {
+        ((Liste*) test->getParent())->ajoutItem(yeah);
+    }
+    //Controleur::parseAndAddAfter(root_, test ,yeah);
     qDebug()<<"test->getNom()";
 
-    theControlledWindow->refresh();
+    theControlledWindow->refresh(yeah);
 }
 
 void Controleur::addListeALaSuiteDeTache(Item *test)
 {
     qDebug()<<test->getNom();
-    Item * yeah = new Liste("Yeah",QDate::currentDate(),"Yeah bis", NULL); //on set le parent quand on le connais
+    Item * yeah = new Liste("Default_Liste",QDate::currentDate(),"", test->getParent()); //on set le parent quand on le connais
     //((Ensemble*)root_)->ajoutItem(yeah);
 
-    Controleur::parseAndAddAfter(root_, test ,yeah);
+    if(test->getParent()->getType()=="ensemble")
+    {
+        ((Ensemble*) test->getParent())->ajoutItem(yeah);
+    }
+    else
+    {
+        ((Liste*) test->getParent())->ajoutItem(yeah);
+    }
+    //Controleur::parseAndAddAfter(root_, test ,yeah);;
     qDebug()<<"test->getNom()";
 
-    theControlledWindow->refresh();
+    theControlledWindow->refresh(yeah);
 }
 
 void Controleur::addEnsembleALaSuiteDeTache(Item *test)
 {
     qDebug()<<test->getNom();
-    Item * yeah = new Ensemble("Yeah",QDate::currentDate(),"Yeah bis", NULL); //on set le parent quand on le connais
+    Item * yeah = new Ensemble("Default_Ensemble",QDate::currentDate(),"", test->getParent()); //on set le parent quand on le connais
     //((Ensemble*)root_)->ajoutItem(yeah);
 
-    Controleur::parseAndAddAfter(root_, test ,yeah);
+    if(test->getParent()->getType()=="ensemble")
+    {
+        ((Ensemble*) test->getParent())->ajoutItem(yeah);
+    }
+    else
+    {
+        ((Liste*) test->getParent())->ajoutItem(yeah);
+    }
+    //Controleur::parseAndAddAfter(root_, test ,yeah);
     qDebug()<<"test->getNom()";
 
-    theControlledWindow->refresh();
+    theControlledWindow->refresh(yeah);
 }
 
 void Controleur::addTacheApresTache(Item *test)
 {
     qDebug()<<test->getNom();
-    Item * yeah = new Tache("Yeah",QDate::currentDate(),"Yeah bis", NULL); //on set le parent quand on le connais
+    Item * yeah = new Tache("Default_Tache",QDate::currentDate(),"", test); //on set le parent quand on le connais
     //((Ensemble*)root_)->ajoutItem(yeah);
 
     if(test->getType()=="ensemble")
@@ -127,13 +159,13 @@ void Controleur::addTacheApresTache(Item *test)
     }
     qDebug()<<"test->getNom()";
 
-    theControlledWindow->refresh();
+    theControlledWindow->refresh(yeah);
 }
 
 void Controleur::addListeApresTache(Item *test)
 {
     qDebug()<<test->getNom();
-    Item * yeah = new Liste("Yeah",QDate::currentDate(),"Yeah bis", NULL); //on set le parent quand on le connais
+    Item * yeah = new Liste("Default_Liste",QDate::currentDate(),"", test); //on set le parent quand on le connais
     //((Ensemble*)root_)->ajoutItem(yeah);
 
     if(test->getType()=="ensemble")
@@ -146,13 +178,13 @@ void Controleur::addListeApresTache(Item *test)
     }
     qDebug()<<"test->getNom()";
 
-    theControlledWindow->refresh();
+    theControlledWindow->refresh(yeah);
 }
 
 void Controleur::addEnsembleApresTache(Item *test)
 {
     qDebug()<<test->getNom();
-    Item * yeah = new Ensemble("Yeah",QDate::currentDate(),"Yeah bis", NULL); //on set le parent quand on le connais
+    Item * yeah = new Ensemble("Default_Ensemble",QDate::currentDate(),"", test); //on set le parent quand on le connais
     //((Ensemble*)root_)->ajoutItem(yeah);
 
     if(test->getType()=="ensemble")
@@ -165,7 +197,7 @@ void Controleur::addEnsembleApresTache(Item *test)
     }
     qDebug()<<"test->getNom()";
 
-    theControlledWindow->refresh();
+    theControlledWindow->refresh(yeah);
 }
 
 void Controleur::addEnsemble()
@@ -186,5 +218,10 @@ void Controleur::addTache()
 Item * Controleur::getRoot()
 {
     return root_;
+}
+
+void Controleur::callRefreshWithoutMoveScreen()
+{
+    theControlledWindow->callRefreshWithoutMoveScreen();
 }
 

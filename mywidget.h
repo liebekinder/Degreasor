@@ -19,6 +19,7 @@ private:
 public:
     explicit myWidget(Controleur * control, QWidget *parent = 0);
     void mousePressEvent(QMouseEvent *event);
+    void mouseDoubleClickEvent(QMouseEvent *event);
     
 signals:
     void add();

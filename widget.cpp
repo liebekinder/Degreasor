@@ -40,7 +40,6 @@ Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
     //this->installEventFilter(this);
 
 
-
     this->currentPercent = 0;
     this->imageOf = caller;
     this->controler = ctrl;
@@ -55,21 +54,32 @@ Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
     connect(this, SIGNAL(addEnsembleApresTacheSignal(Item *)), controler, SLOT(addEnsembleApresTache(Item *)));
 
 
+
     chiffre = new entete(0,0);
+    chiffre->installEventFilter(this);
 
     date = new QLabel();
-    date->installEventFilter(this);
+    if(this->imageOf->getType()!="tache") date->installEventFilter(this);
     date->setAlignment(Qt::AlignCenter);
     date->setFont(QFont("Arial", 12));
 
     titre = new QLabel();
-    titre->installEventFilter(this);
+    if(this->imageOf->getType()!="tache") titre->installEventFilter(this);
     titre->setAlignment(Qt::AlignCenter);
     titre->setFont(QFont("Arial", 15, QFont::Bold));
     titre->setMaximumSize(14/16.*500,50);
 
+    //////////////////
+    /*QPalette cpalette3 = palette();
+    QBrush brush3(QColor(0, 255, 0, 255));
+    brush3.setStyle(Qt::SolidPattern);
+    cpalette3.setBrush(QPalette::Active, QPalette::Window, brush3);
+    titre->setPalette(cpalette3);
+    titre->setAutoFillBackground(true);*/
+    //////////////////
+
     description = new QLabel();
-    description->installEventFilter(this);
+    if(this->imageOf->getType()!="tache") description->installEventFilter(this);
     description->setAlignment(Qt::AlignCenter);
     QFont fDesc("Arial", 12);
     fDesc.setItalic(true);
@@ -83,16 +93,16 @@ Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
         description->setAutoFillBackground(true);*/
 
     lineV = new QFrame();
-    lineV->installEventFilter(this);
+    if(this->imageOf->getType()!="tache") lineV->installEventFilter(this);
         //lineV->setGeometry(QRect(320, 150, 118000, 100));
         //lineV->setStyle();
         lineV->setFrameShape(QFrame::VLine);
     lineH = new QFrame();
-    lineH->installEventFilter(this);
+    if(this->imageOf->getType()!="tache") lineH->installEventFilter(this);
          //lineH->setGeometry(QRect(320, 150, 1180000048, 100));
          lineH->setFrameShape(QFrame::HLine);
     lineH2 = new QFrame();
-    lineH2->installEventFilter(this);
+    if(this->imageOf->getType()!="tache") lineH2->installEventFilter(this);
         //lineH2->setGeometry(QRect(320, 150, 118000, 100));
         lineH2->setFrameShape(QFrame::VLine);
 
@@ -170,11 +180,11 @@ bool Widget::eventFilter( QObject *, QEvent *e)
         this->mouseReleaseEvent((QMouseEvent *)e);
         return true;
     }
-    else if(e->type()==QEvent::MouseButtonPress)
+    /*else if(e->type()==QEvent::MouseButtonPress)
     {
         this->mousePressEvent((QMouseEvent *)e);
         return true;
-    }
+    }*/
     return false;
 
 }
@@ -204,11 +214,14 @@ bool Widget::eventFilter( QObject *, QEvent *e)
 
 void Widget::mousePressEvent(QMouseEvent *event)
 {
-    if(this->imageOf->getType()=="tache")
+    if(this->imageOf->getType()=="tache" && event->button() == Qt::LeftButton)
     {
         qDebug()<<"Debut drag";
-        //Widget *child = static_cast<Widget*>(childAt(event->pos()));
-        Widget *child = static_cast<Widget*>(childAt(this->pos()));
+        //QPoint  test = QPoint(this->pos());
+        //Widget *child = static_cast<Widget*>(childAt(test));
+        Widget *child = static_cast<Widget*>(childAt(event->pos()));
+
+        //Widget *child = static_cast<Widget*>(childAt(this->pos()));
         if (!child)
             return;
 
@@ -257,11 +270,18 @@ void Widget::mouseDoubleClickEvent(QMouseEvent *event)
         this->imageOf->setVisible(!this->imageOf->getVisible());
         controler->callRefreshWithoutMoveScreen();
     }
+    else if(event->button() == Qt::LeftButton && type==Widget::ELEMENT)
+    {
+        this->currentPercent=this->currentPercent==0?100:0;
+        this->setPercent(this->currentPercent);
+        ((Tache*)this->imageOf)->setPercentage(currentPercent);
+        controler->callRefreshWithoutMoveScreen();
+    }
 }
 
 void Widget::mouseReleaseEvent(QMouseEvent *event)
 {
-
+    qDebug()<<"qsdqsdqsdqsdqsdqsdqsd";
     if(event->button() == Qt::RightButton)
     {
         qDebug()<<"bouton droit";
@@ -321,13 +341,6 @@ void Widget::mouseReleaseEvent(QMouseEvent *event)
 
         m->popup(event->globalPos());
     }
-    else if(event->button() == Qt::LeftButton && type==Widget::ELEMENT)
-    {
-        this->currentPercent=this->currentPercent==0?100:0;
-        this->setPercent(this->currentPercent);
-        ((Tache*)this->imageOf)->setPercentage(currentPercent);
-        controler->callRefreshWithoutMoveScreen();
-    }
     else
     {
 
@@ -377,6 +390,3 @@ void Widget::addEnsembleApresTache()
 Widget::~Widget()
 {
 }
-
-
-

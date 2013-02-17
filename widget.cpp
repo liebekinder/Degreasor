@@ -37,6 +37,8 @@ void Widget::setType(Type typeV)
 Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
     QWidget(parent)
 {
+    //this->installEventFilter(this);
+
     this->currentPercent = 0;
     this->imageOf = caller;
     this->controler = ctrl;
@@ -54,15 +56,18 @@ Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
     chiffre = new entete(0,0);
 
     date = new QLabel();
+    date->installEventFilter(this);
     date->setAlignment(Qt::AlignCenter);
     date->setFont(QFont("Arial", 12));
 
     titre = new QLabel();
+    titre->installEventFilter(this);
     titre->setAlignment(Qt::AlignCenter);
     titre->setFont(QFont("Arial", 15, QFont::Bold));
     titre->setMaximumSize(14/16.*500,50);
 
     description = new QLabel();
+    description->installEventFilter(this);
     description->setAlignment(Qt::AlignCenter);
     QFont fDesc("Arial", 12);
     fDesc.setItalic(true);
@@ -75,14 +80,17 @@ Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
         description->setPalette(cpalette3);
         description->setAutoFillBackground(true);*/
 
-    lineV = new QFrame(this);
+    lineV = new QFrame();
+    lineV->installEventFilter(this);
         //lineV->setGeometry(QRect(320, 150, 118000, 100));
         //lineV->setStyle();
         lineV->setFrameShape(QFrame::VLine);
-    lineH = new QFrame(this);
+    lineH = new QFrame();
+    lineH->installEventFilter(this);
          //lineH->setGeometry(QRect(320, 150, 1180000048, 100));
          lineH->setFrameShape(QFrame::HLine);
-    lineH2 = new QFrame(this);
+    lineH2 = new QFrame();
+    lineH2->installEventFilter(this);
         //lineH2->setGeometry(QRect(320, 150, 118000, 100));
         lineH2->setFrameShape(QFrame::VLine);
 
@@ -148,18 +156,31 @@ void Widget::paintEvent(QPaintEvent *event)
 
 }
 
+bool Widget::eventFilter( QObject *, QEvent *e)
+{
+    if(e->type()==QEvent::MouseButtonDblClick)
+    {
+        this->mouseDoubleClickEvent((QMouseEvent *)e);
+        return true;
+    }
+    if(e->type()==QEvent::MouseButtonPress)
+    {
+        this->mousePressEvent((QMouseEvent *)e);
+        return true;
+    }
+    return false;
+
+}
+
+
 void Widget::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    qDebug()<<"Double ! &&&&&&&&&&&&&&&&&&&&&&&&&&&";
+    qDebug()<<"Double clic !";
 }
 
 void Widget::mousePressEvent(QMouseEvent *event)
 {
     qDebug() <<event->type();
-    if(event->type()==QEvent::MouseButtonDblClick)
-    {
-        qDebug() << "uiydsuigfdsuohfdfds";
-    }
     if(event->button() == Qt::RightButton)
     {
         qDebug()<<"bouton droit";
@@ -232,6 +253,7 @@ void Widget::mousePressEvent(QMouseEvent *event)
     }
     return;
 }
+
 
 
 

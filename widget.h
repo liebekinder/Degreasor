@@ -7,7 +7,8 @@
 #include <QLabel>
 #include <QFrame>
 #include <QPaintEvent>
-#include <QtGui>
+#include <QDate>
+#include <QDebug>
 #include <QMouseEvent>
 #include <QMenu>
 #include <QAction>
@@ -33,11 +34,16 @@ public:
     void setDate(QDate dateText);
     void setType(Type typeV);
     void setDescription(QString descriptionText);
-    void mousePressEvent(QMouseEvent *event);
-    void mouseDoubleClickEvent(QMouseEvent *event);
+
+
+    //bool eventFilter(QObject *o,QEvent *e);
+
     explicit Widget(Controleur *control, Item * caller, QWidget *parent = 0);
     ~Widget();
 protected:
+    void mousePressEvent(QMouseEvent *event);
+    void mouseDoubleClickEvent(QMouseEvent *event);
+    bool eventFilter( QObject *, QEvent *e);
     void paintEvent(QPaintEvent *event);
 public slots:
     void addTacheApresTache();

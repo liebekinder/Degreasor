@@ -27,6 +27,8 @@
 #include "affichage.h"
 #include <QStackedWidget>
 
+#include "droparea.h"
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT

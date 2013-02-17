@@ -55,9 +55,6 @@ protected:
     bool eventFilter( QObject *, QEvent *e);
     void paintEvent(QPaintEvent *event);
 
-    void dragEnterEvent(QDragEnterEvent *event);
-    void dragMoveEvent(QDragMoveEvent *event);
-    void dropEvent(QDropEvent *event);
 public slots:
     void addTacheApresTache();
     void addListeApresTache();

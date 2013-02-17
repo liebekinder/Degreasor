@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     tache.cpp \
     widget.cpp \
     entete.cpp \
-    affichage.cpp
+    affichage.cpp \
+    droparea.cpp
 
 HEADERS  += mainwindow.h \
     mywidget.h \
@@ -33,7 +34,8 @@ HEADERS  += mainwindow.h \
     tache.h \
     widget.h \
     entete.h \
-    affichage.h
+    affichage.h \
+    droparea.h
 
 FORMS    +=
 

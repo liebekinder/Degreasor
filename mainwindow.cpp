@@ -135,7 +135,7 @@ QWidget *MainWindow::setInfoPanel(bool b){
         cbb2 = new QComboBox();
 
         te = new QTextEdit();
-        widg = new QWidget();
+        widg = new DropArea();
         widg->setMinimumHeight(75);
 
         b1 = new QPushButton("Annuler");

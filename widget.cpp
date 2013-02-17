@@ -181,22 +181,23 @@ void Widget::paintEvent(QPaintEvent *event)
     {
         if(imageOf==controler->getSelectedItem())
         {
-            px.load(QCoreApplication::applicationDirPath()+"/images/fondCourantElemS.png");
+            //px.load(QCoreApplication::applicationDirPath()+"/images/fondCourantElemS.png");
+            px.load(":/images/fondCourantElemS.png");
         }
         else
         {
-            px.load(QCoreApplication::applicationDirPath()+"/images/fondCourantElem.png");
+            px.load(":/images/fondCourantElem.png");
         }
     }
     else
     {
         if(imageOf==controler->getSelectedItem())
         {
-            px.load(QCoreApplication::applicationDirPath()+"/images/fondCourantListeS.png");
+            px.load(":/images/fondCourantListeS.png");
         }
         else
         {
-            px.load(QCoreApplication::applicationDirPath()+"/images/fondCourantListe.png");
+            px.load(":/images/fondCourantListe.png");
         }
     }
 

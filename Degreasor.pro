@@ -43,3 +43,6 @@ FORMS    +=
 
 OTHER_FILES += \
     FileError.txt
+
+RESOURCES += \
+    Degreasor_ressources.qrc

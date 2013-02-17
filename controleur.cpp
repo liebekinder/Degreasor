@@ -7,10 +7,21 @@ Controleur::Controleur(MainWindow * theControlledWindow,QObject *parent) :
     QObject(parent)
 {
     root_ = new Ensemble(true);
+    selectedItem = root_;
     this->theControlledWindow = theControlledWindow;
     //root_ = new Ensemble("nom", QDate::currentDate(),"bla", NULL);
     //qDebug()<< Item::TwoDaysAfter;
 
+}
+
+Item * Controleur::getSelectedItem()
+{
+    return selectedItem;
+}
+
+void Controleur::setSelectedItem(Item * wi)
+{
+    selectedItem = wi;
 }
 
 /*void Controleur::parseAndAddAfter(Item * currentList, Item * elementPere ,Item * elementToAdd)

@@ -26,6 +26,11 @@ void Widget::setDate(QDate dateText)
     date->setText(dateText.currentDate().toString("dd/MM/yyyy"));
 }
 
+Item * Widget::getImage()
+{
+    return imageOf;
+}
+
 void Widget::setType(Type typeV)
 {
     type = typeV;
@@ -38,7 +43,6 @@ Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
     QWidget(parent)
 {
     //this->installEventFilter(this);
-
 
     this->currentPercent = 0;
     this->imageOf = caller;
@@ -53,18 +57,16 @@ Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
     connect(this, SIGNAL(addListeApresTacheSignal(Item *)), controler, SLOT(addListeApresTache(Item *)));
     connect(this, SIGNAL(addEnsembleApresTacheSignal(Item *)), controler, SLOT(addEnsembleApresTache(Item *)));
 
-
-
     chiffre = new entete(0,0);
     chiffre->installEventFilter(this);
 
     date = new QLabel();
-    if(this->imageOf->getType()!="tache") date->installEventFilter(this);
+    date->installEventFilter(this);
     date->setAlignment(Qt::AlignCenter);
     date->setFont(QFont("Arial", 12));
 
     titre = new QLabel();
-    if(this->imageOf->getType()!="tache") titre->installEventFilter(this);
+    titre->installEventFilter(this);
     titre->setAlignment(Qt::AlignCenter);
     titre->setFont(QFont("Arial", 15, QFont::Bold));
     titre->setMaximumSize(14/16.*500,50);
@@ -79,7 +81,7 @@ Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
     //////////////////
 
     description = new QLabel();
-    if(this->imageOf->getType()!="tache") description->installEventFilter(this);
+    /*if(this->imageOf->getType()!="tache")*/ description->installEventFilter(this);
     description->setAlignment(Qt::AlignCenter);
     QFont fDesc("Arial", 12);
     fDesc.setItalic(true);
@@ -93,29 +95,46 @@ Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
         description->setAutoFillBackground(true);*/
 
     lineV = new QFrame();
-    if(this->imageOf->getType()!="tache") lineV->installEventFilter(this);
+    lineV->installEventFilter(this);
         //lineV->setGeometry(QRect(320, 150, 118000, 100));
         //lineV->setStyle();
         lineV->setFrameShape(QFrame::VLine);
     lineH = new QFrame();
-    if(this->imageOf->getType()!="tache") lineH->installEventFilter(this);
+    lineH->installEventFilter(this);
          //lineH->setGeometry(QRect(320, 150, 1180000048, 100));
          lineH->setFrameShape(QFrame::HLine);
     lineH2 = new QFrame();
-    if(this->imageOf->getType()!="tache") lineH2->installEventFilter(this);
+    lineH2->installEventFilter(this);
         //lineH2->setGeometry(QRect(320, 150, 118000, 100));
         lineH2->setFrameShape(QFrame::VLine);
 
+
+
+    rightLayoutHight = new QHBoxLayout();
+    rightLayoutHightContainer=new QWidget();
+
+
+    dragZone = new DragZone(this);
+        QPalette cpalette3 = palette();
+        QBrush brush3(QColor(0, 255, 0, 255));
+        brush3.setStyle(Qt::SolidPattern);
+        cpalette3.setBrush(QPalette::Active, QPalette::Window, brush3);
+        dragZone->setPalette(cpalette3);
+        dragZone->setAutoFillBackground(true);
 
 
     centralLayout = new QHBoxLayout();
     rightLayout= new QVBoxLayout();
     subRightLayout= new QHBoxLayout();
 
+                rightLayoutHight->addWidget(titre,5);
+                if(this->imageOf->getType()=="tache") rightLayoutHight->addWidget(dragZone,1);
+            rightLayoutHightContainer->setLayout(rightLayoutHight);
+
             subRightLayout->addWidget(date,1);
             subRightLayout->addWidget(lineH2);
             subRightLayout->addWidget(description,2.7);
-        rightLayout->addWidget(titre);
+        rightLayout->addWidget(rightLayoutHightContainer);
         rightLayout->addWidget(lineH);
         rightLayout->addLayout(subRightLayout);
         rightLayout->setSpacing(0);
@@ -124,6 +143,7 @@ Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
     centralLayout->addLayout(rightLayout,15);
     centralLayout->setSpacing(1);
 
+
     this->setLayout(centralLayout);
 
 
@@ -131,10 +151,46 @@ Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
     //chiffre->setContentsMargins(100,100,100,100);
 }
 
+Widget * Widget::getChild(QMouseEvent * event)
+{
+    return static_cast<Widget*>(childAt(event->pos()));
+}
+
 void Widget::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
+
+    /////////////////////
+    QPixmap px;
+
+    //qDebug() <<QCoreApplication::applicationDirPath()+"/images/fondCourantElem.png";
+    if(this->imageOf->getType()=="tache")
+    {
+        if(imageOf==controler->getSelectedItem())
+        {
+            px.load(QCoreApplication::applicationDirPath()+"/images/fondCourantElemS.png");
+        }
+        else
+        {
+            px.load(QCoreApplication::applicationDirPath()+"/images/fondCourantElem.png");
+        }
+    }
+    else
+    {
+        if(imageOf==controler->getSelectedItem())
+        {
+            px.load(QCoreApplication::applicationDirPath()+"/images/fondCourantListeS.png");
+        }
+        else
+        {
+            px.load(QCoreApplication::applicationDirPath()+"/images/fondCourantListe.png");
+        }
+    }
+
+    painter.drawPixmap(px.rect(),px);
+    ////////////////////
+
     //QColor myColor(0,0,255);
     //QBrush myBrush(myColor);
     int rayonAngles = 20;
@@ -170,21 +226,27 @@ void Widget::paintEvent(QPaintEvent *event)
 
 bool Widget::eventFilter( QObject *, QEvent *e)
 {
+
     if(e->type()==QEvent::MouseButtonDblClick)
     {
         this->mouseDoubleClickEvent((QMouseEvent *)e);
         return true;
     }
-    else if(e->type()==QEvent::MouseButtonRelease)
+    if(e->type()==QEvent::MouseButtonRelease)
     {
         this->mouseReleaseEvent((QMouseEvent *)e);
         return true;
     }
-    /*else if(e->type()==QEvent::MouseButtonPress)
+    if(e->type()==QEvent::MouseButtonPress)
     {
-        this->mousePressEvent((QMouseEvent *)e);
+        /*Item * oldSelect = controler->getSelectedItem();
+        Widget * oldSelectW = controler->getSelectedWidget();
+        controler->setSelectedItem(this->imageOf,this);
+        if(oldSelect!=controler->getRoot()) oldSelectW->update();
+        update();*/
+        //this->mousePressEvent((QMouseEvent *)e);
         return true;
-    }*/
+    }
     return false;
 
 }
@@ -212,10 +274,14 @@ bool Widget::eventFilter( QObject *, QEvent *e)
 
 ////////////////////////////////////////////////
 
-void Widget::mousePressEvent(QMouseEvent *event)
-{
+//void Widget::mousePressEvent(QMouseEvent *event)
+
+/*void Widget::mousePressEvent(QMouseEvent *event){
+
     if(this->imageOf->getType()=="tache" && event->button() == Qt::LeftButton)
     {
+
+
         qDebug()<<"Debut drag";
         //QPoint  test = QPoint(this->pos());
         //Widget *child = static_cast<Widget*>(childAt(test));
@@ -234,40 +300,46 @@ void Widget::mousePressEvent(QMouseEvent *event)
 
         QMimeData *mimeData = new QMimeData;
         mimeData->setData("application/x-dnditemdata", itemData);
-        //qDebug()<<"Int drag";
+
 
         drag->setMimeData(mimeData);
         drag->setPixmap(pixmap);
         drag->setHotSpot(event->pos() - child->pos());
 
 
-        /*QPixmap tempPixmap = pixmap;
-        QPainter painter(this);
-        painter.begin(&tempPixmap);
-        painter.fillRect(pixmap.rect(), QColor(127, 127, 127, 127));
-        painter.end();*/
+
 
         //child->setPixmap(tempPixmap);
-
-        if (drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction) == Qt::MoveAction) {
-            child->close();
+        qDebug()<<"Int drag";
+        if (drag->exec(Qt::MoveAction) == Qt::MoveAction) {
+            //child->close(); //faudrais pas supprimer le widget....
         } else {
-            child->show();
+           // child->show();
+            //on atterit ici si on ne drop pas le widget au bon endroit.
+            qDebug()<<"raganrok drag";
             //child->setPixmap(pixmap);
         }
         qDebug()<<"Fin drag";
     }
-}
+}*/
 
 ///////////////////////////////////////////
 
-
 void Widget::mouseDoubleClickEvent(QMouseEvent *event)
 {
+
+        //controler->getSelectedWidget()->setSelected(false);
+        //controler->getSelectedWidget()->repaint();
+        //controler->getSelectedWidget()->imageOf->setSelected(false);
+        //controler->setSelectedItem(imageOf);
+
+
+
     if(event->button()==Qt::LeftButton && this->imageOf->getType()!="tache")
     {
         qDebug()<<"Double clic gauche !";
         this->imageOf->setVisible(!this->imageOf->getVisible());
+        controler->setSelectedItem(imageOf);
         controler->callRefreshWithoutMoveScreen();
     }
     else if(event->button() == Qt::LeftButton && type==Widget::ELEMENT)
@@ -275,6 +347,7 @@ void Widget::mouseDoubleClickEvent(QMouseEvent *event)
         this->currentPercent=this->currentPercent==0?100:0;
         this->setPercent(this->currentPercent);
         ((Tache*)this->imageOf)->setPercentage(currentPercent);
+        controler->setSelectedItem(imageOf);
         controler->callRefreshWithoutMoveScreen();
     }
 }
@@ -340,6 +413,15 @@ void Widget::mouseReleaseEvent(QMouseEvent *event)
                 a3->setDisabled(true);
 
         m->popup(event->globalPos());
+    }
+    else if(event->button() == Qt::LeftButton)
+    {
+        controler->setSelectedItem(imageOf);
+        controler->callRefreshWithoutMoveScreen();
+
+         ////////////////////////////////////////////////////////
+                //Ici édition
+         ///////////////////////////
     }
     else
     {

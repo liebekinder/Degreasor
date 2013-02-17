@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     widget.cpp \
     entete.cpp \
     affichage.cpp \
-    droparea.cpp
+    droparea.cpp \
+    dragzone.cpp
 
 HEADERS  += mainwindow.h \
     mywidget.h \
@@ -35,7 +36,8 @@ HEADERS  += mainwindow.h \
     widget.h \
     entete.h \
     affichage.h \
-    droparea.h
+    droparea.h \
+    dragzone.h
 
 FORMS    +=
 

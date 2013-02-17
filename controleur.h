@@ -13,7 +13,7 @@
 
 
 class MainWindow;
-
+class Widget;
 
 class Controleur : public QObject
 {
@@ -21,12 +21,15 @@ class Controleur : public QObject
 
 public:
     Item * getRoot();
+    Item * getSelectedItem();
+    void setSelectedItem(Item *wi);
     void callRefreshWithoutMoveScreen();
     //void parseAndAddAfter(Item * currentList, Item *elementPere, Item * elementToAdd);
     explicit Controleur(MainWindow *theControlledWindow, QObject *parent = 0);
     Item * root_;
 
 private:
+    Item * selectedItem;
     MainWindow * theControlledWindow;
 signals:
 public slots:

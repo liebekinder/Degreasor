@@ -19,6 +19,7 @@
 #include "controleur.h"
 #include "entete.h"
 #include "item.h"
+#include "dragzone.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -44,13 +45,17 @@ public:
     void setType(Type typeV);
     void setDescription(QString descriptionText);
 
+    Item * getImage();
+    Widget* getChild(QMouseEvent * event);
+
+
 
     //bool eventFilter(QObject *o,QEvent *e);
 
     explicit Widget(Controleur *control, Item * caller, QWidget *parent = 0);
     ~Widget();
 protected:
-    void mousePressEvent(QMouseEvent *event);
+    //void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void mouseDoubleClickEvent(QMouseEvent *event);
 
@@ -72,6 +77,10 @@ signals:
     void addListeALaSuiteDeTacheSignal(Item *);
     void addEnsembleALaSuiteDeTacheSignal(Item *);
 private:
+    DragZone * dragZone;
+    QHBoxLayout *rightLayoutHight;
+    QWidget * rightLayoutHightContainer;
+
 
     int currentPercent;
     Item * imageOf;

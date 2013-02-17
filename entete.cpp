@@ -107,3 +107,8 @@ void entete::paintEvent(QPaintEvent *event)
     }*/
 
 }
+
+void entete::mousePressEvent(QMouseEvent *event)
+{
+
+}

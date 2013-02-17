@@ -12,6 +12,7 @@ DropArea::DropArea(QWidget *parent) :
      cpalette3.setBrush(QPalette::Active, QPalette::Window, brush3);
      this->setPalette(cpalette3);
      this->setAutoFillBackground(true);
+
      this->setAcceptDrops(true);
 }
 

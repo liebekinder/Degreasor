@@ -12,6 +12,7 @@
 #include <QMouseEvent>
 #include <QMenu>
 #include <QAction>
+#include <QTimer>
 
 #include <QPixmap>
 
@@ -52,6 +53,7 @@ protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void mouseDoubleClickEvent(QMouseEvent *event);
+
     bool eventFilter( QObject *, QEvent *e);
     void paintEvent(QPaintEvent *event);
 
@@ -70,6 +72,7 @@ signals:
     void addListeALaSuiteDeTacheSignal(Item *);
     void addEnsembleALaSuiteDeTacheSignal(Item *);
 private:
+
     int currentPercent;
     Item * imageOf;
     Controleur * controler;

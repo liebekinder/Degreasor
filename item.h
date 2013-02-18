@@ -5,6 +5,7 @@
 #include <QDate>
 #include <QDebug>
 #include <QUuid>
+#include <QComboBox>
 
 class Item : public QObject
 {
@@ -32,31 +33,35 @@ public:
     QString getType();
 
     //accesseur
-
-    QString getNom();
-    QDate getDate();
-    DateRelative getDateR();
-    QString getDescription();
-    QWidget * getVue();
-    Item * getParent();
-
     bool getVisible();
+    void setVisible(bool b);
+    bool getChoixDate();
+    void setChoixDate(bool b);
+    QString getNom();
     void setNom(QString n);
+    QDate getDate();
     void setDate(QDate d);
+    DateRelative getDateR();
     void setDateR(DateRelative r);
     void setDescription(QString i);
+    QString getDescription();
+    QWidget * getVue();
     void setVue(QWidget * v);
+    Item * getParent();
+    void setAssocie(Item * i);
+    Item * getAssocie();
     void setParent(Item * p);
-    void setVisible(bool b);
     void setUID(QUuid i);
     QUuid getUID();
+    QString getDateRString(DateRelative d);
 
 
 
-
+    static void getComboBox(QComboBox *c);
 private:
     bool visible;
     QString nom_;
+    bool choixDate_;
     QDate date_;
     DateRelative dateR_;
     QString description_;

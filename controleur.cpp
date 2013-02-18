@@ -22,6 +22,73 @@ Item * Controleur::getSelectedItem()
 void Controleur::setSelectedItem(Item * wi)
 {
     selectedItem = wi;
+    refreshRightPanel(wi);
+    //methode d'affichage de la partie droite de l'ui
+}
+
+void Controleur::refreshRightPanel(Item * wi)
+{
+    //actualisation des combobox
+    videCombo(theControlledWindow->cbb2);
+    process(root_, theControlledWindow->cbb2);
+
+    //nom
+    theControlledWindow->le1->setText(wi->getNom());
+    qDebug()<<"nom... done!";
+    //choix de la date
+    if(wi->getChoixDate()) theControlledWindow->cb1->setChecked(true);
+    else theControlledWindow->cb2->setChecked(true);
+    qDebug()<<"radiobutton... done!";
+    //date
+    theControlledWindow->de->setDate(wi->getDate());
+    qDebug()<<"date... done!";
+    //theControlledWindow->cbb1->setCurrentText(wi->getAssocie()->getDateRString(wi->getDateR()));
+    qDebug()<<"combobox... done!";
+    //ici, besoin d'une fonction qui détermine la position de l'item wi->getAssocie()
+    //dans la combobox. Besoin d'une liste pour ce faire.
+    //theControlledWindow->cbb2->setCurrentText(wi->getAssocie()->getNom());
+    qDebug()<<"combobox2... done!";
+    //description
+    theControlledWindow->te->setText(wi->getDescription());
+    qDebug()<<"text area... done!";
+
+}
+
+void Controleur::videCombo(QComboBox * c){
+    for(int i=c->count()-1; i>=0;--i){
+        c->removeItem(i);
+    }
+}
+
+void Controleur::process(Item * item, QComboBox * c)
+{
+    QList<Item *>::iterator it;
+    QList<Item *> * maListe;
+    if(item->getType() == "liste") maListe =( (Liste *)item)->getNotreListe();
+    if(item->getType() == "ensemble") maListe =( (Ensemble *)item)->getNotreListe();
+
+    qDebug()<<"iterateur... done!";
+    for(it = maListe->begin(); it != maListe->end(); ++it)
+    {
+        qDebug()<<"un tour!... done!";
+        Item * currentItem = ((Item*)*it);
+        qDebug()<<currentItem;
+        qDebug()<<"cast!... done!";
+        qDebug()<<currentItem->getType();
+
+        if(currentItem->getType() == "tache")
+        {
+            qDebug()<<"tache ajout... done!";
+            c->addItem(currentItem->getNom(),QVariant(currentItem->getUID().toString()));
+        }
+        if(currentItem->getType()=="ensemble" || currentItem->getType() == "liste" )
+        {
+            qDebug()<<"listez/ensemble ajout... done!";
+            c->addItem(currentItem->getNom(),QVariant(currentItem->getUID().toString()));
+            process(currentItem, c);
+            qDebug()<<"listez/ensemble ajout... done!";
+        }
+    }
 }
 
 /*void Controleur::parseAndAddAfter(Item * currentList, Item * elementPere ,Item * elementToAdd)
@@ -73,6 +140,7 @@ void Controleur::addEnsembleApres()
 {
     Item * yeah = new Ensemble("Default_Tache",QDate::currentDate(),"",root_);
     ((Ensemble *)root_)->ajoutItem(yeah);
+    this->setSelectedItem(yeah);
     qDebug()<<"ajout détecté! Ensemble avant";
     theControlledWindow->refresh(yeah);
 }
@@ -81,6 +149,7 @@ void Controleur::addListeApres()
 {
     Item * yeah = new Liste("Default_Tache",QDate::currentDate(),"",root_);
     ((Ensemble *)root_)->ajoutItem(yeah);
+    this->setSelectedItem(yeah);
     qDebug()<<"ajout détecté!";
     theControlledWindow->refresh(yeah);
 }
@@ -89,6 +158,7 @@ void Controleur::addTacheApres()
 {
     Item * yeah = new Tache("Default_Tache",QDate::currentDate(),"",root_);
     ((Ensemble *)root_)->ajoutItem(yeah);
+    this->setSelectedItem(yeah);
     qDebug()<<"ajout détecté!";
     theControlledWindow->refresh(yeah);
 
@@ -110,6 +180,7 @@ void Controleur::addTacheALaSuiteDeTache(Item *test)
     }
     //Controleur::parseAndAddAfter(root_, test ,yeah);
     qDebug()<<"test->getNom()";
+    this->setSelectedItem(yeah);
 
     theControlledWindow->refresh(yeah);
 }
@@ -130,6 +201,7 @@ void Controleur::addListeALaSuiteDeTache(Item *test)
     }
     //Controleur::parseAndAddAfter(root_, test ,yeah);;
     qDebug()<<"test->getNom()";
+    this->setSelectedItem(yeah);
 
     theControlledWindow->refresh(yeah);
 }
@@ -150,6 +222,7 @@ void Controleur::addEnsembleALaSuiteDeTache(Item *test)
     }
     //Controleur::parseAndAddAfter(root_, test ,yeah);
     qDebug()<<"test->getNom()";
+    this->setSelectedItem(yeah);
 
     theControlledWindow->refresh(yeah);
 }
@@ -172,6 +245,7 @@ void Controleur::addTacheApresTache(Item *test)
         ((Liste*) test)->ajoutItem(yeah);
     }
     qDebug()<<"test->getNom()";
+    this->setSelectedItem(yeah);
 
     theControlledWindow->refresh(yeah);
 }
@@ -194,6 +268,7 @@ void Controleur::addListeApresTache(Item *test)
         ((Liste*) test)->ajoutItem(yeah);
     }
     qDebug()<<"test->getNom()";
+    this->setSelectedItem(yeah);
 
     theControlledWindow->refresh(yeah);
 }
@@ -216,6 +291,7 @@ void Controleur::addEnsembleApresTache(Item *test)
         ((Liste*) test)->ajoutItem(yeah);
     }
     qDebug()<<"test->getNom()";
+    this->setSelectedItem(yeah);
 
     theControlledWindow->refresh(yeah);
 }

@@ -40,11 +40,21 @@ public:
     MainWindow(QWidget *parent = 0);
     MainWindow(bool b, QWidget *parent = 0);
     void refresh(Item *centerOn = NULL);
+    //get et set à FAIRE!!!!!
+    QLineEdit * le1;
+    QRadioButton * cb1;
+    QRadioButton * cb2;
+    QDateEdit * de;
+    QComboBox * cbb1;
+    QComboBox * cbb2;
+    QTextEdit * te;
+    QListWidget * dropListe;
+    // fin A FAIRE!!!!
+
     ~MainWindow();
     
 private:
 
-    QListWidget * dropListe;
     QVBoxLayout * dropListeL;
 
     Affichage * affichage;
@@ -79,13 +89,6 @@ private:
     QLabel * lb4;
     QLabel * lb5;
     QLabel * lb6;
-    QLineEdit * le1;
-    QRadioButton * cb1;
-    QRadioButton * cb2;
-    QDateEdit * de;
-    QComboBox * cbb1;
-    QComboBox * cbb2;
-    QTextEdit * te;
     QWidget * widg;
     QPushButton * b1;
     QPushButton * b2;

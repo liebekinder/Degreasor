@@ -49,6 +49,16 @@ void Item::setVisible(bool b)
     visible=b;
 }
 
+bool Item::getChoixDate()
+{
+    return choixDate_;
+}
+
+void Item::setChoixDate(bool b)
+{
+    choixDate_ = b;
+}
+
 void Item::setUID(QUuid i)
 {
     UID = i;
@@ -57,6 +67,56 @@ void Item::setUID(QUuid i)
 QUuid Item::getUID()
 {
     return UID;
+}
+
+void Item::getComboBox(QComboBox * c){
+    c->addItem("Deux semaines avant");
+    c->addItem("Une semaine avant");
+    c->addItem("Deux jours avant");
+    c->addItem("Un jour avant");
+    c->addItem("En même temps");
+    c->addItem("Un jour après");
+    c->addItem("Deux jours après");
+    c->addItem("Une semaine après");
+    c->addItem("Deux semaines après");
+}
+
+QString Item::getDateRString(Item::DateRelative d)
+{
+    QString retour;
+    switch(d){
+    case TwoWeeksBefore:
+        retour = "Deux semaines avant";
+        break;
+    case OneWeekBefore:
+        retour = "Une semaine avant";
+        break;
+    case TwoDaysBefore:
+        retour = "Deux jours avant";
+        break;
+    case OneDayBefore:
+        retour = "Un jour avant";
+        break;
+    case Now:
+        retour = "En même temps";
+        break;
+    case OneDayAfter:
+        retour = "Un jour après";
+        break;
+    case TwoDaysAfter:
+        retour = "Deux jours après";
+        break;
+    case OneWeekAfter:
+        retour = "Une semaine après";
+        break;
+    case TwoWeeksAfter:
+        retour = "Deux semaines après";
+        break;
+    default:
+        retour = "erreur";
+        break;
+    }
+    return retour;
 }
 
 bool Item::getVisible()
@@ -97,6 +157,16 @@ QWidget *Item::getVue()
 Item *Item::getParent()
 {
     return parent_;
+}
+
+void Item::setAssocie(Item *i)
+{
+    itemAssocie_ = i;
+}
+
+Item *Item::getAssocie()
+{
+    return itemAssocie_;
 }
 
 void Item::setNom(QString n)

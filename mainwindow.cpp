@@ -133,6 +133,8 @@ QWidget *MainWindow::setInfoPanel(bool b){
         de = new QDateEdit();
 
         cbb1 = new QComboBox();
+        Item::getComboBox(cbb1);
+
         cbb2 = new QComboBox();
 
         te = new QTextEdit();

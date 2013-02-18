@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QList>
 #include <QListIterator>
+#include <QComboBox>
 
 #include "ensemble.h"
 #include "item.h"
@@ -24,11 +25,13 @@ public:
     Item * getSelectedItem();
     void setSelectedItem(Item *wi);
     void callRefreshWithoutMoveScreen();
+    void refreshRightPanel(Item *wi);
     //void parseAndAddAfter(Item * currentList, Item *elementPere, Item * elementToAdd);
     explicit Controleur(MainWindow *theControlledWindow, QObject *parent = 0);
     Item * root_;
 
-
+    void process(Item *item, QComboBox *c);
+    void videCombo(QComboBox *c);
 private:
     Item * selectedItem;
     MainWindow * theControlledWindow;

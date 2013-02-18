@@ -35,10 +35,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ((Ensemble*)root_)->ajoutItem((Item *)num2);
     ((Ensemble*)root_)->ajoutItem((Item *)num5);
 
+
         QList<Item *>* pred = new QList<Item *>();
         pred->append(num2);
         pred->append(num5);
         num6->setPreconditions(pred);
+
+        qDebug()<< "ctoi buizazerffv" + controler->getItemWithUUID(num6->getUID().toString(),root_)->getNom();
+
 
     qDebug()<<"fin exemple";
 
@@ -103,8 +107,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //configuration
 
-    upperPaneT->setText(QDate::currentDate().toString());
+    QString date = "";
+    date += QDate::longDayName(QDate::currentDate().dayOfWeek());
+    date += " " + QString::number(QDate::currentDate().day());
+    date += " " + QDate::longMonthName(QDate::currentDate().month());
+    date += " " + QString::number(QDate::currentDate().year());
+    upperPaneT->setText(date);
     upperPaneL->setAlignment(Qt::AlignHCenter);
+    upperPaneT->setFont(QFont("Courrier", 20, 1));
 
 
     //actions

@@ -94,6 +94,31 @@ void Controleur::saveRightPanel(Item * wi)
     callRefreshWithoutMoveScreen();
 }
 
+Item * Controleur::getItemWithUUID(QString uid, Item * item)
+{
+    QUuid * id = new QUuid(uid);
+    Item * trouve = NULL;
+
+    QList<Item *>::iterator it;
+    QList<Item *> * maListe;
+    if(item->getType() == "liste") maListe =( (Liste *)item)->getNotreListe();
+    if(item->getType() == "ensemble") maListe =( (Ensemble *)item)->getNotreListe();
+
+    for(it = maListe->begin(); it != maListe->end(); ++it)
+    {
+        Item * currentItem = ((Item*)*it);
+
+        if(currentItem->getUID() == *id) trouve = currentItem;
+
+        if(currentItem->getType()=="ensemble" || currentItem->getType() == "liste" )
+        {
+            trouve = trouve == NULL ? getItemWithUUID(uid, currentItem): trouve;
+        }
+
+    }
+    return trouve;
+}
+
 void Controleur::videCombo(QComboBox * c){
     for(int i=c->count()-1; i>=0;--i){
         c->removeItem(i);
@@ -107,26 +132,18 @@ void Controleur::process(Item * item, QComboBox * c)
     if(item->getType() == "liste") maListe =( (Liste *)item)->getNotreListe();
     if(item->getType() == "ensemble") maListe =( (Ensemble *)item)->getNotreListe();
 
-    qDebug()<<"iterateur... done!";
     for(it = maListe->begin(); it != maListe->end(); ++it)
     {
-        qDebug()<<"un tour!... done!";
         Item * currentItem = ((Item*)*it);
-        qDebug()<<currentItem;
-        qDebug()<<"cast!... done!";
-        qDebug()<<currentItem->getType();
 
         if(currentItem->getType() == "tache")
         {
-            qDebug()<<"tache ajout... done!";
             c->addItem(currentItem->getNom(),QVariant(currentItem->getUID().toString()));
         }
         if(currentItem->getType()=="ensemble" || currentItem->getType() == "liste" )
         {
-            qDebug()<<"listez/ensemble ajout... done!";
             c->addItem(currentItem->getNom(),QVariant(currentItem->getUID().toString()));
             process(currentItem, c);
-            qDebug()<<"listez/ensemble ajout... done!";
         }
     }
 }

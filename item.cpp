@@ -6,6 +6,7 @@ Item::Item(Item *conteneur, QObject *parent) :
 {
     nom_ = "Mon nouvel item";
     date_ = QDate::currentDate();
+    dateR_ = Now;
     setParent(conteneur);
     choixDate_ = true;
     UID = QUuid::createUuid();
@@ -22,6 +23,7 @@ Item::Item(bool root, QObject *parent) :
     nom_ = "Root";
     choixDate_ = true;
     date_ = QDate::currentDate();
+    dateR_ = Now;
     UID = QUuid::createUuid();
     itemAssocie_=NULL;
     precondition_ = new QList<Item * >();
@@ -33,9 +35,10 @@ Item::Item(QString nom, QDate date, QString description, Item *conteneur, QObjec
     visible = true;
     nom_ = nom;
     date_ = date;
+    dateR_ = Now;
     description_ = description;
     setParent(conteneur);
-    choixDate_ = false;
+    choixDate_ = true;
     UID = QUuid::createUuid();
     itemAssocie_=NULL;
     precondition_ = new QList<Item * >();

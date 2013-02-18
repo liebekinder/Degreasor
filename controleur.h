@@ -39,6 +39,7 @@ public:
     void process(Item *item, QComboBox *c);
     void videCombo(QComboBox *c);
     void saveRightPanel(Item *wi);
+    Item * getItemWithUUID(QString uid, Item *item);
 private:
     Item * selectedItem;
     MainWindow * theControlledWindow;

@@ -34,6 +34,7 @@ public:
     Item * root_;
     bool saveToXml(QString path, Item * racine = NULL, bool templateItem = false);
     void parseToXml(Item * item, QDomElement currentNode, QDomDocument * xml);
+    QDomElement creeXmlItem(Item * itemPh,QDomDocument * xml);
 
     void process(Item *item, QComboBox *c);
     void videCombo(QComboBox *c);

@@ -398,13 +398,7 @@ bool Controleur::saveToXml(QString path,Item * racine,bool templateItem)
 
         /////
 
-        QDomElement item = xml->createElement("item");
-
-        QDomElement name= xml->createElement("name");
-        item.appendChild(name);
-
-        QDomText nametext = xml->createTextNode(racine->getNom());
-        name.appendChild(nametext);
+        QDomElement item = creeXmlItem(racine,xml);
 
         QDomElement children= xml->createElement("children");
 
@@ -426,6 +420,44 @@ bool Controleur::saveToXml(QString path,Item * racine,bool templateItem)
     return true;
 }
 
+QDomElement Controleur::creeXmlItem(Item * itemPh,QDomDocument * xml)
+{
+    QDomElement item = xml->createElement("item");
+    item.setAttribute("type",itemPh->getType());
+    item.setAttribute("visible",itemPh->getVisible());
+    item.setAttribute("choixDate",itemPh->getChoixDate());
+    item.setAttribute("date",itemPh->getDate().toString(Qt::ISODate));
+    item.setAttribute("dateR",int(itemPh->getDateR()));
+
+    if(itemPh->getAssocie()!=NULL) item.setAttribute("itemAssocie",itemPh->getAssocie()->getUID().toString());
+    item.setAttribute("UID",itemPh->getUID().toString());
+    item.setAttribute("parent",itemPh->getParent()->getUID().toString());
+
+    QDomElement name= xml->createElement("name");
+    name.appendChild(xml->createTextNode(itemPh->getNom()));
+    item.appendChild(name);
+
+    QDomElement description= xml->createElement("description");
+    description.appendChild(xml->createTextNode(itemPh->getDescription()));
+    item.appendChild(description);
+
+    QDomElement preds= xml->createElement("preconditions");
+
+    QList<Item *>::iterator it;
+    QList<Item *> * maListe = itemPh->getPreconditions();
+
+    for(it = maListe->begin(); it != maListe->end(); ++it)
+    {
+        Item * currentItem = ((Item*)*it);
+        QDomElement pred= xml->createElement("precondition");
+        pred.appendChild(xml->createTextNode(currentItem->getUID().toString()));
+        preds.appendChild(pred);
+    }
+
+    item.appendChild(preds);
+
+    return item;
+}
 
 void Controleur::parseToXml(Item * item, QDomElement currentNode,QDomDocument * xml)
 {
@@ -442,29 +474,15 @@ void Controleur::parseToXml(Item * item, QDomElement currentNode,QDomDocument * 
 
         if(currentItem->getType() == "tache")
         {
-            qDebug()<<"tache ajout... done!";
-            QDomElement item = xml->createElement("item");
 
-            QDomElement name= xml->createElement("name");
-            item.appendChild(name);
-
-            QDomText nametext = xml->createTextNode(currentItem->getNom());
-            name.appendChild(nametext);
-
-            currentNode.appendChild(item);
+            currentNode.appendChild(creeXmlItem(currentItem,xml));
 
 
 
         }
         if(currentItem->getType()=="ensemble" || currentItem->getType() == "liste" )
         {
-            QDomElement item = xml->createElement("item");
-
-            QDomElement name= xml->createElement("name");
-            item.appendChild(name);
-
-            QDomText nametext = xml->createTextNode(currentItem->getNom());
-            name.appendChild(nametext);
+            QDomElement item = creeXmlItem(currentItem,xml);
 
             QDomElement children= xml->createElement("children");
 
@@ -473,10 +491,6 @@ void Controleur::parseToXml(Item * item, QDomElement currentNode,QDomDocument * 
             item.appendChild(children);
 
             currentNode.appendChild(item);
-
-
-
-            //currentNode->appendChild(item);
         }
     }
 }

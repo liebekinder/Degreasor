@@ -35,6 +35,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ((Ensemble*)root_)->ajoutItem((Item *)num2);
     ((Ensemble*)root_)->ajoutItem((Item *)num5);
 
+        QList<Item *>* pred = new QList<Item *>();
+        pred->append(num2);
+        pred->append(num5);
+        num6->setPreconditions(pred);
+
     qDebug()<<"fin exemple";
 
     controler->saveToXml("example.xml");

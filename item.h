@@ -54,8 +54,8 @@ public:
     void setUID(QUuid i);
     QUuid getUID();
     QString getDateRString(DateRelative d);
-
-
+    QList<Item *> * getPreconditions();
+    void setPreconditions(QList<Item *> * pred);
 
     static void getComboBox(QComboBox *c);
     static DateRelative getComboBoxFromText(QString s);

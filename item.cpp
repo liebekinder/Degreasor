@@ -9,6 +9,8 @@ Item::Item(Item *conteneur, QObject *parent) :
     setParent(conteneur);
     choixDate_ = true;
     UID = QUuid::createUuid();
+    itemAssocie_=NULL;
+    precondition_ = new QList<Item * >();
     //qDebug()<<UID.toString();
 }
 
@@ -21,6 +23,8 @@ Item::Item(bool root, QObject *parent) :
     choixDate_ = true;
     date_ = QDate::currentDate();
     UID = QUuid::createUuid();
+    itemAssocie_=NULL;
+    precondition_ = new QList<Item * >();
 }
 
 Item::Item(QString nom, QDate date, QString description, Item *conteneur, QObject *parent) :
@@ -33,6 +37,8 @@ Item::Item(QString nom, QDate date, QString description, Item *conteneur, QObjec
     setParent(conteneur);
     choixDate_ = false;
     UID = QUuid::createUuid();
+    itemAssocie_=NULL;
+    precondition_ = new QList<Item * >();
     //qDebug()<<UID.toString();
 }
 
@@ -136,6 +142,16 @@ QString Item::getDateRString(Item::DateRelative d)
     return retour;
 }
 
+QList<Item *> * Item::getPreconditions()
+{
+    return precondition_;
+}
+
+void Item::setPreconditions(QList<Item *> * pred)
+{
+    precondition_ = pred;
+}
+
 bool Item::getVisible()
 {
     return visible;
@@ -181,7 +197,7 @@ void Item::setAssocie(Item *i)
     itemAssocie_ = i;
 }
 
-Item *Item::getAssocie()
+Item * Item::getAssocie()
 {
     return itemAssocie_;
 }

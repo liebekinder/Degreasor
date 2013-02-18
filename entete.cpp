@@ -1,11 +1,14 @@
 #include "entete.h"
+#include "widget.h"
 
-entete::entete(int numEntete,int typeV, QWidget *parent) :
+
+entete::entete(int numEntete,int typeV, Widget * papa,QWidget *parent) :
     QWidget(parent)
 {
     type=typeV;
     percent = 0;
     numeroEntete = numEntete;
+    this->papa = papa;
 }
 
 void entete::setPercent(int perc)
@@ -57,8 +60,8 @@ void entete::paintEvent(QPaintEvent *event)
     if(type==0)
     {
         padding = 0;
-        double rayonAngles = 20;
-        for(int i = 0;i<100;i++)//2*size().height()*percent/100.;i++)
+        double rayonAngles = (20+9-2)*papa->size().height()/100.;
+        for(int i = 0;i<this->size().height();i++)//2*size().height()*percent/100.;i++)
         {
             //qDebug()<<qPow(rayonAngles-(i+padding),2);
             //if(i+padding<rayonAngles) painter.drawLine(qPow(qPow(rayonAngles,2)-qPow((i+padding),2),0.5),i+padding,size().width(),i+padding);

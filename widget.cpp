@@ -45,12 +45,15 @@ Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
 {
     this->installEventFilter(this);
 
+
     setAttribute(Qt::WA_TranslucentBackground,true);
 
     this->currentPercent = 0;
     this->imageOf = caller;
     this->controler = ctrl;
-    this->setFixedSize(500,100);
+    this->setFixedSize(0,50);
+    //this->setFixedWidth(500*this->size().height()/100.);
+    this->setFixedWidth(500*this->size().height()/100.*1.3);
 
     connect(this, SIGNAL(addTacheALaSuiteDeTacheSignal(Item *)), controler, SLOT(addTacheALaSuiteDeTache(Item *)));
     connect(this, SIGNAL(addListeALaSuiteDeTacheSignal(Item *)), controler, SLOT(addListeALaSuiteDeTache(Item *)));
@@ -60,20 +63,21 @@ Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
     connect(this, SIGNAL(addListeApresTacheSignal(Item *)), controler, SLOT(addListeApresTache(Item *)));
     connect(this, SIGNAL(addEnsembleApresTacheSignal(Item *)), controler, SLOT(addEnsembleApresTache(Item *)));
 
-    chiffre = new entete(0,0);
+    chiffre = new entete(0,0,this);
     chiffre->installEventFilter(this);
 
     date = new QLabel();
     date->installEventFilter(this);
     date->setAlignment(Qt::AlignCenter);
-    date->setFont(QFont("Arial", 12));
+    //qDebug()<<this->size().height()/100.;
+    date->setFont(QFont("Arial", 12*1.5*this->size().height()/100.));
 
     titre = new QLabel();
     titre->installEventFilter(this);
     titre->setAlignment(Qt::AlignCenter);
-    titre->setFont(QFont("Arial", 15, QFont::Bold));
-    titre->setMaximumSize(14/16.*500,50);
-
+    titre->setFont(QFont("Arial", 15*1.5*this->size().height()/100., QFont::Bold));
+    titre->setMaximumSize(14/16.*this->size().width(),50*this->size().height()/100.);
+    qDebug()<<50*this->size().height()/100.;
     //////////////////
     /*QPalette cpalette3 = palette();
     QBrush brush3(QColor(0, 255, 0, 255));
@@ -86,10 +90,10 @@ Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
     description = new QLabel();
     /*if(this->imageOf->getType()!="tache")*/ description->installEventFilter(this);
     description->setAlignment(Qt::AlignCenter);
-    QFont fDesc("Arial", 12);
+    QFont fDesc("Arial", 12*1.5*this->size().height()/100.);//12*this->size().height()/250);
     fDesc.setItalic(true);
     description->setFont(fDesc);
-    description->setMaximumSize(2.7/3.5*500*14/16.,50);
+    description->setMaximumSize(2.7/3.5*this->size().width()*14/16.,50*this->size().height()/100.);
        /* QPalette cpalette3 = palette();
         QBrush brush3(QColor(0, 255, 0, 255));
         brush3.setStyle(Qt::SolidPattern);
@@ -115,11 +119,14 @@ Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
 
     rightLayoutHight = new QHBoxLayout();
     rightLayoutHight->installEventFilter(this);
+    rightLayoutHight->setMargin(0);
     rightLayoutHightContainer=new QWidget();
+    rightLayoutHightContainer->setMaximumHeight(50*this->size().height()/100.);
     rightLayoutHightContainer->installEventFilter(this);
 
 
     dragZone = new DragZone(this);
+    dragZone->setMaximumHeight(50*this->size().height()/100.);
         QPalette cpalette3 = palette();
         QBrush brush3(QColor(0, 255, 0, 255));
         brush3.setStyle(Qt::SolidPattern);
@@ -131,8 +138,10 @@ Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
     centralLayout = new QHBoxLayout();
     centralLayout->installEventFilter(this);
     rightLayout= new QVBoxLayout();
+    rightLayout->setMargin(0);
     rightLayout->installEventFilter(this);
     subRightLayout= new QHBoxLayout();
+    subRightLayout->setMargin(0);
     subRightLayout->installEventFilter(this);
 
                 rightLayoutHight->addWidget(titre,5);
@@ -142,11 +151,15 @@ Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
                 }
                 else if(!this->imageOf->getVisible())
                 {
-                    rightLayoutHight->addWidget(new QLabel("Liste repliée"),1);
+                    QLabel * reDe = new QLabel("Liste repliée");
+                    reDe->setMaximumHeight(50*this->size().height()/100.);
+                    rightLayoutHight->addWidget(reDe,1);
                 }
                 else
                 {
-                    rightLayoutHight->addWidget(new QLabel("Liste dépliée"),1);
+                    QLabel * reDe = new QLabel("Liste dépliée");
+                    reDe->setMaximumHeight(50*this->size().height()/100.);
+                    rightLayoutHight->addWidget(reDe,1);
                 }
 
             rightLayoutHightContainer->setLayout(rightLayoutHight);
@@ -163,7 +176,7 @@ Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
     centralLayout->addLayout(rightLayout,15);
     centralLayout->setSpacing(1);
 
-
+    centralLayout->setMargin(3*this->size().height()/70.);
     this->setLayout(centralLayout);
 
 
@@ -188,7 +201,7 @@ void Widget::paintEvent(QPaintEvent *event)
     QPixmap px;
 
     //qDebug() <<QCoreApplication::applicationDirPath()+"/images/fondCourantElem.png";
-    if(this->imageOf->getType()=="tache")
+    /*if(this->imageOf->getType()=="tache")
     {
         if(imageOf==controler->getSelectedItem())
         {
@@ -210,32 +223,39 @@ void Widget::paintEvent(QPaintEvent *event)
         {
             px.load(":/images/fondCourantListe.png");
         }
-    }
+    }*/
 
     painter.drawPixmap(px.rect(),px);
     ////////////////////
 
     //QColor myColor(0,0,255);
     //QBrush myBrush(myColor);
-    int rayonAngles = 20;
-    QPen myPen(Qt::black, 2);
-    int padding = 7;
-    painter.setPen(myPen);
+    int padding = 0;
+    int rayonAngles = (20+9-padding)*this->size().height()/100.;
+
+    int partieLigneBoufeeParAngles = 0;
+
+    painter.setPen(QPen(Qt::black, 2));
     painter.drawLine(padding+rayonAngles,padding,size().width()-(padding+rayonAngles),padding);
     painter.drawLine(padding+rayonAngles,size().height()-padding,size().width()-(padding+rayonAngles),size().height()-padding);
     painter.drawLine(padding,padding+rayonAngles,padding,size().height()-(padding+rayonAngles));
     painter.drawLine(size().width()-padding,padding+rayonAngles,size().width()-padding,size().height()-(padding+rayonAngles));
 
-    painter.drawArc( size().width()-(padding+rayonAngles)-rayonAngles, padding, rayonAngles*2, rayonAngles*2, 0*16, 90*16);
+    painter.setPen(QPen(Qt::black, 1));
 
-    painter.drawArc( size().width()-(padding+rayonAngles)-rayonAngles,size().height()-(padding+rayonAngles)-rayonAngles, rayonAngles*2, rayonAngles*2, 270*16, 90*16);
+
+
+    painter.drawArc( size().width()-(padding+rayonAngles)-rayonAngles-partieLigneBoufeeParAngles, padding, rayonAngles*2, rayonAngles*2, 0*16, 90*16);
+
+    painter.drawArc( size().width()-(padding+rayonAngles)-rayonAngles-partieLigneBoufeeParAngles,size().height()-(padding+rayonAngles)-rayonAngles, rayonAngles*2, rayonAngles*2, 270*16, 90*16);
     if(type==Widget::ELEMENT)
     {
-        painter.drawArc( padding, padding, rayonAngles*2, rayonAngles*2, 90*16, 90*16); //rectangle//angle de départ, taille angulaire de l'arc
-        painter.drawArc( padding, size().height()-(padding+rayonAngles)-rayonAngles, rayonAngles*2, rayonAngles*2, 180*16, 90*16);
+        painter.drawArc( padding+partieLigneBoufeeParAngles, padding, rayonAngles*2, rayonAngles*2, 90*16, 90*16); //rectangle//angle de départ, taille angulaire de l'arc
+        painter.drawArc( padding+partieLigneBoufeeParAngles, size().height()-(padding+rayonAngles)-rayonAngles, rayonAngles*2, rayonAngles*2, 180*16, 90*16);
     }
     else if(type==Widget::LIST)
     {
+        painter.setPen(QPen(Qt::black, 2));
         painter.drawLine(padding,padding,padding,padding+rayonAngles);
         painter.drawLine(padding,padding,padding+rayonAngles,padding);
 

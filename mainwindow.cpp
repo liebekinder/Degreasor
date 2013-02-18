@@ -140,7 +140,7 @@ QWidget *MainWindow::setInfoPanel(bool b){
         dropListe = new QListWidget;
         widg = new DropArea(dropListe);
         dropListeL = new QVBoxLayout();
-
+        dropListeL->setMargin(0);
         dropListeL->addWidget(dropListe);
         widg->setLayout(dropListeL);
 

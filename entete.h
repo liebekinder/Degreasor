@@ -6,12 +6,14 @@
 #include <QtCore/qmath.h>
 #include <QApplication>
 
+class Widget;
+
 class entete : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit entete(int numEntete,int typeV,QWidget *parent = 0);
+    explicit entete(int numEntete,int typeV,Widget * papa,QWidget *parent = 0);
     void setPercent(int perc);
     void setType(int typeV);
     void setEntete(int numEntete);
@@ -24,6 +26,7 @@ private:
     int percent;
     int numeroEntete;
     int type;
+    Widget * papa;
     
 signals:
     

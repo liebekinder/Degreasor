@@ -23,6 +23,7 @@ void Widget::setDescription(QString descriptionText)
 
 void Widget::setDate(QDate dateText)
 {
+    Q_UNUSED(dateText);
     date->setText(dateText.currentDate().toString("dd/MM/yyyy"));
 }
 
@@ -42,7 +43,9 @@ void Widget::setType(Type typeV)
 Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
     QWidget(parent)
 {
-    //this->installEventFilter(this);
+    this->installEventFilter(this);
+
+    setAttribute(Qt::WA_TranslucentBackground,true);
 
     this->currentPercent = 0;
     this->imageOf = caller;
@@ -111,7 +114,9 @@ Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
 
 
     rightLayoutHight = new QHBoxLayout();
+    rightLayoutHight->installEventFilter(this);
     rightLayoutHightContainer=new QWidget();
+    rightLayoutHightContainer->installEventFilter(this);
 
 
     dragZone = new DragZone(this);
@@ -124,8 +129,11 @@ Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
 
 
     centralLayout = new QHBoxLayout();
+    centralLayout->installEventFilter(this);
     rightLayout= new QVBoxLayout();
+    rightLayout->installEventFilter(this);
     subRightLayout= new QHBoxLayout();
+    subRightLayout->installEventFilter(this);
 
                 rightLayoutHight->addWidget(titre,5);
                 if(this->imageOf->getType()=="tache")
@@ -170,6 +178,9 @@ Widget * Widget::getChild(QMouseEvent * event)
 
 void Widget::paintEvent(QPaintEvent *event)
 {
+    Q_UNUSED(event);
+
+
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
 
@@ -347,10 +358,10 @@ void Widget::mouseDoubleClickEvent(QMouseEvent *event)
         //controler->setSelectedItem(imageOf);
 
 
-
+    qDebug()<<"Double clic gauche !";
     if(event->button()==Qt::LeftButton && this->imageOf->getType()!="tache")
     {
-        qDebug()<<"Double clic gauche !";
+
         this->imageOf->setVisible(!this->imageOf->getVisible());
         controler->setSelectedItem(imageOf);
         controler->callRefreshWithoutMoveScreen();

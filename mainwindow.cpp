@@ -36,6 +36,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ((Ensemble*)root_)->ajoutItem((Item *)num5);
 
     qDebug()<<"fin exemple";
+
+    controler->saveToXml("example.xml");
+    controler->saveToXml("templateExample.xml",num4,true);
     //fin exp
 
 

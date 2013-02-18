@@ -321,3 +321,114 @@ void Controleur::callRefreshWithoutMoveScreen()
     theControlledWindow->callRefreshWithoutMoveScreen();
 }
 
+bool Controleur::saveToXml(QString path,Item * racine,bool templateItem)
+{
+    if(racine==NULL) racine = root_;
+    //global save
+
+    QDomDocument* xml = new QDomDocument();
+    if(!templateItem)
+    {
+
+
+        QDomNode xmlNode = xml->createProcessingInstruction("xml","version\"1.0\" encoding=\"UTF-8\"");
+        xml->insertBefore(xmlNode,xml->firstChild());
+
+        QDomElement root = xml->createElement("root");
+        xml->appendChild(root);
+        parseToXml(racine,root,xml);
+    }
+    else
+    {
+        QDomNode xmlNode = xml->createProcessingInstruction("xml","version\"1.0\" encoding=\"UTF-8\"");
+        xml->insertBefore(xmlNode,xml->firstChild());
+
+        QDomElement root = xml->createElement("template");
+        xml->appendChild(root);
+
+        /////
+
+        QDomElement item = xml->createElement("item");
+
+        QDomElement name= xml->createElement("name");
+        item.appendChild(name);
+
+        QDomText nametext = xml->createTextNode(racine->getNom());
+        name.appendChild(nametext);
+
+        QDomElement children= xml->createElement("children");
+
+        parseToXml(racine, children, xml);
+
+        item.appendChild(children);
+
+        root.appendChild(item);
+        /////
+
+    }
+
+    //save
+    QFile file(path);
+    file.open(QIODevice::WriteOnly);
+    QTextStream ts(&file);
+    ts.setCodec("UTF-8");
+    xml->save(ts,2,QDomNode::EncodingFromTextStream);
+    return true;
+}
+
+
+void Controleur::parseToXml(Item * item, QDomElement currentNode,QDomDocument * xml)
+{
+    QList<Item *>::iterator it;
+    QList<Item *> * maListe;
+    if(item->getType() == "liste") maListe =( (Liste *)item)->getNotreListe();
+    if(item->getType() == "ensemble") maListe =( (Ensemble *)item)->getNotreListe();
+
+    qDebug()<<"iterateur... done!";
+    for(it = maListe->begin(); it != maListe->end(); ++it)
+    {
+        qDebug()<<"un tour!... done!";
+        Item * currentItem = ((Item*)*it);
+
+        if(currentItem->getType() == "tache")
+        {
+            qDebug()<<"tache ajout... done!";
+            QDomElement item = xml->createElement("item");
+
+            QDomElement name= xml->createElement("name");
+            item.appendChild(name);
+
+            QDomText nametext = xml->createTextNode(currentItem->getNom());
+            name.appendChild(nametext);
+
+            currentNode.appendChild(item);
+
+
+
+        }
+        if(currentItem->getType()=="ensemble" || currentItem->getType() == "liste" )
+        {
+            QDomElement item = xml->createElement("item");
+
+            QDomElement name= xml->createElement("name");
+            item.appendChild(name);
+
+            QDomText nametext = xml->createTextNode(currentItem->getNom());
+            name.appendChild(nametext);
+
+            QDomElement children= xml->createElement("children");
+
+            parseToXml(currentItem, children, xml);
+
+            item.appendChild(children);
+
+            currentNode.appendChild(item);
+
+
+
+            //currentNode->appendChild(item);
+        }
+    }
+}
+
+

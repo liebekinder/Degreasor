@@ -6,6 +6,9 @@
 #include <QList>
 #include <QListIterator>
 #include <QComboBox>
+#include <QDomDocument>
+#include <QDomNode>
+#include <QDomText>
 
 #include "ensemble.h"
 #include "item.h"
@@ -29,6 +32,8 @@ public:
     //void parseAndAddAfter(Item * currentList, Item *elementPere, Item * elementToAdd);
     explicit Controleur(MainWindow *theControlledWindow, QObject *parent = 0);
     Item * root_;
+    bool saveToXml(QString path, Item * racine = NULL, bool templateItem = false);
+    void parseToXml(Item * item, QDomElement currentNode, QDomDocument * xml);
 
     void process(Item *item, QComboBox *c);
     void videCombo(QComboBox *c);

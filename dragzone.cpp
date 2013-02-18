@@ -11,7 +11,7 @@ DragZone::DragZone(Widget *pere, QWidget *parent) :
 
 void DragZone::mousePressEvent(QMouseEvent *event){
 
-    if(parent->getImage()->getType()=="tache" && event->button() == Qt::LeftButton)
+    if(event->button() == Qt::LeftButton)
     {
         /*Item * oldSelect = controler->getSelectedItem();
         Widget * oldSelectW = controler->getSelectedWidget();
@@ -70,7 +70,23 @@ void DragZone::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
     QPixmap px;
-    px.load(":/images/grabIcon.png");
+
+    if(parent->getImage()->getVisible())
+    {
+        if(parent->getImage()->getType()=="tache")
+        {
+            px.load(":/images/grabIcon.png");
+        }
+        else
+        {
+            px.load(":/images/grabIconMoins.png");
+        }
+
+    }
+    else
+    {
+        px.load(":/images/grabIconPlus.png");
+    }
     px=px.scaledToHeight(px.size().height()*parent->size().height()/500.,Qt::SmoothTransformation);
     painter.drawPixmap(QPoint(this->size().width()/2.,18*parent->size().height()/500.),px,px.rect());
 }

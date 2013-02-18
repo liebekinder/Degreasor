@@ -145,10 +145,10 @@ Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
     subRightLayout->installEventFilter(this);
 
                 rightLayoutHight->addWidget(titre,5);
-                if(this->imageOf->getType()=="tache")
-                {
+                //if(this->imageOf->getType()=="tache")
+                //{
                     rightLayoutHight->addWidget(dragZone,1);
-                }
+                /*}
                 else if(!this->imageOf->getVisible())
                 {
                     QLabel * reDe = new QLabel("Liste repliée");
@@ -160,7 +160,7 @@ Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
                     QLabel * reDe = new QLabel("Liste dépliée");
                     reDe->setMaximumHeight(50*this->size().height()/100.);
                     rightLayoutHight->addWidget(reDe,1);
-                }
+                }*/
 
             rightLayoutHightContainer->setLayout(rightLayoutHight);
 
@@ -300,16 +300,16 @@ bool Widget::eventFilter( QObject *, QEvent *e)
         this->mouseReleaseEvent((QMouseEvent *)e);
         return true;
     }
-    if(e->type()==QEvent::MouseButtonPress)
+    /*if(e->type()==QEvent::MouseButtonPress)
     {
-        /*Item * oldSelect = controler->getSelectedItem();
+        Item * oldSelect = controler->getSelectedItem();
         Widget * oldSelectW = controler->getSelectedWidget();
         controler->setSelectedItem(this->imageOf,this);
         if(oldSelect!=controler->getRoot()) oldSelectW->update();
-        update();*/
+        update();
         //this->mousePressEvent((QMouseEvent *)e);
         return true;
-    }
+    }*/
     return false;
 
 }

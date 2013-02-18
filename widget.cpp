@@ -174,7 +174,7 @@ Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
     centralLayout->addWidget(chiffre,1);
     centralLayout->addWidget(lineV);
     centralLayout->addLayout(rightLayout,15);
-    centralLayout->setSpacing(1);
+    centralLayout->setSpacing(1*this->size().height()/100.);
 
     centralLayout->setMargin(3*this->size().height()/70.);
     this->setLayout(centralLayout);
@@ -201,16 +201,31 @@ void Widget::paintEvent(QPaintEvent *event)
     QPixmap px;
 
     //qDebug() <<QCoreApplication::applicationDirPath()+"/images/fondCourantElem.png";
-    /*if(this->imageOf->getType()=="tache")
+    if(this->imageOf->getType()=="tache")
     {
         if(imageOf==controler->getSelectedItem())
         {
             //px.load(QCoreApplication::applicationDirPath()+"/images/fondCourantElemS.png");
-            px.load(":/images/fondCourantElemS.png");
+
+            if(((Tache*)this->imageOf)->getPercentage()==100)
+            {
+                 px.load(":/images/fondCourantElemSelectS.png");
+            }
+            else
+            {
+                 px.load(":/images/fondCourantElemDeselectS.png");
+            }
         }
         else
         {
-            px.load(":/images/fondCourantElem.png");
+            if(((Tache*)this->imageOf)->getPercentage()==100)
+            {
+                 px.load(":/images/fondCourantElemSelect.png");
+            }
+            else
+            {
+                 px.load(":/images/fondCourantElemDeselect.png");
+            }
         }
     }
     else
@@ -223,7 +238,10 @@ void Widget::paintEvent(QPaintEvent *event)
         {
             px.load(":/images/fondCourantListe.png");
         }
-    }*/
+    }
+
+
+    px=px.scaledToHeight(this->size().height()*px.size().height()/308.,Qt::SmoothTransformation);
 
     painter.drawPixmap(px.rect(),px);
     ////////////////////
@@ -234,28 +252,29 @@ void Widget::paintEvent(QPaintEvent *event)
     int rayonAngles = (20+9-padding)*this->size().height()/100.;
 
     int partieLigneBoufeeParAngles = 0;
+    int lineThin = size().height()/100.;
 
-    painter.setPen(QPen(Qt::black, 2));
+    painter.setPen(QPen(Qt::black, 2*size().height()/50.));
     painter.drawLine(padding+rayonAngles,padding,size().width()-(padding+rayonAngles),padding);
     painter.drawLine(padding+rayonAngles,size().height()-padding,size().width()-(padding+rayonAngles),size().height()-padding);
     painter.drawLine(padding,padding+rayonAngles,padding,size().height()-(padding+rayonAngles));
     painter.drawLine(size().width()-padding,padding+rayonAngles,size().width()-padding,size().height()-(padding+rayonAngles));
 
-    painter.setPen(QPen(Qt::black, 1));
+    painter.setPen(QPen(Qt::black, 1*size().height()/50.));
 
 
 
-    painter.drawArc( size().width()-(padding+rayonAngles)-rayonAngles-partieLigneBoufeeParAngles, padding, rayonAngles*2, rayonAngles*2, 0*16, 90*16);
+    painter.drawArc( size().width()-(padding+rayonAngles)-rayonAngles-partieLigneBoufeeParAngles-lineThin, padding+lineThin, rayonAngles*2, rayonAngles*2, 0*16, 90*16);
 
-    painter.drawArc( size().width()-(padding+rayonAngles)-rayonAngles-partieLigneBoufeeParAngles,size().height()-(padding+rayonAngles)-rayonAngles, rayonAngles*2, rayonAngles*2, 270*16, 90*16);
+    painter.drawArc( size().width()-(padding+rayonAngles)-rayonAngles-partieLigneBoufeeParAngles-lineThin,size().height()-(padding+rayonAngles)-rayonAngles-lineThin, rayonAngles*2, rayonAngles*2, 270*16, 90*16);
     if(type==Widget::ELEMENT)
     {
-        painter.drawArc( padding+partieLigneBoufeeParAngles, padding, rayonAngles*2, rayonAngles*2, 90*16, 90*16); //rectangle//angle de départ, taille angulaire de l'arc
-        painter.drawArc( padding+partieLigneBoufeeParAngles, size().height()-(padding+rayonAngles)-rayonAngles, rayonAngles*2, rayonAngles*2, 180*16, 90*16);
+        painter.drawArc( padding+partieLigneBoufeeParAngles+lineThin, padding+lineThin, rayonAngles*2, rayonAngles*2, 90*16, 90*16); //rectangle//angle de départ, taille angulaire de l'arc
+        painter.drawArc( padding+partieLigneBoufeeParAngles+lineThin, size().height()-(padding+rayonAngles)-rayonAngles-lineThin, rayonAngles*2, rayonAngles*2, 180*16, 90*16);
     }
     else if(type==Widget::LIST)
     {
-        painter.setPen(QPen(Qt::black, 2));
+        painter.setPen(QPen(Qt::black, 2*size().height()/50.));
         painter.drawLine(padding,padding,padding,padding+rayonAngles);
         painter.drawLine(padding,padding,padding+rayonAngles,padding);
 

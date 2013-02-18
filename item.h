@@ -39,6 +39,7 @@ public:
     QString getDescription();
     QWidget * getVue();
     Item * getParent();
+
     bool getVisible();
     void setNom(QString n);
     void setDate(QDate d);

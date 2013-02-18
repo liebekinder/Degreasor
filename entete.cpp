@@ -57,12 +57,29 @@ void entete::paintEvent(QPaintEvent *event)
     myPen.setColor(myColor);
     painter.setPen(myPen);
     //painter.fillRect(0,(1.-percent/100.)*size().height(),size().width(),size().height()*percent/100.,myBrush);
-    double padding = (1.-percent/100.)*size().height();
-    if(type==0)
+    //double padding = (1.-percent/100.)*size().height();
+    /*if(type==0)
     {
         padding = 0;
         double rayonAngles = (20+9-2)*papa->size().height()/100.;
-        for(int i = 0;i<this->size().height();i++)//2*size().height()*percent/100.;i++)
+
+        /*int i =0;
+        while(i+padding<=rayonAngles)
+        {
+            if(i+padding<=rayonAngles) painter.drawLine(rayonAngles-qPow(qPow(rayonAngles,2)-qPow(rayonAngles-(i+padding),2),0.5),i+padding,size().width(),i+padding);
+            i++;
+        }
+
+        painter.fillRect(0,rayonAngles+1,this->size().width(),size().height()-2*rayonAngles-2,myBrush);
+
+        i=size().height()-rayonAngles;
+        while(i<this->size().height())
+        {
+            painter.drawLine(rayonAngles-qPow(qPow(rayonAngles,2)-qPow((i+padding)-(size().height()-rayonAngles),2),0.5),i+padding,size().width(),i+padding);
+            i++;
+        }*/
+
+        /*for(int i = 0;i<this->size().height();i++)//2*size().height()*percent/100.;i++)
         {
             //qDebug()<<qPow(rayonAngles-(i+padding),2);
             //if(i+padding<rayonAngles) painter.drawLine(qPow(qPow(rayonAngles,2)-qPow((i+padding),2),0.5),i+padding,size().width(),i+padding);
@@ -71,8 +88,8 @@ void entete::paintEvent(QPaintEvent *event)
             else painter.drawLine(0,i+padding,size().width(),i+padding);
 
         }
-    }
-    else
+    }*/
+    if(type!=0)
     {
         painter.fillRect(0,(1.-percent/100.)*size().height(),size().width(),size().height()*percent/100.,myBrush);
     }

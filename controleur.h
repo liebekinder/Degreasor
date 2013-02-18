@@ -28,6 +28,7 @@ public:
     explicit Controleur(MainWindow *theControlledWindow, QObject *parent = 0);
     Item * root_;
 
+
 private:
     Item * selectedItem;
     MainWindow * theControlledWindow;

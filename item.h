@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QDate>
+#include <QDebug>
+#include <QUuid>
 
 class Item : public QObject
 {
@@ -45,6 +47,8 @@ public:
     void setVue(QWidget * v);
     void setParent(Item * p);
     void setVisible(bool b);
+    void setUID(QUuid i);
+    QUuid getUID();
 
 
 
@@ -57,6 +61,7 @@ private:
     QString description_;
     Item * itemAssocie_;
     QList<Item *> * precondition_;
+    QUuid UID;
 
     Item * parent_;
     QString TYPE;

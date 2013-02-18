@@ -7,6 +7,8 @@ Item::Item(Item *conteneur, QObject *parent) :
     nom_ = "Mon nouvel item";
     date_ = QDate::currentDate();
     setParent(conteneur);
+    UID = QUuid::createUuid();
+    //qDebug()<<UID.toString();
 }
 
 Item::Item(bool root, QObject *parent) :
@@ -15,6 +17,7 @@ Item::Item(bool root, QObject *parent) :
     //root = true; //enlever le warning
     nom_ = "Root";
     date_ = QDate::currentDate();
+    UID = QUuid::createUuid();
 }
 
 Item::Item(QString nom, QDate date, QString description, Item *conteneur, QObject *parent) :
@@ -25,6 +28,8 @@ Item::Item(QString nom, QDate date, QString description, Item *conteneur, QObjec
     date_ = date;
     description_ = description;
     setParent(conteneur);
+    UID = QUuid::createUuid();
+    //qDebug()<<UID.toString();
 }
 
 void Item::setType(QString t)
@@ -41,6 +46,16 @@ void Item::setType(QString t)
 void Item::setVisible(bool b)
 {
     visible=b;
+}
+
+void Item::setUID(QUuid i)
+{
+    UID = i;
+}
+
+QUuid Item::getUID()
+{
+    return UID;
 }
 
 bool Item::getVisible()

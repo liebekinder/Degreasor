@@ -63,7 +63,7 @@ void entete::paintEvent(QPaintEvent *event)
         padding = 0;
         double rayonAngles = (20+9-2)*papa->size().height()/100.;
 
-        /*int i =0;
+        int i =0;
         while(i+padding<=rayonAngles)
         {
             if(i+padding<=rayonAngles) painter.drawLine(rayonAngles-qPow(qPow(rayonAngles,2)-qPow(rayonAngles-(i+padding),2),0.5),i+padding,size().width(),i+padding);

@@ -58,6 +58,7 @@ public:
 
 
     static void getComboBox(QComboBox *c);
+    static DateRelative getComboBoxFromText(QString s);
 private:
     bool visible;
     QString nom_;

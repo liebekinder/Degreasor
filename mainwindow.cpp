@@ -104,6 +104,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //actions
 
+    b1->setDisabled(true);
+    b2->setDisabled(true);
+    connect(b1, SIGNAL(pressed()), controler, SLOT(cancelModification()));
+    connect(b2, SIGNAL(pressed()), controler, SLOT(saveModification()));
 
 }
 
@@ -133,7 +137,7 @@ QWidget *MainWindow::setInfoPanel(bool b){
         cb1 = new QRadioButton();
         cb2 = new QRadioButton();
 
-        de = new QDateEdit();
+        de = new QDateEdit(QDate::currentDate());
 
         cbb1 = new QComboBox();
         Item::getComboBox(cbb1);

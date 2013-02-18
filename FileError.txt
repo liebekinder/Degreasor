@@ -5,3 +5,5 @@ Codes d'erreur liés à Degreasor
 
 
 Problème éventuel sur les dates cycliques avec dates relatives.
+
+Clic à l'extérieur désactive la partie droite

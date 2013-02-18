@@ -7,6 +7,7 @@ Item::Item(Item *conteneur, QObject *parent) :
     nom_ = "Mon nouvel item";
     date_ = QDate::currentDate();
     setParent(conteneur);
+    choixDate_ = true;
     UID = QUuid::createUuid();
     //qDebug()<<UID.toString();
 }
@@ -17,6 +18,7 @@ Item::Item(bool root, QObject *parent) :
     Q_UNUSED(root);
     //root = true; //enlever le warning
     nom_ = "Root";
+    choixDate_ = true;
     date_ = QDate::currentDate();
     UID = QUuid::createUuid();
 }
@@ -29,6 +31,7 @@ Item::Item(QString nom, QDate date, QString description, Item *conteneur, QObjec
     date_ = date;
     description_ = description;
     setParent(conteneur);
+    choixDate_ = false;
     UID = QUuid::createUuid();
     //qDebug()<<UID.toString();
 }
@@ -79,6 +82,20 @@ void Item::getComboBox(QComboBox * c){
     c->addItem("Deux jours après");
     c->addItem("Une semaine après");
     c->addItem("Deux semaines après");
+}
+
+Item::DateRelative Item::getComboBoxFromText(QString s)
+{
+    if(s == "Deux semaines avant") return TwoWeeksBefore;
+    else if(s == "Une semaine avant") return OneWeekBefore;
+    else if(s == "Deux jours avant") return TwoDaysBefore;
+    else if(s == "Un jour avant") return OneDayBefore;
+    else if(s == "En même temps") return Now;
+    else if(s == "Un jour après") return OneDayAfter;
+    else if(s == "Deux jours après") return TwoDaysAfter;
+    else if(s == "Une semaine après") return OneWeekAfter;
+    else if(s == "Deux semaines après") return TwoWeeksAfter;
+    else return Now;
 }
 
 QString Item::getDateRString(Item::DateRelative d)

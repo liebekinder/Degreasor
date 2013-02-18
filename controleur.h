@@ -28,7 +28,7 @@ public:
     Item * getSelectedItem();
     void setSelectedItem(Item *wi);
     void callRefreshWithoutMoveScreen();
-    void refreshRightPanel(Item *wi);
+    void refreshRightPanel(Item *wi, bool b = false);
     //void parseAndAddAfter(Item * currentList, Item *elementPere, Item * elementToAdd);
     explicit Controleur(MainWindow *theControlledWindow, QObject *parent = 0);
     Item * root_;
@@ -37,6 +37,7 @@ public:
 
     void process(Item *item, QComboBox *c);
     void videCombo(QComboBox *c);
+    void saveRightPanel(Item *wi);
 private:
     Item * selectedItem;
     MainWindow * theControlledWindow;
@@ -54,6 +55,8 @@ public slots:
     void addTacheALaSuiteDeTache(Item *);
     void addListeALaSuiteDeTache(Item *);
     void addEnsembleALaSuiteDeTache(Item *);
+    void cancelModification();
+    void saveModification();
 };
 
 #endif // CONTROLEUR_H

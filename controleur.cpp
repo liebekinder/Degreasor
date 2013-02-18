@@ -11,7 +11,6 @@ Controleur::Controleur(MainWindow * theControlledWindow,QObject *parent) :
     this->theControlledWindow = theControlledWindow;
     //root_ = new Ensemble("nom", QDate::currentDate(),"bla", NULL);
     //qDebug()<< Item::TwoDaysAfter;
-
 }
 
 Item * Controleur::getSelectedItem()
@@ -26,32 +25,73 @@ void Controleur::setSelectedItem(Item * wi)
     //methode d'affichage de la partie droite de l'ui
 }
 
-void Controleur::refreshRightPanel(Item * wi)
+void Controleur::refreshRightPanel(Item * wi, bool b)
 {
     //actualisation des combobox
     videCombo(theControlledWindow->cbb2);
     process(root_, theControlledWindow->cbb2);
 
-    //nom
-    theControlledWindow->le1->setText(wi->getNom());
-    qDebug()<<"nom... done!";
-    //choix de la date
-    if(wi->getChoixDate()) theControlledWindow->cb1->setChecked(true);
-    else theControlledWindow->cb2->setChecked(true);
-    qDebug()<<"radiobutton... done!";
-    //date
-    theControlledWindow->de->setDate(wi->getDate());
-    qDebug()<<"date... done!";
-    //theControlledWindow->cbb1->setCurrentText(wi->getAssocie()->getDateRString(wi->getDateR()));
-    qDebug()<<"combobox... done!";
-    //ici, besoin d'une fonction qui détermine la position de l'item wi->getAssocie()
-    //dans la combobox. Besoin d'une liste pour ce faire.
-    //theControlledWindow->cbb2->setCurrentText(wi->getAssocie()->getNom());
-    qDebug()<<"combobox2... done!";
-    //description
-    theControlledWindow->te->setText(wi->getDescription());
-    qDebug()<<"text area... done!";
+    if(b){
+        //nom
+        theControlledWindow->le1->setText("");
 
+        //choix de la date
+        theControlledWindow->cb1->setChecked(true);
+        //date
+        theControlledWindow->de->setDate(QDate::currentDate());
+        theControlledWindow->cbb1->setCurrentIndex(0);
+        if(((Ensemble *)root_)->getNotreListe()->size() != 0)
+        {
+            theControlledWindow->cbb2->setCurrentIndex(0);
+        }
+        //description
+        theControlledWindow->te->setText("");
+
+        theControlledWindow->b1->setDisabled(true);
+        theControlledWindow->b2->setDisabled(true);
+    }
+    else{
+        //nom
+        theControlledWindow->le1->setText(wi->getNom());
+
+        //choix de la date
+        if(wi->getChoixDate()) theControlledWindow->cb1->setChecked(true);
+        else theControlledWindow->cb2->setChecked(true);
+        //date
+        theControlledWindow->de->setDate(wi->getDate());
+        theControlledWindow->cbb1->setCurrentText(wi->getAssocie()->getDateRString(wi->getDateR()));
+        if(((Ensemble *)root_)->getNotreListe()->size() != 0)
+        {
+            theControlledWindow->cbb2->setCurrentIndex(0);
+        }
+        //description
+        theControlledWindow->te->setText(wi->getDescription());
+
+        theControlledWindow->b1->setDisabled(false);
+        theControlledWindow->b2->setDisabled(false);
+    }
+
+}
+
+void Controleur::saveRightPanel(Item * wi)
+{
+    wi->setNom(theControlledWindow->le1->text());
+    if(theControlledWindow->cb1->isChecked())
+    {
+        wi->setChoixDate(true);
+        wi->setDate(theControlledWindow->de->date());
+    }
+    else
+    {
+        wi->setChoixDate(true);
+        wi->setDateR(wi->getComboBoxFromText(theControlledWindow->cbb1->currentText()));
+        QVariant v = theControlledWindow->cbb2->itemData(theControlledWindow->cbb2->currentIndex());
+        //méthode de récupération de l'item via le quuid du qvariant
+        qDebug()<<v.toString();
+    }
+    wi->setDescription(theControlledWindow->te->toPlainText());
+
+    callRefreshWithoutMoveScreen();
 }
 
 void Controleur::videCombo(QComboBox * c){
@@ -225,6 +265,16 @@ void Controleur::addEnsembleALaSuiteDeTache(Item *test)
     this->setSelectedItem(yeah);
 
     theControlledWindow->refresh(yeah);
+}
+
+void Controleur::cancelModification()
+{
+    refreshRightPanel(selectedItem);
+}
+
+void Controleur::saveModification()
+{
+    saveRightPanel(selectedItem);
 }
 
 void Controleur::addTacheApresTache(Item *test)

@@ -49,6 +49,9 @@ public:
     QComboBox * cbb2;
     QTextEdit * te;
     QListWidget * dropListe;
+
+    QPushButton * b1;
+    QPushButton * b2;
     // fin A FAIRE!!!!
 
     ~MainWindow();
@@ -90,8 +93,6 @@ private:
     QLabel * lb5;
     QLabel * lb6;
     QWidget * widg;
-    QPushButton * b1;
-    QPushButton * b2;
 
 
 

@@ -3,7 +3,7 @@ Degreasor
 
 An advanced task manager.
 
-Git repository : [https://github.com/liebekinder/Degreasor)
+Git repository : https://github.com/liebekinder/Degreasor  
 Bugs/Suggestions: antoine.floriano@gmail.com
 
 Compilation

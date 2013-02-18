@@ -15,6 +15,7 @@ class DragZone : public QWidget
 public:
     explicit DragZone(Widget * pere,QWidget *parent = 0);
     void mousePressEvent(QMouseEvent *event);
+    void paintEvent(QPaintEvent *event);
 private:
     Widget * parent;
 signals:

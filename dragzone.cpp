@@ -63,3 +63,14 @@ void DragZone::mousePressEvent(QMouseEvent *event){
         qDebug()<<"Fin drag";
     }
 }
+
+void DragZone::paintEvent(QPaintEvent *event)
+{
+    Q_UNUSED(event);
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    QPixmap px;
+    px.load(":/images/grabIcon.png");
+    px=px.scaledToHeight(px.size().height()*parent->size().height()/500.,Qt::SmoothTransformation);
+    painter.drawPixmap(QPoint(this->size().width()/2.,18*parent->size().height()/500.),px,px.rect());
+}

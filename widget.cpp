@@ -127,12 +127,12 @@ Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
 
     dragZone = new DragZone(this);
     dragZone->setMaximumHeight(50*this->size().height()/100.);
-        QPalette cpalette3 = palette();
+        /*QPalette cpalette3 = palette();
         QBrush brush3(QColor(0, 255, 0, 255));
         brush3.setStyle(Qt::SolidPattern);
         cpalette3.setBrush(QPalette::Active, QPalette::Window, brush3);
         dragZone->setPalette(cpalette3);
-        dragZone->setAutoFillBackground(true);
+        dragZone->setAutoFillBackground(true);*/
 
 
     centralLayout = new QHBoxLayout();

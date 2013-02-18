@@ -6,5 +6,6 @@
         <file>images/fondCourantElemDeselectS.png</file>
         <file>images/fondCourantElemSelect.png</file>
         <file>images/fondCourantElemSelectS.png</file>
+        <file>images/grabIcon.png</file>
     </qresource>
 </RCC>

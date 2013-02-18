@@ -57,6 +57,7 @@ void myWidget::mousePressEvent(QMouseEvent *event)
 
 void myWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
+    Q_UNUSED(event);
     qDebug()<< "uiohdsiodiohs";
 }
 

@@ -5,6 +5,7 @@ MainWindow::MainWindow(bool b, QWidget * parent) :
     qDebug()<<"mode console "<<b;
 
     Controleur * c = new Controleur(this);
+    Q_UNUSED(c);
 
 }
 

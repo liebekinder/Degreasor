@@ -35,6 +35,7 @@ void entete::setType(int typeV)
 
 void entete::paintEvent(QPaintEvent *event)
 {
+    Q_UNUSED(event);
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
     //painter.setRenderHint(QPainter::Antialiasing, true);
@@ -113,5 +114,5 @@ void entete::paintEvent(QPaintEvent *event)
 
 void entete::mousePressEvent(QMouseEvent *event)
 {
-
+    Q_UNUSED(event);
 }

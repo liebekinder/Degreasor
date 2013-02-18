@@ -14,6 +14,7 @@ Item::Item(Item *conteneur, QObject *parent) :
 Item::Item(bool root, QObject *parent) :
     QObject(parent)
 {
+    Q_UNUSED(root);
     //root = true; //enlever le warning
     nom_ = "Root";
     date_ = QDate::currentDate();

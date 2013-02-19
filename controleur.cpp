@@ -74,7 +74,9 @@ void Controleur::refreshRightPanel(Item * wi, bool b)
         else theControlledWindow->cb2->setChecked(true);
         //date
         theControlledWindow->de->setDisabled(false);
+
         theControlledWindow->de->setDate(wi->getDate());
+
         theControlledWindow->cbb1->setDisabled(false);
         theControlledWindow->cbb2->setDisabled(false);
         theControlledWindow->cbb1->setCurrentText(wi->getAssocie()->getDateRString(wi->getDateR()));
@@ -122,27 +124,35 @@ void Controleur::saveRightPanel(Item * wi)
 {
     wi->setNom(theControlledWindow->le1->text());
 
-    if(!wi->getChoixDate())
-    {
-        theControlledWindow->de->setDate(daysToRealDate(wi));
-    }
 
+    //######################################################
+
+
+    qDebug()<< theControlledWindow->de->date().toString();
+    qDebug()<< wi->getDate().toString();
     if(theControlledWindow->cb1->isChecked())
     {
         wi->setChoixDate(true);
-        wi->setDate(theControlledWindow->de->date());
     }
     else
     {
         wi->setChoixDate(false);
+        theControlledWindow->de->setDate(daysToRealDate(wi));
         wi->setDateR(wi->getComboBoxFromText(theControlledWindow->cbb1->currentText()));
 
         QVariant v = theControlledWindow->cbb2->itemData(theControlledWindow->cbb2->currentIndex());
         //méthode de récupération de l'item via le quuid du qvariant
         wi->setAssocie(getItemWithUUID(v.toString(),root_));
         //QMessageBox::warning(this->theControlledWindow->vue,"1",wi->getAssocie()->getNom());
-        qDebug()<<v.toString();
+        //qDebug()<<v.toString();
     }
+
+    wi->setDate(theControlledWindow->de->date());
+    qDebug()<< theControlledWindow->de->date().toString();
+    qDebug()<< wi->getDate().toString();
+
+    //#######################################################
+
     wi->setDescription(theControlledWindow->te->toPlainText());
 
 

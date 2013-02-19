@@ -77,6 +77,7 @@ public slots:
     void saveModification();
     void getDrop(QString s);
     void deleteItemListView(QListWidgetItem *wi);
+    void setRDButton(int i);
 };
 
 #endif // CONTROLEUR_H

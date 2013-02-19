@@ -4,16 +4,12 @@ Codes d'erreur liés à Degreasor
 10 : "Erreur: le type créé n'existe pas!"
 
 
-Problème éventuel sur les dates cycliques avec dates relatives. Pas vérifié (les conditions +le calcul des dates.)
-
-
 reduire la main, le +/- ?
 
 
 
 //////
 Template :  à ajouter : choix du nom.
-Et pt un supprimer !
 
 
 Load et vérif des templates... a faire

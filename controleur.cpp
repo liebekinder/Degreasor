@@ -430,6 +430,12 @@ void Controleur::deleteItemListView(QListWidgetItem * wi){
     //theControlledWindow->dropListe->
 }
 
+void Controleur::setRDButton(int i)
+{
+    Q_UNUSED(i);
+    this->theControlledWindow->cb2->setChecked(true);
+}
+
 void Controleur::getDrop(QString s)
 {
     qDebug()<<"drop détecté et transmis!";

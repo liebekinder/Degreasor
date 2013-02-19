@@ -86,7 +86,7 @@ private:
     QHBoxLayout * hb1;
     QHBoxLayout * hb2;
     QHBoxLayout * hb3;
-    QHBoxLayout * hb4;
+    QVBoxLayout * hb4;
     QVBoxLayout * vb1;
     QGroupBox * gb1;
     QLabel * lb1;

@@ -144,7 +144,7 @@ QWidget *MainWindow::setInfoPanel(bool b){
         hb1 = new QHBoxLayout();
         hb2 = new QHBoxLayout();
         hb3 = new QHBoxLayout();
-        hb4 = new QHBoxLayout();
+        hb4 = new QVBoxLayout();
 
         vb1 = new QVBoxLayout();
 
@@ -203,16 +203,18 @@ QWidget *MainWindow::setInfoPanel(bool b){
         infoL->addWidget(gb1);
 
         infoL->addWidget(lb5);
-        infoL->addWidget(te);
+        infoL->addWidget(te,5);
         infoL->addWidget(lb6);
-        infoL->addWidget(widg);
+        infoL->addWidget(widg,2);
 
-            hb4->addWidget(b1);
             hb4->addWidget(b2);
-        infoL->addLayout(hb4,2);
+            hb4->addWidget(b1);
+
+        infoL->addLayout(hb4,4);
     }
 
 
+    b2->setMinimumHeight(40);
     info->setLayout(infoL);
     return info;
 }

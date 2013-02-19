@@ -63,6 +63,9 @@ void myWidget::mouseReleaseEvent(QMouseEvent *event)
         m->popup(event->globalPos());
     }
     else{
+        controler->setSelectedItem(controler->getRoot());
+        controler->refreshRightPanel(NULL, true);
+        controler->callRefreshWithoutMoveScreen();
 
     }
     return;
@@ -95,6 +98,27 @@ void myWidget::templateTest(int i)
     //emit addNewTemplate(this->imageOf);
 }
 
+void myWidget::toutReduire(Item * itemC)
+{
+
+    QList<Item *>::iterator it;
+    QList<Item *> * maListe;
+    if(itemC->getType() == "liste") maListe =( (Liste *)itemC)->getNotreListe();
+    if(itemC->getType() == "ensemble") maListe =( (Ensemble *)itemC)->getNotreListe();
+
+    for(it = maListe->begin(); it != maListe->end(); ++it)
+    {
+        Item * currentItem = ((Item*)*it);
+        currentItem->setVisible(false);
+
+        if(currentItem->getType()=="ensemble" || currentItem->getType() == "liste" )
+        {
+            toutReduire(currentItem);
+        }
+
+    }
+}
+
 void myWidget::deleteThis()
 {
     controler->setRoot(new Ensemble(true));
@@ -104,6 +128,7 @@ void myWidget::deleteThis()
 void myWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
+    toutReduire(controler->getRoot());
     qDebug()<< "uiohdsiodiohs";
 }
 

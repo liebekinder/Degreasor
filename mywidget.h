@@ -22,6 +22,7 @@ public:
     explicit myWidget(Controleur * control, QWidget *parent = 0);
     void mouseReleaseEvent(QMouseEvent *event);
     void mouseDoubleClickEvent(QMouseEvent *event);
+    void toutReduire(Item * itemC);
 public slots:
     void deleteThis();
     void templateTest(int);

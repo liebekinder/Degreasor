@@ -1,4 +1,4 @@
-Codes d'erreur liés à Degreasor
+﻿Codes d'erreur liés à Degreasor
 ###############################
 
 10 : "Erreur: le type créé n'existe pas!"
@@ -6,9 +6,6 @@ Codes d'erreur liés à Degreasor
 
 reduire la main, le +/- ?
 
-
-
-//////
 Template :  à ajouter : choix du nom.
 
 
@@ -22,8 +19,6 @@ XML pas de sauvegarde systématique des dates.
 
 
 
-
-
 Recalcul des dates relatives dépendant de l'élément sauvegardé.
 Crash sur les chaines de dates relatives.
 
@@ -32,3 +27,7 @@ Ajouter sauvegarde session.
 
 Le bouton sauvegarder : trop chiant !
 +- le clic sur la main sélectionne quand même
+
+bug ajout template sur le même élément
+erreur sur le cycle
+>>>>>>> correction

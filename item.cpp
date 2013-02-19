@@ -145,6 +145,17 @@ QString Item::getDateRString(Item::DateRelative d)
     return retour;
 }
 
+
+void Item::setPrecondSS(QList<QString> * predSS)
+{
+    precondition_onStringState = predSS;
+}
+
+QList<QString> * Item::getPrecondSS()
+{
+    return precondition_onStringState;
+}
+
 QList<Item *> * Item::getPreconditions()
 {
     return precondition_;

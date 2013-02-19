@@ -453,6 +453,7 @@ Item * Controleur::chargerXml(QString path)
 
         Ensemble * rootLoading = new Ensemble(true);
 
+        QMap<QString,QString> * correspondances = new QMap<QString,QString>();
 
         QDomElement rootXml = xml.documentElement();
         rootXml=rootXml.firstChildElement();
@@ -460,9 +461,12 @@ Item * Controleur::chargerXml(QString path)
         while(!rootXml.isNull())
         {
             //qDebug()<<"@@@@@@"+rootXml.tagName();
-            rootLoading->ajoutItem(loadRecurXml(rootXml,rootLoading));
+            rootLoading->ajoutItem(loadRecurXml(rootXml,rootLoading,correspondances));
             rootXml=rootXml.nextSiblingElement();
         }
+
+        //Gestion des préconditions...
+        convertOldUUIDToNewItems(rootLoading,correspondances,rootLoading);
 
         qDebug()<<"Fin load";
         return rootLoading;
@@ -473,7 +477,46 @@ Item * Controleur::chargerXml(QString path)
 
 }
 
-Item * Controleur::loadRecurXml(QDomElement rootXml,Item * rootLoading)
+void Controleur::convertOldUUIDToNewItems(Item * rootLoading,QMap<QString, QString> * correspondances, Item * rootElem)
+{
+    QList<Item *>::iterator it;
+    QList<Item *> * maListe;
+    if(rootLoading->getType() == "liste") maListe =( (Liste *)rootLoading)->getNotreListe();
+    if(rootLoading->getType() == "ensemble") maListe =( (Ensemble *)rootLoading)->getNotreListe();
+
+    qDebug()<<"iterateur... done!";
+    for(it = maListe->begin(); it != maListe->end(); ++it)
+    {
+        qDebug()<<"un tour!... done!";
+        Item * currentItem = ((Item*)*it);
+
+        if(currentItem->getType() == "tache")
+        {
+            //conversion
+            qDebug()<<currentItem->getNom();
+            QList<QString> * OLDUUIDList = currentItem->getPrecondSS();
+            QList<Item * > * preconditionsWithNewUUID = new QList<Item * >();
+            QList<QString>::iterator itUUID;
+            qDebug()<<currentItem->getNom();
+            for(itUUID = OLDUUIDList->begin(); itUUID != OLDUUIDList->end(); ++itUUID)
+            {
+                QString currentOLDUUID = ((QString)*itUUID);
+                qDebug()<<currentOLDUUID;
+                qDebug()<<*correspondances->find(currentOLDUUID);
+                preconditionsWithNewUUID->append(getItemWithUUID(((QString)*correspondances->find(currentOLDUUID)),rootElem));
+            }
+            qDebug()<<currentItem->getNom();
+            currentItem->setPreconditions(preconditionsWithNewUUID);
+        }
+        if(currentItem->getType()=="ensemble" || currentItem->getType() == "liste" )
+        {
+            convertOldUUIDToNewItems(currentItem, correspondances,rootElem);
+        }
+    }
+
+}
+
+Item * Controleur::loadRecurXml(QDomElement rootXml,Item * rootLoading,QMap<QString,QString> * correspondances)
 {
     Item * newItem;
     if(rootXml.tagName() == "item"){
@@ -494,7 +537,9 @@ Item * Controleur::loadRecurXml(QDomElement rootXml,Item * rootLoading)
 
         newItem->setVisible(rootXml.attribute(QString("visible"))=="0"?false:true);
         newItem->setType(rootXml.attribute(QString("type")));
-        newItem->setUID(QUuid(rootXml.attribute(QString("UID"))));
+        //newItem->setUID(QUuid(rootXml.attribute(QString("UID"))));
+        //nouvel UUID, ancien UUID
+            correspondances->insert(rootXml.attribute(QString("UID")),newItem->getUID().toString());
         newItem->setChoixDate(rootXml.attribute(QString("choixDate"))=="0"?false:true);
         newItem->setDateR((Item::DateRelative)rootXml.attribute(QString("dateR")).toInt());
 
@@ -519,11 +564,11 @@ Item * Controleur::loadRecurXml(QDomElement rootXml,Item * rootLoading)
                 {
                     if(newItem->getType()=="ensemble")
                     {
-                        ((Ensemble*)newItem)->ajoutItem(loadRecurXml(childish,newItem));
+                        ((Ensemble*)newItem)->ajoutItem(loadRecurXml(childish,newItem,correspondances));
                     }
                     else
                     {
-                        ((Liste*)newItem)->ajoutItem(loadRecurXml(childish,newItem));
+                        ((Liste*)newItem)->ajoutItem(loadRecurXml(childish,newItem,correspondances));
                     }
                     childish=childish.nextSiblingElement();
                 }
@@ -531,6 +576,18 @@ Item * Controleur::loadRecurXml(QDomElement rootXml,Item * rootLoading)
             else if(nomEtChildren.tagName()=="preconditions")
             {
                 qDebug()<<"preconditions";
+                QList<QString>* predSS = new QList<QString>();
+                QDomElement pred = nomEtChildren.firstChildElement();
+                while(!pred.isNull())
+                {
+                    if(pred.tagName()=="precondition")
+                    {
+                        //là ancien UUID !
+                        predSS->append(QString(pred.text()));
+                    }
+                    pred=pred.nextSiblingElement();
+                }
+                newItem->setPrecondSS(predSS);
             }
             else
             {
@@ -543,16 +600,6 @@ Item * Controleur::loadRecurXml(QDomElement rootXml,Item * rootLoading)
     }
 
     return newItem;
-}
-
-void Controleur::buildItemViaXml(QDomElement rootXml,Item* elementToBuild)
-{
-
-
-    if(rootXml.tagName()=="name")
-    {
-
-    }
 }
 
 QDomElement Controleur::creeXmlItem(Item * itemPh,QDomDocument * xml)

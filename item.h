@@ -56,6 +56,8 @@ public:
     QString getDateRString(DateRelative d);
     QList<Item *> * getPreconditions();
     void setPreconditions(QList<Item *> * pred);
+    void setPrecondSS(QList<QString>* predSS);
+    QList<QString>* getPrecondSS();
 
     static void getComboBox(QComboBox *c);
     static DateRelative getComboBoxFromText(QString s);
@@ -68,6 +70,7 @@ private:
     QString description_;
     Item * itemAssocie_;
     QList<Item *> * precondition_;
+    QList<QString> * precondition_onStringState;
     QUuid UID;
 
     Item * parent_;

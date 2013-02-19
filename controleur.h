@@ -37,8 +37,9 @@ public:
     void parseToXml(Item * item, QDomElement currentNode, QDomDocument * xml);
     QDomElement creeXmlItem(Item * itemPh,QDomDocument * xml);
     Item * chargerXml(QString path);
-    void buildItemViaXml(QDomElement rootXml, Item *elementToBuild);
-    Item * loadRecurXml(QDomElement rootXml,Item * rootLoading);
+    //void buildItemViaXml(QDomElement rootXml, Item *elementToBuild);
+    Item * loadRecurXml(QDomElement rootXml, Item * rootLoading, QMap<QString, QString> *correspondances);
+    void convertOldUUIDToNewItems(Item * rootLoading, QMap<QString, QString> * correspondances, Item *rootElem);
 
     void process(Item *item, QComboBox *c);
     void videCombo(QComboBox *c);

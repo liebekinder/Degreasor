@@ -51,6 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //fin exp*/
     Item * futurRoot = controler->chargerXml(QString("example.xml"));
     if(futurRoot!=NULL) controler->setRoot(futurRoot);
+
     //controler->chargerXml(QString("example.xml"));
     //qDebug()<<controler->chargerXml(QString("example.xml"));
     //((Ensemble*)controler->getRoot())->ajoutItem(controler->chargerXml(QString("example.xml")));

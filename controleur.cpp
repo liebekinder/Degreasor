@@ -11,6 +11,7 @@ Controleur::Controleur(MainWindow * theControlledWindow,QObject *parent) :
     this->theControlledWindow = theControlledWindow;
     //root_ = new Ensemble("nom", QDate::currentDate(),"bla", NULL);
     //qDebug()<< Item::TwoDaysAfter;
+    malisteuid = new QStringList();
 }
 
 Item * Controleur::getSelectedItem()
@@ -30,6 +31,9 @@ void Controleur::refreshRightPanel(Item * wi, bool b)
     //actualisation des combobox
     videCombo(theControlledWindow->cbb2);
     process(root_, theControlledWindow->cbb2);
+
+    theControlledWindow->dropListe->clear();
+    malisteuid->clear();
 
     if(b){
         //nom
@@ -67,6 +71,14 @@ void Controleur::refreshRightPanel(Item * wi, bool b)
         //description
         theControlledWindow->te->setText(wi->getDescription());
 
+        //on copie la ligne de preconditions dans le qlist widget, en 2 ligne dont une caché UID
+
+        for(int i=0; i<wi->getPreconditions()->count(); ++i)
+        {
+            theControlledWindow->dropListe->addItem(new QListWidgetItem(wi->getPreconditions()->at(i)->getNom()));
+            malisteuid->append(wi->getPreconditions()->at(i)->getUID().toString());
+        }
+
         theControlledWindow->b1->setDisabled(false);
         theControlledWindow->b2->setDisabled(false);
     }
@@ -90,6 +102,16 @@ void Controleur::saveRightPanel(Item * wi)
         qDebug()<<v.toString();
     }
     wi->setDescription(theControlledWindow->te->toPlainText());
+
+
+    QList<Item *> * precond = new QList<Item *>();
+    //on avance de 2 en 2, pour saisir à la fois le nom et le paramètre caché UID
+    for(int i=0; i<malisteuid->count(); ++i){
+        precond->append( getItemWithUUID(malisteuid->at(i), root_) );
+    }
+    qDebug()<<"precond->size()";
+    qDebug()<<precond->size();
+    wi->setPreconditions(precond);
 
     callRefreshWithoutMoveScreen();
 }
@@ -292,6 +314,17 @@ void Controleur::cancelModification()
 void Controleur::saveModification()
 {
     saveRightPanel(selectedItem);
+}
+
+void Controleur::getDrop(QString s)
+{
+    qDebug()<<"drop détecté et transmis!";
+    theControlledWindow->dropListe->addItem(new QListWidgetItem(getItemWithUUID(s,root_)->getNom()));
+    malisteuid->append(s);
+    //theControlledWindow->dropListe->addItem(new QListWidgetItem(s));
+    //qDebug()<<s;
+    //qDebug()<<theControlledWindow->dropListe->count();
+    //theControlledWindow->dropListe->itemAt(theControlledWindow->dropListe->count(),1)->setHidden(true);
 }
 
 void Controleur::addTacheApresTache(Item *test)

@@ -3,7 +3,7 @@
 #include "item.h"
 #include <QtWidgets>
 
-DropArea::DropArea(QListWidget *listeGeree, QWidget *parent) :
+DropArea::DropArea(QWidget *parent) :
     QWidget(parent)
 {
      QPalette cpalette3 = palette();
@@ -12,7 +12,7 @@ DropArea::DropArea(QListWidget *listeGeree, QWidget *parent) :
      cpalette3.setBrush(QPalette::Active, QPalette::Window, brush3);
      this->setPalette(cpalette3);
      this->setAutoFillBackground(true);
-     this->listeGeree=listeGeree;
+     //this->listeGeree=listeGeree;
      this->setAcceptDrops(true);
 }
 
@@ -52,19 +52,20 @@ void DropArea::dropEvent(QDropEvent *event)
         QByteArray itemData = event->mimeData()->data("application/x-dnditemdata");
         QDataStream dataStream(&itemData, QIODevice::ReadOnly);
 
-        QPixmap pixmap = QPixmap(":/images/boat.png");;
-        QPoint offset;
+        //QPixmap pixmap = QPixmap(":/images/boat.png");;
+        //QPoint offset;
         QString itemEnvoye;
         dataStream >> itemEnvoye;
+        emit dropICI(itemEnvoye);
 
-        qDebug()<< "T'as drop "+itemEnvoye;
-        listeGeree->addItem(new QListWidgetItem(itemEnvoye));
+        //qDebug()<< "T'as drop "+itemEnvoye;
+        //listeGeree->addItem(new QListWidgetItem(itemEnvoye));
 
-        QLabel *newIcon = new QLabel(this);
+        /*QLabel *newIcon = new QLabel(this);
         newIcon->setPixmap(pixmap);
         newIcon->move(event->pos() - offset);
         newIcon->show();
-        newIcon->setAttribute(Qt::WA_DeleteOnClose);
+        newIcon->setAttribute(Qt::WA_DeleteOnClose);*/
 
         if (event->source() == this) {
             event->setDropAction(Qt::MoveAction);

@@ -14,15 +14,17 @@ class DropArea : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DropArea(QListWidget * listeGeree, QWidget *parent = 0);
+    //explicit DropArea(QListWidget * listeGeree, QWidget *parent = 0);
+    explicit DropArea(QWidget *parent = 0);
 private:
-    QListWidget * listeGeree;
+    //QListWidget * listeGeree;
 protected:
     void dragEnterEvent(QDragEnterEvent *event);
     void dragMoveEvent(QDragMoveEvent *event);
     void dropEvent(QDropEvent *event);
 
 signals:
+    void dropICI(QString s);
     
 public slots:
     

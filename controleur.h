@@ -48,6 +48,7 @@ public:
 private:
     Item * selectedItem;
     MainWindow * theControlledWindow;
+    QStringList * malisteuid;
 signals:
 public slots:
     void addEnsemble();
@@ -64,6 +65,7 @@ public slots:
     void addEnsembleALaSuiteDeTache(Item *);
     void cancelModification();
     void saveModification();
+    void getDrop(QString s);
 };
 
 #endif // CONTROLEUR_H

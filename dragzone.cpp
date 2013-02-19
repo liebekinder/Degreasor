@@ -33,7 +33,7 @@ void DragZone::mousePressEvent(QMouseEvent *event){
         QDrag *drag = new QDrag(this);
         QByteArray itemData;
         QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-        dataStream << parent->getImage()->getNom();
+        dataStream << parent->getImage()->getUID().toString();
 
         QMimeData *mimeData = new QMimeData;
         mimeData->setData("application/x-dnditemdata", itemData);

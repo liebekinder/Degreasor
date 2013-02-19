@@ -128,6 +128,7 @@ MainWindow::MainWindow(QWidget *parent) :
     b2->setDisabled(true);
     connect(b1, SIGNAL(pressed()), controler, SLOT(cancelModification()));
     connect(b2, SIGNAL(pressed()), controler, SLOT(saveModification()));
+    connect(((DropArea *)widg), SIGNAL(dropICI(QString)),controler, SLOT(getDrop(QString)));
 
 }
 
@@ -168,7 +169,7 @@ QWidget *MainWindow::setInfoPanel(bool b){
         ///////////////////////////
 
         dropListe = new QListWidget;
-        widg = new DropArea(dropListe);
+        widg = new DropArea();
         dropListeL = new QVBoxLayout();
         dropListeL->setMargin(0);
         dropListeL->addWidget(dropListe);

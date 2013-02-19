@@ -18,3 +18,5 @@ reduire la main, le +/- ?
 //////
 Template :  à ajouter : choix du nom.
 Et pt un supprimer !
+
+Load et vérif des templates... a faire

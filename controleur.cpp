@@ -275,6 +275,7 @@ void Controleur::addTacheALaSuiteDeTache(Item *test)
     else
     {
         ((Liste*) test->getParent())->ajoutItem(yeah);
+
     }
     //Controleur::parseAndAddAfter(root_, test ,yeah);
     qDebug()<<"test->getNom()";
@@ -469,7 +470,7 @@ bool Controleur::saveToXml(QString path,Item * racine,Item * deleteItem ,bool te
         QDomNode xmlNode = xml->createProcessingInstruction("xml","version\"1.0\" encoding=\"UTF-8\"");
         xml->insertBefore(xmlNode,xml->firstChild());
 
-        QDomElement root = xml->createElement("template");
+        QDomElement root = xml->createElement("root");
         xml->appendChild(root);
 
         /////
@@ -496,34 +497,61 @@ bool Controleur::saveToXml(QString path,Item * racine,Item * deleteItem ,bool te
     return true;
 }
 
-Item * Controleur::chargerXml(QString path)
+Item * Controleur::chargerXml(QString path,bool templateP)
 {
     QFile file(path);
 
     if(file.open(QFile::ReadOnly|QFile::Text)){
-
-        QDomDocument xml;
-        xml.setContent(&file,false);
-
-        Ensemble * rootLoading = new Ensemble(true);
-
-        QMap<QString,QString> * correspondances = new QMap<QString,QString>();
-
-        QDomElement rootXml = xml.documentElement();
-        rootXml=rootXml.firstChildElement();
-        //on a dans quiz la balise <root></root>
-        while(!rootXml.isNull())
+        if(!templateP)
         {
-            //qDebug()<<"@@@@@@"+rootXml.tagName();
-            rootLoading->ajoutItem(loadRecurXml(rootXml,rootLoading,correspondances));
-            rootXml=rootXml.nextSiblingElement();
+            QDomDocument xml;
+            xml.setContent(&file,false);
+
+            Ensemble * rootLoading = new Ensemble(true);
+
+            QMap<QString,QString> * correspondances = new QMap<QString,QString>();
+
+            QDomElement rootXml = xml.documentElement();
+            rootXml=rootXml.firstChildElement();
+            //on a dans quiz la balise <root></root>
+            while(!rootXml.isNull())
+            {
+                //qDebug()<<"@@@@@@"+rootXml.tagName();
+                rootLoading->ajoutItem(loadRecurXml(rootXml,rootLoading,correspondances));
+                rootXml=rootXml.nextSiblingElement();
+            }
+
+            //Gestion des préconditions...
+            convertOldUUIDToNewItems(rootLoading,correspondances,rootLoading);
+
+            qDebug()<<"Fin load";
+            return rootLoading;
         }
+        else
+        {
+            QDomDocument xml;
+            xml.setContent(&file,false);
 
-        //Gestion des préconditions...
-        convertOldUUIDToNewItems(rootLoading,correspondances,rootLoading);
+            Ensemble * rootLoading = new Ensemble(true);
 
-        qDebug()<<"Fin load";
-        return rootLoading;
+            QMap<QString,QString> * correspondances = new QMap<QString,QString>();
+
+            QDomElement rootXml = xml.documentElement();
+            rootXml=rootXml.firstChildElement();
+            //on a dans quiz la balise <root></root>
+            while(!rootXml.isNull())
+            {
+                //qDebug()<<"@@@@@@"+rootXml.tagName();
+                rootLoading->ajoutItem(loadRecurXml(rootXml,rootLoading,correspondances));
+                rootXml=rootXml.nextSiblingElement();
+            }
+
+            //Gestion des préconditions...
+            convertOldUUIDToNewItems(rootLoading,correspondances,rootLoading);
+
+            qDebug()<<"Fin load";
+            return rootLoading->getNotreListe()->at(0);
+        }
 
     }
     qDebug()<<"Erreur lecture fichier";

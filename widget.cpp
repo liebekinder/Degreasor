@@ -444,9 +444,10 @@ void Widget::mouseReleaseEvent(QMouseEvent *event)
                 //a13->setStatusTip("export de l'item vers un template");
                 //a14->setDisabled(true);
                 mapper = new QSignalMapper(this);
-                for(int i = 0;i<10;i++)
+
+                for(int i = 0;i<controler->listeTemplate->count();i++)
                 {
-                    QAction * tempAction = a14->addAction("template "+QString::number(i));
+                    QAction * tempAction = a14->addAction(controler->listeTemplate->at(i));
                     mapper->setMapping(tempAction, i);
                     // Associate the toggled signal to map slot from the mapper
                     // (it does not matter if we don't use the bool parameter from the signal)
@@ -454,6 +455,7 @@ void Widget::mouseReleaseEvent(QMouseEvent *event)
                 }
 
                 connect(mapper, SIGNAL(mapped(int)), this, SLOT(templateTest(int)));
+                if(controler->listeTemplate->count()==0) a14->setDisabled(true);
 
 
                    /* QAction * a141 = a14->addAction("template &1");
@@ -529,9 +531,11 @@ void Widget::deleteThis()
 
 void Widget::exportTemplate()
 {
-    if(controler->saveToXml(QDir::currentPath()+"/templates/template"+QString(this->imageOf->getNom())+".template",this->imageOf,NULL,true))
+    if(controler->saveToXml(QDir::currentPath()+"/templates/"+QString(this->imageOf->getNom())+".template",this->imageOf,NULL,true))
     {
         QMessageBox::information(this,"Opération réussie.","Le template "+QString(this->imageOf->getNom())+" a bien été crée.");
+        controler->listerTemplate();
+        controler->callRefreshWithoutMoveScreen();
     }
     else
     {
@@ -541,7 +545,33 @@ void Widget::exportTemplate()
 
 void Widget::templateTest(int i)
 {
+    /*Item * yeah = controler->chargerXml(controler->listeTemplate->at(i),false);
+    qDebug() << "ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt"+yeah->getNom();
+    //((Ensemble*)root_)->ajoutItem(yeah);
+
+    if(this->imageOf->getParent()->getType()=="ensemble")
+    {
+        //((Ensemble*) this->imageOf->getParent())->ajoutItem(yeah);
+        ((Ensemble*)controler->getRoot())->ajoutItem(yeah);
+    }
+    else
+    {
+        //((Liste*) this->imageOf->getParent())->ajoutItem(yeah);
+        ((Ensemble*)controler->getRoot())->ajoutItem(yeah);
+
+    }
+    controler->setRoot(yeah);
+    //Controleur::parseAndAddAfter(root_, test ,yeah);
+    qDebug()<<"test->getNom()";
+    controler->callRefreshWithoutMoveScreen();
+    */
+
+    Item * futurRoot = controler->chargerXml(QDir::currentPath()+"/templates/"+controler->listeTemplate->at(i));
+    if(futurRoot!=NULL) controler->setRoot(futurRoot);
+    //controler->callRefreshWithoutMoveScreen();
     qDebug()<<i;
+
+
     //emit addNewTemplate(this->imageOf);
 }
 

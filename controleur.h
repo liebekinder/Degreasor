@@ -37,7 +37,7 @@ public:
     bool saveToXml(QString path, Item * racine = NULL, Item *deleteItem = NULL, bool templateItem = false);
     void parseToXml(Item * item, QDomElement currentNode, QDomDocument * xml, Item *deleteItem);
     QDomElement creeXmlItem(Item * itemPh,QDomDocument * xml);
-    Item * chargerXml(QString path);
+    Item * chargerXml(QString path, bool templateP=false);
     //void buildItemViaXml(QDomElement rootXml, Item *elementToBuild);
     Item * loadRecurXml(QDomElement rootXml, Item * rootLoading, QMap<QString, QString> *correspondances);
     void convertOldUUIDToNewItems(Item * rootLoading, QMap<QString, QString> * correspondances, Item *rootElem);

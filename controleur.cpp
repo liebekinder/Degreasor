@@ -145,20 +145,29 @@ void Controleur::saveRightPanel(Item * wi)
     if(theControlledWindow->cb1->isChecked())
     {
         wi->setChoixDate(true);
+
     }
     else
     {
-        wi->setDate(daysToRealDate(wi));
-        qDebug()<<"qsfdsdffdqfqfdd"+wi->getDate().toString(Qt::ISODate);
+        QVariant v = theControlledWindow->cbb2->itemData(theControlledWindow->cbb2->currentIndex());
+        wi->setAssocie(getItemWithUUID(v.toString(),root_));
+        qDebug()<<"iofhfghigfsihgfhogfshiofsgRAMMSTEIN!"+wi->getAssocie()->getNom();
+        //wi->setDate(daysToRealDate(wi));
         wi->setChoixDate(false);
-        theControlledWindow->de->setDate(daysToRealDate(wi));
+       // qDebug()<<"qsfdsdffdqfqfdd"+wi->getDate().toString(Qt::ISODate);
+
+         //qDebug()<<"qsfiodsfddf@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@qfusqfyqfs"+date.toString();
+
+        //wi->setDateR((Item::DateRelative));
         wi->setDateR(wi->getComboBoxFromText(theControlledWindow->cbb1->currentText()));
 
-        //qDebug()<<"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"+
+        qDebug()<<"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&";
+        QDate date = daysToRealDate(wi);
 
-        QVariant v = theControlledWindow->cbb2->itemData(theControlledWindow->cbb2->currentIndex());
+       theControlledWindow->de->setDate(date);
+
         //méthode de récupération de l'item via le quuid du qvariant
-        wi->setAssocie(getItemWithUUID(v.toString(),root_));
+
         //QMessageBox::warning(this->theControlledWindow->vue,"1",wi->getAssocie()->getNom());
         //qDebug()<<v.toString();
     }
@@ -298,9 +307,11 @@ QDate Controleur::daysToRealDate(Item * item)
 
     if(item->getChoixDate())
     {
+        qDebug()<<"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+item->getNom();
         return item->getDate().isNull()?QDate::currentDate():item->getDate();
     }
     QDate retour = daysToRealDate(item->getAssocie());
+    qDebug()<<"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+retour.toString(Qt::ISODate);
     //QMessageBox::warning(this->theControlledWindow->vue,item->getNom(),QString::number(int(item->getDateR())));
     retour = retour.addDays(int(item->getDateR()));
     //QMessageBox::warning(this->theControlledWindow->vue,item->getNom(),retour.toString(Qt::ISODate));

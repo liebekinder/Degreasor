@@ -452,8 +452,8 @@ QString Widget::verifierPreconditions(Item * ref)
             Item * currentItem = ((Item*)*it);
             if(currentItem->getType()=="tache")
             {
-                if(((Tache*)currentItem)->getPercentage()!=100) return currentItem->getNom();
-                return NULL;
+                if(((Tache*)currentItem)->getPercentage()!=100) retour= currentItem->getNom();
+                retour = retour==NULL?NULL:retour;
             }
             if(currentItem->getType()=="ensemble" || currentItem->getType() == "liste" )
             {

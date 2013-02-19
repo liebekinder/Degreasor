@@ -1,5 +1,6 @@
 #include "widget.h"
 #include <QMessageBox>
+#include "mainwindow.h"
 
 void Widget::setPercent(int i)
 {
@@ -545,31 +546,36 @@ void Widget::exportTemplate()
 
 void Widget::templateTest(int i)
 {
-    /*Item * yeah = controler->chargerXml(controler->listeTemplate->at(i),false);
+    Item * yeah = controler->chargerXml(QDir::currentPath()+"/templates/"+controler->listeTemplate->at(i),true);
     qDebug() << "ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt"+yeah->getNom();
     //((Ensemble*)root_)->ajoutItem(yeah);
-
-    if(this->imageOf->getParent()->getType()=="ensemble")
+    if(yeah!=NULL)
     {
-        //((Ensemble*) this->imageOf->getParent())->ajoutItem(yeah);
-        ((Ensemble*)controler->getRoot())->ajoutItem(yeah);
-    }
-    else
-    {
-        //((Liste*) this->imageOf->getParent())->ajoutItem(yeah);
-        ((Ensemble*)controler->getRoot())->ajoutItem(yeah);
+        if(this->imageOf->getParent()->getType()=="ensemble")
+        {
+            ((Ensemble*) this->imageOf->getParent())->ajoutItem(yeah);
+            //((Ensemble*)controler->getRoot())->ajoutItem(yeah);
+        }
+        else
+        {
+            ((Liste*) this->imageOf->getParent())->ajoutItem(yeah);
+            //((Ensemble*)controler->getRoot())->ajoutItem(yeah);
 
-    }
-    controler->setRoot(yeah);
-    //Controleur::parseAndAddAfter(root_, test ,yeah);
-    qDebug()<<"test->getNom()";
-    controler->callRefreshWithoutMoveScreen();
-    */
+        }
+        controler->setSelectedItem(controler->getRoot());
+        controler->callRefreshWithoutMoveScreen();
+        //controler->setRoot(yeah);
+        //Controleur::parseAndAddAfter(root_, test ,yeah);
+        qDebug()<<"test->getNom()";
+        //controler->callRefreshWithoutMoveScreen();
 
-    Item * futurRoot = controler->chargerXml(QDir::currentPath()+"/templates/"+controler->listeTemplate->at(i));
-    if(futurRoot!=NULL) controler->setRoot(futurRoot);
-    //controler->callRefreshWithoutMoveScreen();
-    qDebug()<<i;
+
+        //Item * futurRoot = controler->chargerXml(QDir::currentPath()+"/templates/"+controler->listeTemplate->at(i));
+        //if(futurRoot!=NULL) controler->setRoot(futurRoot);
+        //controler->callRefreshWithoutMoveScreen();
+        qDebug()<<i;
+    }
+
 
 
     //emit addNewTemplate(this->imageOf);

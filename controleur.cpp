@@ -443,6 +443,7 @@ void Controleur::setRoot(Item * root)
 
 void Controleur::callRefreshWithoutMoveScreen()
 {
+    qDebug()<<"sqdfgkldsfhpisdifhsdpofihsdipfsdf";
     theControlledWindow->callRefreshWithoutMoveScreen();
 }
 
@@ -600,6 +601,11 @@ void Controleur::convertOldUUIDToNewItems(Item * rootLoading,QMap<QString, QStri
         }
     }
 
+}
+
+MainWindow * Controleur::getCtrlW()
+{
+    return theControlledWindow;
 }
 
 Item * Controleur::loadRecurXml(QDomElement rootXml,Item * rootLoading,QMap<QString,QString> * correspondances)

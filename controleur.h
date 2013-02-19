@@ -48,6 +48,7 @@ public:
     Item * getItemWithUUID(QString uid, Item *item);
     void listerTemplate();
     QStringList * listeTemplate;
+    MainWindow * getCtrlW();
 private:
     Item * selectedItem;
     MainWindow * theControlledWindow;

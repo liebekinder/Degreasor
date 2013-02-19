@@ -250,7 +250,7 @@ void MainWindow::callRefreshWithoutMoveScreen()
     int cPosx = vue->horizontalScrollBar()->value();
 
 
-    delete vue;
+    //delete vue;
     vue = affichage->getScrollArea(controler->getRoot(), controler, NULL);
 
     stackedWidget->addWidget(vue);

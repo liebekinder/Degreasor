@@ -30,7 +30,7 @@ int Affichage::process(Item * monSet, QGridLayout * layout, Controleur * ctrl, I
         counter++;
         Item * currentItem = ((Item*)*it);
 
-        //qDebug()<<"add to screen "+currentItem->getNom();
+        qDebug()<<"add to screen "+currentItem->getNom();
         //qDebug()<<(afficher==true?1:0);
 
 

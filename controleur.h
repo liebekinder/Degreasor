@@ -25,6 +25,7 @@ class Controleur : public QObject
 
 public:
     Item * getRoot();
+    void setRoot(Item * root);
     Item * getSelectedItem();
     void setSelectedItem(Item *wi);
     void callRefreshWithoutMoveScreen();
@@ -35,6 +36,9 @@ public:
     bool saveToXml(QString path, Item * racine = NULL, bool templateItem = false);
     void parseToXml(Item * item, QDomElement currentNode, QDomDocument * xml);
     QDomElement creeXmlItem(Item * itemPh,QDomDocument * xml);
+    Item * chargerXml(QString path);
+    void buildItemViaXml(QDomElement rootXml, Item *elementToBuild);
+    Item * loadRecurXml(QDomElement rootXml,Item * rootLoading);
 
     void process(Item *item, QComboBox *c);
     void videCombo(QComboBox *c);

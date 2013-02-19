@@ -383,6 +383,11 @@ Item * Controleur::getRoot()
     return root_;
 }
 
+void Controleur::setRoot(Item * root)
+{
+    root_=root;
+}
+
 void Controleur::callRefreshWithoutMoveScreen()
 {
     theControlledWindow->callRefreshWithoutMoveScreen();
@@ -435,6 +440,119 @@ bool Controleur::saveToXml(QString path,Item * racine,bool templateItem)
     ts.setCodec("UTF-8");
     xml->save(ts,2,QDomNode::EncodingFromTextStream);
     return true;
+}
+
+Item * Controleur::chargerXml(QString path)
+{
+    QFile file(path);
+
+    if(file.open(QFile::ReadOnly|QFile::Text)){
+
+        QDomDocument xml;
+        xml.setContent(&file,false);
+
+        Ensemble * rootLoading = new Ensemble(true);
+
+
+        QDomElement rootXml = xml.documentElement();
+        rootXml=rootXml.firstChildElement();
+        //on a dans quiz la balise <root></root>
+        while(!rootXml.isNull())
+        {
+            //qDebug()<<"@@@@@@"+rootXml.tagName();
+            rootLoading->ajoutItem(loadRecurXml(rootXml,rootLoading));
+            rootXml=rootXml.nextSiblingElement();
+        }
+
+        qDebug()<<"Fin load";
+        return rootLoading;
+
+    }
+    qDebug()<<"Erreur lecture fichier";
+    return NULL;
+
+}
+
+Item * Controleur::loadRecurXml(QDomElement rootXml,Item * rootLoading)
+{
+    Item * newItem;
+    if(rootXml.tagName() == "item"){
+        //qDebug()<<rootXml.attribute(QString("type"));
+
+        if(rootXml.attribute(QString("type"))=="tache")
+        {
+            newItem = new Tache("",QDate::fromString(rootXml.attribute(QString("date"))),rootXml.attribute(QString("description")),rootLoading);
+        }
+        else if(rootXml.attribute(QString("type"))=="liste")
+        {
+            newItem = new Liste("",QDate::fromString(rootXml.attribute(QString("date"))),rootXml.attribute(QString("description")),rootLoading);
+        }
+        else
+        {
+            newItem = new Ensemble("",QDate::fromString(rootXml.attribute(QString("date"))),rootXml.attribute(QString("description")),rootLoading);
+        }
+
+        newItem->setVisible(rootXml.attribute(QString("visible"))=="0"?false:true);
+        newItem->setType(rootXml.attribute(QString("type")));
+        newItem->setUID(QUuid(rootXml.attribute(QString("UID"))));
+        newItem->setChoixDate(rootXml.attribute(QString("choixDate"))=="0"?false:true);
+        newItem->setDateR((Item::DateRelative)rootXml.attribute(QString("dateR")).toInt());
+
+        QDomElement nomEtChildren = rootXml.firstChildElement();
+        while(!nomEtChildren.isNull())
+        {
+            if(nomEtChildren.tagName()=="name")
+            {
+                qDebug()<<nomEtChildren.text();
+                newItem->setNom(nomEtChildren.text());
+            }
+            else if(nomEtChildren.tagName()=="description")
+            {
+                qDebug()<<nomEtChildren.text();
+                newItem->setDescription(nomEtChildren.text());
+            }
+            else if(nomEtChildren.tagName()=="children")
+            {
+                qDebug()<<"traitement des enfants";
+                QDomElement childish = nomEtChildren.firstChildElement();
+                while(!childish.isNull())
+                {
+                    if(newItem->getType()=="ensemble")
+                    {
+                        ((Ensemble*)newItem)->ajoutItem(loadRecurXml(childish,newItem));
+                    }
+                    else
+                    {
+                        ((Liste*)newItem)->ajoutItem(loadRecurXml(childish,newItem));
+                    }
+                    childish=childish.nextSiblingElement();
+                }
+            }
+            else if(nomEtChildren.tagName()=="preconditions")
+            {
+                qDebug()<<"preconditions";
+            }
+            else
+            {
+                qDebug()<<"What the fuck himself !"+nomEtChildren.tagName();
+            }
+            nomEtChildren=nomEtChildren.nextSiblingElement();
+        }
+
+        //buildItemViaXml(rootXml.firstChildElement(),newItem);
+    }
+
+    return newItem;
+}
+
+void Controleur::buildItemViaXml(QDomElement rootXml,Item* elementToBuild)
+{
+
+
+    if(rootXml.tagName()=="name")
+    {
+
+    }
 }
 
 QDomElement Controleur::creeXmlItem(Item * itemPh,QDomDocument * xml)

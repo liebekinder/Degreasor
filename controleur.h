@@ -9,6 +9,7 @@
 #include <QDomDocument>
 #include <QDomNode>
 #include <QDomText>
+#include <QFileSystemModel>
 
 #include "ensemble.h"
 #include "item.h"
@@ -45,10 +46,12 @@ public:
     void videCombo(QComboBox *c);
     void saveRightPanel(Item *wi);
     Item * getItemWithUUID(QString uid, Item *item);
+    void listerTemplate();
 private:
     Item * selectedItem;
     MainWindow * theControlledWindow;
     QStringList * malisteuid;
+    QStringList * listeTemplate;
 signals:
 public slots:
     void addEnsemble();

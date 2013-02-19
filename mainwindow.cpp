@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     setWindowTitle(tr("Degreasor!"));
 
     controler = new Controleur(this);
+    controler->listerTemplate();
 
     ///////////////////////////////////
     //exp test

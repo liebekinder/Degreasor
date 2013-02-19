@@ -141,6 +141,25 @@ Item * Controleur::getItemWithUUID(QString uid, Item * item)
     return trouve;
 }
 
+void Controleur::listerTemplate()
+{
+    listeTemplate = new QStringList();
+
+    if( !(new QDir(QDir::currentPath() + "/templates"))->exists())
+    {
+        (new QDir(QDir::currentPath()))->mkdir("templates");
+    }
+    QDir * dir = new QDir(QDir::currentPath()+"/templates");
+    QStringList list(dir->entryList(QDir::Files|QDir::NoDotAndDotDot));
+    for(int i=0;i<list.size();++i){
+        if((new QFileInfo(list.at(i)))->suffix() == "template"){
+            listeTemplate->append((new QFileInfo(list.at(i)))->filePath());
+        }
+    }
+    qDebug()<<listeTemplate->size();
+
+}
+
 void Controleur::videCombo(QComboBox * c){
     for(int i=c->count()-1; i>=0;--i){
         c->removeItem(i);

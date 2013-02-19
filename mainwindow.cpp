@@ -130,6 +130,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(b1, SIGNAL(pressed()), controler, SLOT(cancelModification()));
     connect(b2, SIGNAL(pressed()), controler, SLOT(saveModification()));
     connect(((DropArea *)widg), SIGNAL(dropICI(QString)),controler, SLOT(getDrop(QString)));
+    connect(dropListe,SIGNAL(itemClicked(QListWidgetItem*)),controler,SLOT(deleteItemListView(QListWidgetItem*)));
 }
 
 QWidget *MainWindow::setInfoPanel(bool b){

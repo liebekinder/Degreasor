@@ -345,6 +345,25 @@ void Controleur::saveModification()
     saveRightPanel(selectedItem);
 }
 
+void Controleur::deleteItemListView(QListWidgetItem * wi){
+
+    qDebug()<<"lllllllllllllllllllllllllllllllllllllll";
+    qDebug()<<theControlledWindow->dropListe->count();
+    int i =0;
+    bool trouve = false;
+    while (!trouve && i < theControlledWindow->dropListe->count()){
+        if(theControlledWindow->dropListe->item(i)->text() == wi->text()) trouve = true;
+        ++i;
+    }
+    delete (theControlledWindow->dropListe->item(i-1));
+    malisteuid->removeAt(i-1);
+    qDebug()<<"lllllllllllllllllllllllllllllllllllllll";
+    qDebug()<<theControlledWindow->dropListe->count();
+    qDebug()<<i-1;
+
+    //theControlledWindow->dropListe->
+}
+
 void Controleur::getDrop(QString s)
 {
     qDebug()<<"drop détecté et transmis!";

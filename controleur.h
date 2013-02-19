@@ -10,6 +10,7 @@
 #include <QDomNode>
 #include <QDomText>
 #include <QFileSystemModel>
+#include <QListWidgetItem>
 
 #include "ensemble.h"
 #include "item.h"
@@ -71,6 +72,7 @@ public slots:
     void cancelModification();
     void saveModification();
     void getDrop(QString s);
+    void deleteItemListView(QListWidgetItem *wi);
 };
 
 #endif // CONTROLEUR_H

@@ -535,8 +535,12 @@ void Controleur::convertOldUUIDToNewItems(Item * rootLoading,QMap<QString, QStri
             {
                 QString currentOLDUUID = ((QString)*itUUID);
                 qDebug()<<currentOLDUUID;
-                qDebug()<<*correspondances->find(currentOLDUUID);
-                preconditionsWithNewUUID->append(getItemWithUUID(((QString)*correspondances->find(currentOLDUUID)),rootElem));
+                if(correspondances->find(currentOLDUUID)!=NULL)
+                {
+                    qDebug()<<*correspondances->find(currentOLDUUID);
+                    preconditionsWithNewUUID->append(getItemWithUUID(((QString)*correspondances->find(currentOLDUUID)),rootElem));
+                }
+
             }
             qDebug()<<currentItem->getNom();
             currentItem->setPreconditions(preconditionsWithNewUUID);

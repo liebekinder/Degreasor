@@ -55,8 +55,6 @@ void Controleur::refreshRightPanel(Item * wi, bool b)
         theControlledWindow->b2->setDisabled(true);
     }
     else{
-        //nom
-        theControlledWindow->le1->setText(wi->getNom());
 
         //choix de la date
         if(wi->getChoixDate()) theControlledWindow->cb1->setChecked(true);
@@ -79,6 +77,12 @@ void Controleur::refreshRightPanel(Item * wi, bool b)
             malisteuid->append(wi->getPreconditions()->at(i)->getUID().toString());
         }
 
+        //nom
+        theControlledWindow->le1->setText(wi->getNom());
+
+        theControlledWindow->le1->setFocus();
+        theControlledWindow->le1->deselect();
+        theControlledWindow->b2->setDefault(true);
         theControlledWindow->b1->setDisabled(false);
         theControlledWindow->b2->setDisabled(false);
     }

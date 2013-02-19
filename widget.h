@@ -13,7 +13,7 @@
 #include <QMenu>
 #include <QAction>
 #include <QTimer>
-
+#include <QFileDialog>
 #include <QPixmap>
 
 #include "controleur.h"

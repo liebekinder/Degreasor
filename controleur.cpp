@@ -153,6 +153,7 @@ void Controleur::saveRightPanel(Item * wi)
     qDebug()<<precond->size();
     wi->setPreconditions(precond);
 
+
     callRefreshWithoutMoveScreen();
 }
 

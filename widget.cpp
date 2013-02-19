@@ -591,9 +591,10 @@ void Widget::deleteThis()
 
 void Widget::exportTemplate()
 {
-    if(controler->saveToXml(QDir::currentPath()+"/templates/"+QString(this->imageOf->getNom())+".template",this->imageOf,NULL,true))
+    QString chemin = QFileDialog::getSaveFileName(this,"nom du template",QString(QDir::currentPath()+"/templates"),"fichier template (*.template)");
+    if(controler->saveToXml(chemin,this->imageOf,NULL,true))
     {
-        QMessageBox::information(this,"Opération réussie.","Le template "+QString(this->imageOf->getNom())+" a bien été crée.");
+        QMessageBox::information(this,"Opération réussie.","Le template "+chemin+" a bien été crée.");
         controler->listerTemplate();
         controler->callRefreshWithoutMoveScreen();
     }

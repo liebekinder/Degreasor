@@ -60,7 +60,12 @@ void Controleur::refreshRightPanel(Item * wi, bool b)
         if(wi->getChoixDate()) theControlledWindow->cb1->setChecked(true);
         else theControlledWindow->cb2->setChecked(true);
         //date
-        theControlledWindow->de->setDate(wi->getDate());
+        if(!wi->getChoixDate())
+        {
+            theControlledWindow->de->setDate(daysToRealDate(wi));
+        }
+
+
         theControlledWindow->cbb1->setCurrentText(wi->getAssocie()->getDateRString(wi->getDateR()));
         if(((Ensemble *)root_)->getNotreListe()->size() != 0)
         {
@@ -211,7 +216,7 @@ void Controleur::process(Item * item, QComboBox * c)
             }
             else
             {
-                c->addItem("NULL",QVariant(NULL));
+                //c->addItem("NULL",QVariant(NULL));
             }
 
         }
@@ -223,7 +228,7 @@ void Controleur::process(Item * item, QComboBox * c)
             }
             else
             {
-                c->addItem("NULL",QVariant(NULL));
+                //c->addItem("NULL",QVariant(NULL));
             }
             process(currentItem, c);
         }
@@ -232,17 +237,32 @@ void Controleur::process(Item * item, QComboBox * c)
 
 bool Controleur::isNotDependantOf(Item * item)
 {
-    bool retour = true;
+    bool retour = item!=this->selectedItem;
     if(item->getAssocie()!=NULL)
     {
         Item * currentItem =item->getAssocie();
-        retour = item!=this->selectedItem && isNotDependantOf(currentItem);
+        retour = currentItem!=this->selectedItem && isNotDependantOf(currentItem);
 
         //QMessageBox::warning(this->theControlledWindow->vue,item->getNom(),item->getNom());
 
     }
     return retour;
 }
+
+QDate Controleur::daysToRealDate(Item * item)
+{
+
+    if(item->getChoixDate())
+    {
+        return item->getDate().isNull()?QDate::currentDate():item->getDate();
+    }
+    QDate retour = daysToRealDate(item->getAssocie());
+    //QMessageBox::warning(this->theControlledWindow->vue,item->getNom(),QString::number(int(item->getDateR())));
+    retour = retour.addDays(int(item->getDateR()));
+    //QMessageBox::warning(this->theControlledWindow->vue,item->getNom(),retour.toString(Qt::ISODate));
+    return retour;
+}
+
 
 /*void Controleur::parseAndAddAfter(Item * currentList, Item * elementPere ,Item * elementToAdd)
 {

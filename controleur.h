@@ -53,6 +53,7 @@ public:
 
     bool verifierSiPasDeBoucle(Item *elem, Item *ref);
     bool isNotDependantOf(Item *item);
+    QDate daysToRealDate(Item *item);
 private:
     Item * selectedItem;
     MainWindow * theControlledWindow;

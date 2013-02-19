@@ -47,11 +47,11 @@ public:
     void saveRightPanel(Item *wi);
     Item * getItemWithUUID(QString uid, Item *item);
     void listerTemplate();
+    QStringList * listeTemplate;
 private:
     Item * selectedItem;
     MainWindow * theControlledWindow;
     QStringList * malisteuid;
-    QStringList * listeTemplate;
 signals:
 public slots:
     void addEnsemble();

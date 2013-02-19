@@ -27,6 +27,12 @@ void Ensemble::ajoutItem(Item *it)
     qDebug()<<"ajout?";
 }
 
+void Ensemble::ajoutItem(Item *it, int pos)
+{
+    notreListe_->insert(pos,it);
+    qDebug()<<"ajout?";
+}
+
 QList<Item *> *Ensemble::getNotreListe()
 {
     return notreListe_;

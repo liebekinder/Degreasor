@@ -33,6 +33,23 @@ void Ensemble::ajoutItem(Item *it, int pos)
     qDebug()<<"ajout?";
 }
 
+void Ensemble::ajoutItem(Item *it, Item *db)
+{
+//on cherche db et on ajoute it après
+    QString iddb = db->getUID().toString();
+    int i = 0;
+    bool trouve = false;
+    while(!trouve && i<notreListe_->size()){
+        if(notreListe_->at(i)->getUID() == iddb)
+        {
+            trouve = true;
+            notreListe_->insert(i,db);
+        }
+        ++i;
+    }
+
+}
+
 QList<Item *> *Ensemble::getNotreListe()
 {
     return notreListe_;

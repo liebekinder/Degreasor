@@ -25,6 +25,23 @@ void Liste::ajoutItem(Item *it, int pos)
 
 }
 
+void Liste::ajoutItem(Item *it, Item *db)
+{
+//on cherche db et on ajoute it après
+    QString iddb = db->getUID().toString();
+    int i = 0;
+    bool trouve = false;
+    while(!trouve && i<notreListe_->size()){
+        if(notreListe_->at(i)->getUID() == iddb)
+        {
+            trouve = true;
+            notreListe_->insert(i,it);
+        }
+        ++i;
+    }
+
+}
+
 QList<Item *> * Liste::getNotreListe()
 {
     return notreListe_;

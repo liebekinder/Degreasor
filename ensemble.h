@@ -20,6 +20,7 @@ public:
     QList<Item *> * getNotreListe();
 
     void ajoutItem(Item *it, int pos);
+    void ajoutItem(Item *it, Item *db);
 private:
     QList<Item *> * notreListe_;
 

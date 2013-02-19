@@ -6,7 +6,7 @@ myWidget::myWidget(Controleur *control, QWidget *parent) :
     this->controler = control;
 }
 
-void myWidget::mousePressEvent(QMouseEvent *event)
+void myWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     if(event->button() == Qt::RightButton){
         qDebug()<<"bouton droit";
@@ -42,10 +42,19 @@ void myWidget::mousePressEvent(QMouseEvent *event)
             QMenu * a2 = m->addMenu("Ajouter &dans...");
                 //a2->setStatusTip("ajouter un item après l'item selectionné");
                 a2->setDisabled(true);
+            m->addSeparator();
 
             QAction * a3 = m->addAction("&Export vers template...");
                 //a3->setStatusTip("export de l'item vers un template");
                 a3->setDisabled(true);
+
+            m->addSeparator();
+            m->addSeparator();
+            QAction * a4 = m->addAction("Supprimer");
+                //a3->setStatusTip("export de l'item vers un template");
+                //a3->setDisabled(true);
+                connect(a4,SIGNAL(triggered()),this,SLOT(deleteThis()));
+
 
         m->popup(event->globalPos());
     }
@@ -53,6 +62,12 @@ void myWidget::mousePressEvent(QMouseEvent *event)
 
     }
     return;
+}
+
+void myWidget::deleteThis()
+{
+    controler->setRoot(new Ensemble(true));
+    controler->callRefreshWithoutMoveScreen();
 }
 
 void myWidget::mouseDoubleClickEvent(QMouseEvent *event)

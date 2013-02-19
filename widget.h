@@ -69,6 +69,10 @@ public slots:
     void addTacheALaSuiteDeTache();
     void addListeALaSuiteDeTache();
     void addEnsembleALaSuiteDeTache();
+    void templateTest(int);
+    void exportTemplate();
+    void deleteThis();
+
 signals:
     void addTacheApresTacheSignal(Item *);
     void addListeApresTacheSignal(Item *);
@@ -76,10 +80,12 @@ signals:
     void addTacheALaSuiteDeTacheSignal(Item *);
     void addListeALaSuiteDeTacheSignal(Item *);
     void addEnsembleALaSuiteDeTacheSignal(Item *);
+
 private:
     QWidget * dragZone;
     QHBoxLayout *rightLayoutHight;
     QWidget * rightLayoutHightContainer;
+    QSignalMapper * mapper;
 
 
     int currentPercent;

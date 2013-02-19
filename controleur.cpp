@@ -445,10 +445,12 @@ void Controleur::callRefreshWithoutMoveScreen()
     theControlledWindow->callRefreshWithoutMoveScreen();
 }
 
-bool Controleur::saveToXml(QString path,Item * racine,bool templateItem)
+bool Controleur::saveToXml(QString path,Item * racine,Item * deleteItem ,bool templateItem)
 {
     if(racine==NULL) racine = root_;
     //global save
+
+
 
     QDomDocument* xml = new QDomDocument();
     if(!templateItem)
@@ -460,7 +462,7 @@ bool Controleur::saveToXml(QString path,Item * racine,bool templateItem)
 
         QDomElement root = xml->createElement("root");
         xml->appendChild(root);
-        parseToXml(racine,root,xml);
+        parseToXml(racine,root,xml,deleteItem);
     }
     else
     {
@@ -476,7 +478,7 @@ bool Controleur::saveToXml(QString path,Item * racine,bool templateItem)
 
         QDomElement children= xml->createElement("children");
 
-        parseToXml(racine, children, xml);
+        parseToXml(racine, children, xml,deleteItem);
 
         item.appendChild(children);
 
@@ -487,7 +489,7 @@ bool Controleur::saveToXml(QString path,Item * racine,bool templateItem)
 
     //save
     QFile file(path);
-    file.open(QIODevice::WriteOnly);
+    if(!file.open(QIODevice::WriteOnly)) return false;
     QTextStream ts(&file);
     ts.setCodec("UTF-8");
     xml->save(ts,2,QDomNode::EncodingFromTextStream);
@@ -697,7 +699,7 @@ QDomElement Controleur::creeXmlItem(Item * itemPh,QDomDocument * xml)
     return item;
 }
 
-void Controleur::parseToXml(Item * item, QDomElement currentNode,QDomDocument * xml)
+void Controleur::parseToXml(Item * item, QDomElement currentNode,QDomDocument * xml, Item * deleteItem)
 {
     QList<Item *>::iterator it;
     QList<Item *> * maListe;
@@ -707,29 +709,36 @@ void Controleur::parseToXml(Item * item, QDomElement currentNode,QDomDocument * 
     qDebug()<<"iterateur... done!";
     for(it = maListe->begin(); it != maListe->end(); ++it)
     {
-        qDebug()<<"un tour!... done!";
+        qDebug()<<"un tour!... done11!";
         Item * currentItem = ((Item*)*it);
-
-        if(currentItem->getType() == "tache")
+        qDebug()<<"un tour!... done12!";
+        QString UUIDDEl = deleteItem!=NULL?deleteItem->getUID().toString():"Prout";
+        if(deleteItem!=NULL) qDebug()<<"sqfdghjkhgfsdghjkhgfdfgh"+UUIDDEl;
+        if(currentItem->getUID().toString()!=UUIDDEl)
         {
+            if(currentItem->getType() == "tache")
+            {
 
-            currentNode.appendChild(creeXmlItem(currentItem,xml));
+                currentNode.appendChild(creeXmlItem(currentItem,xml));
 
 
 
+            }
+            if(currentItem->getType()=="ensemble" || currentItem->getType() == "liste" )
+            {
+                QDomElement item = creeXmlItem(currentItem,xml);
+
+                QDomElement children= xml->createElement("children");
+
+                parseToXml(currentItem, children, xml,deleteItem);
+
+                item.appendChild(children);
+
+                currentNode.appendChild(item);
+            }
         }
-        if(currentItem->getType()=="ensemble" || currentItem->getType() == "liste" )
-        {
-            QDomElement item = creeXmlItem(currentItem,xml);
 
-            QDomElement children= xml->createElement("children");
 
-            parseToXml(currentItem, children, xml);
-
-            item.appendChild(children);
-
-            currentNode.appendChild(item);
-        }
     }
 }
 

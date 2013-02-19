@@ -12,3 +12,11 @@ reduire la main, le +/- ?
 
 §§§WARNING§§§
 /!\ la liste ordonnée!!!
+
+
+
+//////
+Template :  à ajouter : choix du nom.
+
+
+A faire : un supprimé avec gestion des liens à supprimmer !

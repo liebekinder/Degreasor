@@ -1,4 +1,5 @@
 #include "widget.h"
+#include <QMessageBox>
 
 void Widget::setPercent(int i)
 {
@@ -439,9 +440,21 @@ void Widget::mouseReleaseEvent(QMouseEvent *event)
 
                 QMenu * a14 = a1->addMenu("Ajout à partir d'un &template");
                 //a13->setStatusTip("export de l'item vers un template");
-                a14->setDisabled(true);
+                //a14->setDisabled(true);
+                mapper = new QSignalMapper(this);
+                for(int i = 0;i<10;i++)
+                {
+                    QAction * tempAction = a14->addAction("template "+QString::number(i));
+                    mapper->setMapping(tempAction, i);
+                    // Associate the toggled signal to map slot from the mapper
+                    // (it does not matter if we don't use the bool parameter from the signal)
+                    connect(tempAction, SIGNAL(triggered()), mapper, SLOT(map()));
+                }
 
-                    QAction * a141 = a14->addAction("template &1");
+                connect(mapper, SIGNAL(mapped(int)), this, SLOT(templateTest(int)));
+
+
+                   /* QAction * a141 = a14->addAction("template &1");
                     connect(a141,SIGNAL(triggered()),controler,SLOT(addTache()));
 
                     QAction * a142 = a14->addAction("template &2");
@@ -452,7 +465,7 @@ void Widget::mouseReleaseEvent(QMouseEvent *event)
 
                     a141->setDisabled(true);
                     a142->setDisabled(true);
-                    a143->setDisabled(true);
+                    a143->setDisabled(true);*/
 
             QMenu * a2 = m->addMenu("Ajouter &dans...");
                 //a2->setStatusTip("ajouter un item après l'item selectionné");
@@ -470,10 +483,18 @@ void Widget::mouseReleaseEvent(QMouseEvent *event)
 
                 if(imageOf->getType()=="tache") a2->setDisabled(true);
 
-
+            m->addSeparator();
             QAction * a3 = m->addAction("&Export vers template...");
                 //a3->setStatusTip("export de l'item vers un template");
-                a3->setDisabled(true);
+                //a3->setDisabled(true);
+                connect(a3,SIGNAL(triggered()),this,SLOT(exportTemplate()));
+                if(this->imageOf->getType()=="tache") a3->setDisabled(true);
+            m->addSeparator();
+            m->addSeparator();
+            QAction * a4 = m->addAction("Supprimer");
+                //a3->setStatusTip("export de l'item vers un template");
+                //a3->setDisabled(true);
+                connect(a4,SIGNAL(triggered()),this,SLOT(deleteThis()));
 
         m->popup(event->globalPos());
     }
@@ -493,8 +514,33 @@ void Widget::mouseReleaseEvent(QMouseEvent *event)
     return;
 }
 
+void Widget::deleteThis()
+{
+    controler->saveToXml("tempSaveToDelete",controler->getRoot(),this->imageOf);
+    Item * newRoot = controler->chargerXml("tempSaveToDelete");
+    if(newRoot!=NULL)
+    {
+        controler->setRoot(newRoot);
+        controler->callRefreshWithoutMoveScreen();
+    }
+}
 
+void Widget::exportTemplate()
+{
+    if(controler->saveToXml(QDir::currentPath()+"/templates/template"+QString(this->imageOf->getNom())+".template",this->imageOf,NULL,true))
+    {
+        QMessageBox::information(this,"Opération réussie.","Le template "+QString(this->imageOf->getNom())+" a bien été crée.");
+    }
+    else
+    {
+        QMessageBox::warning(this,"Opération échouée !","Erreur lors de la création du fichier. Vérifiez votre nom de tâche.");
+    }
+}
 
+void Widget::templateTest(int i)
+{
+    qDebug()<<i;
+}
 
 void Widget::addTacheALaSuiteDeTache()
 {

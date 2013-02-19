@@ -34,8 +34,8 @@ public:
     //void parseAndAddAfter(Item * currentList, Item *elementPere, Item * elementToAdd);
     explicit Controleur(MainWindow *theControlledWindow, QObject *parent = 0);
     Item * root_;
-    bool saveToXml(QString path, Item * racine = NULL, bool templateItem = false);
-    void parseToXml(Item * item, QDomElement currentNode, QDomDocument * xml);
+    bool saveToXml(QString path, Item * racine = NULL, Item *deleteItem = NULL, bool templateItem = false);
+    void parseToXml(Item * item, QDomElement currentNode, QDomDocument * xml, Item *deleteItem);
     QDomElement creeXmlItem(Item * itemPh,QDomDocument * xml);
     Item * chargerXml(QString path);
     //void buildItemViaXml(QDomElement rootXml, Item *elementToBuild);

@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ///////////////////////////////////
     //exp test
-    /*Item * root_ = controler->getRoot();
+    Item * root_ = controler->getRoot();
     Tache * num1 = new Tache("Tache 1", QDate::currentDate(), "Execution du chien",(Item *)root_);
     Liste * num2 = new Liste("Liste 2", QDate::currentDate(), "Quelques exécutions", (Item *)root_);
     Tache * num3 = new Tache("Tache 3", QDate::currentDate(), "Execution du lapin", (Item *)num2);
@@ -48,10 +48,10 @@ MainWindow::MainWindow(QWidget *parent) :
     qDebug()<<"fin exemple";
 
     controler->saveToXml("example.xml");
-    controler->saveToXml("templateExample.xml",num4,true);
-    //fin exp*/
-    Item * futurRoot = controler->chargerXml(QString("example.xml"));
-    if(futurRoot!=NULL) controler->setRoot(futurRoot);
+    controler->saveToXml("templateExample.xml",num4,NULL,true);
+    //fin exp
+    //Item * futurRoot = controler->chargerXml(QString("example.xml"));
+    //if(futurRoot!=NULL) controler->setRoot(futurRoot);
 
     //controler->chargerXml(QString("example.xml"));
     //qDebug()<<controler->chargerXml(QString("example.xml"));

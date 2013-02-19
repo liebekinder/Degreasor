@@ -18,8 +18,10 @@ private:
     Controleur * controler;
 public:
     explicit myWidget(Controleur * control, QWidget *parent = 0);
-    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
     void mouseDoubleClickEvent(QMouseEvent *event);
+public slots:
+    void deleteThis();
     
 signals:
     void add();

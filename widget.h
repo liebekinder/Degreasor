@@ -86,6 +86,7 @@ private:
     QHBoxLayout *rightLayoutHight;
     QWidget * rightLayoutHightContainer;
     QSignalMapper * mapper;
+    QSignalMapper * mapper2;
 
 
     int currentPercent;

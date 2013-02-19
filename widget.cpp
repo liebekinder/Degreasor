@@ -426,7 +426,7 @@ void Widget::mouseReleaseEvent(QMouseEvent *event)
     {
         qDebug()<<"bouton droit";
         QMenu * m = new QMenu();
-            QMenu * a1 = m->addMenu("Ajouter &après...");
+            QMenu * a1 = m->addMenu("Ajouter...");
                 //a1->setStatusTip("ajouter un item inclus dans l'item selectionné");
 
                 QAction * a11 = a1->addAction("Ajout d'une nouvelle &tache");
@@ -449,7 +449,7 @@ void Widget::mouseReleaseEvent(QMouseEvent *event)
                 for(int i = 0;i<controler->listeTemplate->count();i++)
                 {
                     QAction * tempAction = a14->addAction(controler->listeTemplate->at(i));
-                    mapper->setMapping(tempAction, i);
+                    mapper->setMapping(tempAction, i+1);
                     // Associate the toggled signal to map slot from the mapper
                     // (it does not matter if we don't use the bool parameter from the signal)
                     connect(tempAction, SIGNAL(triggered()), mapper, SLOT(map()));
@@ -485,6 +485,23 @@ void Widget::mouseReleaseEvent(QMouseEvent *event)
                 QAction * a23 = a2->addAction("...un nouvel en&semble");
                 connect(a23,SIGNAL(triggered()),this,SLOT(addEnsembleApresTache()));
                 //a13->setDisabled(true);
+
+                QMenu * a24 = a2->addMenu("Ajout à partir d'un &template");
+                //a13->setStatusTip("export de l'item vers un template");
+                //a14->setDisabled(true);
+                mapper2 = new QSignalMapper(this);
+
+                for(int i = 0;i<controler->listeTemplate->count();i++)
+                {
+                    QAction * tempAction = a24->addAction(controler->listeTemplate->at(i));
+                    mapper2->setMapping(tempAction, -i-1);
+                    // Associate the toggled signal to map slot from the mapper
+                    // (it does not matter if we don't use the bool parameter from the signal)
+                    connect(tempAction, SIGNAL(triggered()), mapper2, SLOT(map()));
+                }
+
+                connect(mapper2, SIGNAL(mapped(int)), this, SLOT(templateTest(int)));
+                if(controler->listeTemplate->count()==0) a14->setDisabled(true);
 
                 if(imageOf->getType()=="tache") a2->setDisabled(true);
 
@@ -546,36 +563,73 @@ void Widget::exportTemplate()
 
 void Widget::templateTest(int i)
 {
-    Item * yeah = controler->chargerXml(QDir::currentPath()+"/templates/"+controler->listeTemplate->at(i),true);
-
-    qDebug() << "ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt"+yeah->getNom();
-    //((Ensemble*)root_)->ajoutItem(yeah);
-    if(yeah!=NULL)
+    if(i>0)
     {
-        if(this->imageOf->getParent()->getType()=="ensemble")
+        Item * yeah = controler->chargerXml(QDir::currentPath()+"/templates/"+controler->listeTemplate->at(i-1),true);
+
+        qDebug() << "ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt"+yeah->getNom();
+        //((Ensemble*)root_)->ajoutItem(yeah);
+        if(yeah!=NULL)
         {
-            ((Ensemble*) this->imageOf->getParent())->ajoutItem(yeah);
-            //((Ensemble*)controler->getRoot())->ajoutItem(yeah);
+            if(this->imageOf->getParent()->getType()=="ensemble")
+            {
+                ((Ensemble*) this->imageOf->getParent())->ajoutItem(yeah);
+                //((Ensemble*)controler->getRoot())->ajoutItem(yeah);
+            }
+            else
+            {
+                ((Liste*) this->imageOf->getParent())->ajoutItem(yeah);
+                //((Ensemble*)controler->getRoot())->ajoutItem(yeah);
+
+            }
+            controler->setSelectedItem(yeah);
+            controler->refresh(yeah);
+            //controler->setRoot(yeah);
+            //Controleur::parseAndAddAfter(root_, test ,yeah);
+            qDebug()<<"test->getNom()";
+            //controler->callRefreshWithoutMoveScreen();
+
+
+            //Item * futurRoot = controler->chargerXml(QDir::currentPath()+"/templates/"+controler->listeTemplate->at(i));
+            //if(futurRoot!=NULL) controler->setRoot(futurRoot);
+            //controler->callRefreshWithoutMoveScreen();
+            qDebug()<<i;
         }
-        else
-        {
-            ((Liste*) this->imageOf->getParent())->ajoutItem(yeah);
-            //((Ensemble*)controler->getRoot())->ajoutItem(yeah);
-
-        }
-        controler->setSelectedItem(yeah);
-        controler->refresh(yeah);
-        //controler->setRoot(yeah);
-        //Controleur::parseAndAddAfter(root_, test ,yeah);
-        qDebug()<<"test->getNom()";
-        //controler->callRefreshWithoutMoveScreen();
-
-
-        //Item * futurRoot = controler->chargerXml(QDir::currentPath()+"/templates/"+controler->listeTemplate->at(i));
-        //if(futurRoot!=NULL) controler->setRoot(futurRoot);
-        //controler->callRefreshWithoutMoveScreen();
-        qDebug()<<i;
     }
+    else
+    {
+        Item * yeah = controler->chargerXml(QDir::currentPath()+"/templates/"+controler->listeTemplate->at(-i-1),true);
+
+        qDebug() << "ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt"+yeah->getNom();
+        //((Ensemble*)root_)->ajoutItem(yeah);
+        if(yeah!=NULL)
+        {
+            if(this->imageOf->getType()=="ensemble")
+            {
+                ((Ensemble*) this->imageOf)->ajoutItem(yeah);
+                //((Ensemble*)controler->getRoot())->ajoutItem(yeah);
+            }
+            else
+            {
+                ((Liste*) this->imageOf)->ajoutItem(yeah);
+                //((Ensemble*)controler->getRoot())->ajoutItem(yeah);
+
+            }
+            controler->setSelectedItem(yeah);
+            controler->refresh(yeah);
+            //controler->setRoot(yeah);
+            //Controleur::parseAndAddAfter(root_, test ,yeah);
+            qDebug()<<"test->getNom()";
+            //controler->callRefreshWithoutMoveScreen();
+
+
+            //Item * futurRoot = controler->chargerXml(QDir::currentPath()+"/templates/"+controler->listeTemplate->at(i));
+            //if(futurRoot!=NULL) controler->setRoot(futurRoot);
+            //controler->callRefreshWithoutMoveScreen();
+            qDebug()<<i;
+        }
+    }
+
     //emit addNewTemplate(this->imageOf);
 }
 

@@ -280,8 +280,8 @@ void Controleur::addTacheALaSuiteDeTache(Item *test)
     }
     else
     {
-        ((Liste*) test->getParent())->ajoutItem(yeah);
-
+        ((Liste*) test->getParent())->ajoutItem(yeah,test);
+        qDebug()<<"test->getNom()uiefuufeuohfuofhuofzeohifehiofeoihsdfhifdshiihfdhidfsuohfdhuo";
     }
     //Controleur::parseAndAddAfter(root_, test ,yeah);
     qDebug()<<"test->getNom()";
@@ -302,7 +302,7 @@ void Controleur::addListeALaSuiteDeTache(Item *test)
     }
     else
     {
-        ((Liste*) test->getParent())->ajoutItem(yeah);
+        ((Liste*) test->getParent())->ajoutItem(yeah,test);
     }
     //Controleur::parseAndAddAfter(root_, test ,yeah);;
     qDebug()<<"test->getNom()";
@@ -323,7 +323,7 @@ void Controleur::addEnsembleALaSuiteDeTache(Item *test)
     }
     else
     {
-        ((Liste*) test->getParent())->ajoutItem(yeah);
+        ((Liste*) test->getParent())->ajoutItem(yeah,test);
     }
     //Controleur::parseAndAddAfter(root_, test ,yeah);
     qDebug()<<"test->getNom()";
@@ -368,6 +368,7 @@ void Controleur::addTacheApresTache(Item *test)
     }
     else
     {
+        qDebug()<<"dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddtest->getNom()";
         ((Liste*) test)->ajoutItem(yeah);
     }
     qDebug()<<"test->getNom()";

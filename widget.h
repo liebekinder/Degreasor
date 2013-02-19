@@ -55,6 +55,7 @@ public:
     explicit Widget(Controleur *control, Item * caller, QWidget *parent = 0);
     ~Widget();
     QString verifierPreconditions(Item *ref);
+    Controleur * getControleur();
 protected:
     //void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
@@ -62,6 +63,7 @@ protected:
 
     bool eventFilter( QObject *, QEvent *e);
     void paintEvent(QPaintEvent *event);
+
 
 public slots:
     void addTacheApresTache();

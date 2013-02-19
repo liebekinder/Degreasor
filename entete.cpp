@@ -2,6 +2,7 @@
 #include "widget.h"
 
 
+
 entete::entete(int numEntete,int typeV, Widget * papa,QWidget *parent) :
     QWidget(parent)
 {
@@ -111,6 +112,46 @@ void entete::paintEvent(QPaintEvent *event)
     {
         painter.drawText(QPoint(size().width()/(numeroEntete<10?3:5),6*size().height()/10.),QString::number(numeroEntete));
     }
+
+
+    QPixmap px =  QPixmap();
+    if(papa->getImage()->getType()!="tache")
+    {
+        if(papa->getImage()->getVisible())
+        {
+            if(papa->getControleur()->getSelectedItem()==papa->getImage())
+            {
+                px.load(":/images/Moins.png");
+
+            }
+            else
+            {
+                px.load(":/images/MoinsS.png");
+
+            }
+
+
+
+        }
+        else
+        {
+            if(papa->getControleur()->getSelectedItem()==papa->getImage())
+            {
+                px.load(":/images/Plus.png");
+
+            }
+            else
+            {
+                px.load(":/images/PlusS.png");
+
+            }
+        }
+
+        px=px.scaledToHeight(px.size().height()*papa->size().height()/500.,Qt::SmoothTransformation);
+        painter.drawPixmap(QPoint(this->size().width()/2.-px.size().width()/2.,5*papa->size().height()/50.),px,px.rect());
+    }
+
+
 
     /*//On efface l'angle de la progress barre.
     int rayon=20;

@@ -9,5 +9,9 @@
         <file>images/grabIcon.png</file>
         <file>images/grabIconPlus.png</file>
         <file>images/grabIconMoins.png</file>
+        <file>images/Moins.png</file>
+        <file>images/Plus.png</file>
+        <file>images/MoinsS.png</file>
+        <file>images/PlusS.png</file>
     </qresource>
 </RCC>

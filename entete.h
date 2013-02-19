@@ -6,6 +6,7 @@
 #include <QtCore/qmath.h>
 #include <QApplication>
 
+
 class Widget;
 
 class entete : public QWidget

@@ -201,6 +201,8 @@ void Widget::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
 
+
+
     /////////////////////
     QPixmap px;
 
@@ -289,6 +291,11 @@ void Widget::paintEvent(QPaintEvent *event)
     //painter.drawRect(9,9,size().width()-18,size().height()-18);
 
 
+}
+
+Controleur *Widget::getControleur()
+{
+    return controler;
 }
 
 bool Widget::eventFilter( QObject *, QEvent *e)

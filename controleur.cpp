@@ -1,5 +1,6 @@
 #include "controleur.h"
 #include "mainwindow.h"
+#include <QMessageBox>
 
 
 Controleur::Controleur(MainWindow * theControlledWindow,QObject *parent) :
@@ -64,7 +65,19 @@ void Controleur::refreshRightPanel(Item * wi, bool b)
         if(((Ensemble *)root_)->getNotreListe()->size() != 0)
         {
             theControlledWindow->cbb2->setCurrentIndex(0);
+
         }
+        if(wi->getAssocie()!=NULL)
+        {
+            for(int i= 0; i <theControlledWindow->cbb2->count();i++)
+            {
+                int j = theControlledWindow->cbb2->findData(QVariant(wi->getAssocie()->getUID().toString()));
+                if(j>0) theControlledWindow->cbb2->setCurrentIndex(j);
+
+            }
+
+        }
+
         //description
         theControlledWindow->te->setText(wi->getDescription());
 
@@ -74,6 +87,7 @@ void Controleur::refreshRightPanel(Item * wi, bool b)
         {
             theControlledWindow->dropListe->addItem(new QListWidgetItem(wi->getPreconditions()->at(i)->getNom()));
             malisteuid->append(wi->getPreconditions()->at(i)->getUID().toString());
+
         }
 
         //nom
@@ -98,10 +112,13 @@ void Controleur::saveRightPanel(Item * wi)
     }
     else
     {
-        wi->setChoixDate(true);
+        wi->setChoixDate(false);
         wi->setDateR(wi->getComboBoxFromText(theControlledWindow->cbb1->currentText()));
+
         QVariant v = theControlledWindow->cbb2->itemData(theControlledWindow->cbb2->currentIndex());
         //méthode de récupération de l'item via le quuid du qvariant
+        wi->setAssocie(getItemWithUUID(v.toString(),root_));
+        //QMessageBox::warning(this->theControlledWindow->vue,"1",wi->getAssocie()->getNom());
         qDebug()<<v.toString();
     }
     wi->setDescription(theControlledWindow->te->toPlainText());
@@ -188,14 +205,43 @@ void Controleur::process(Item * item, QComboBox * c)
 
         if(currentItem->getType() == "tache")
         {
-            c->addItem(currentItem->getNom(),QVariant(currentItem->getUID().toString()));
+            if(isNotDependantOf(currentItem))
+            {
+                c->addItem(currentItem->getNom(),QVariant(currentItem->getUID().toString()));
+            }
+            else
+            {
+                c->addItem("NULL",QVariant(NULL));
+            }
+
         }
         if(currentItem->getType()=="ensemble" || currentItem->getType() == "liste" )
         {
-            c->addItem(currentItem->getNom(),QVariant(currentItem->getUID().toString()));
+            if(isNotDependantOf(currentItem))
+            {
+                c->addItem(currentItem->getNom(),QVariant(currentItem->getUID().toString()));
+            }
+            else
+            {
+                c->addItem("NULL",QVariant(NULL));
+            }
             process(currentItem, c);
         }
     }
+}
+
+bool Controleur::isNotDependantOf(Item * item)
+{
+    bool retour = true;
+    if(item->getAssocie()!=NULL)
+    {
+        Item * currentItem =item->getAssocie();
+        retour = item!=this->selectedItem && isNotDependantOf(currentItem);
+
+        //QMessageBox::warning(this->theControlledWindow->vue,item->getNom(),item->getNom());
+
+    }
+    return retour;
 }
 
 /*void Controleur::parseAndAddAfter(Item * currentList, Item * elementPere ,Item * elementToAdd)
@@ -245,7 +291,7 @@ void Controleur::process(Item * item, QComboBox * c)
 
 void Controleur::addEnsembleApres()
 {
-    Item * yeah = new Ensemble("Default_Tache",QDate::currentDate(),"",root_);
+    Item * yeah = new Ensemble("Default_Ensemble",QDate::currentDate(),"",root_);
     ((Ensemble *)root_)->ajoutItem(yeah);
     this->setSelectedItem(yeah);
     qDebug()<<"ajout détecté! Ensemble avant";
@@ -254,7 +300,7 @@ void Controleur::addEnsembleApres()
 
 void Controleur::addListeApres()
 {
-    Item * yeah = new Liste("Default_Tache",QDate::currentDate(),"",root_);
+    Item * yeah = new Liste("Default_Liste",QDate::currentDate(),"",root_);
     ((Ensemble *)root_)->ajoutItem(yeah);
     this->setSelectedItem(yeah);
     qDebug()<<"ajout détecté!";
@@ -367,12 +413,52 @@ void Controleur::deleteItemListView(QListWidgetItem * wi){
 void Controleur::getDrop(QString s)
 {
     qDebug()<<"drop détecté et transmis!";
-    theControlledWindow->dropListe->addItem(new QListWidgetItem(getItemWithUUID(s,root_)->getNom()));
-    malisteuid->append(s);
+    Item * corr = getItemWithUUID(s,root_);
+
+    if((this->selectedItem->getUID().toString()!=s) && verifierSiPasDeBoucle(corr,this->selectedItem) && !malisteuid->contains(s))
+    {
+        theControlledWindow->dropListe->addItem(new QListWidgetItem(corr->getNom()));
+        malisteuid->append(s);
+    }
+    else
+    {
+        QMessageBox::warning(this->theControlledWindow->vue,"Hop hop hop !","Vous essayez de créer un défaut dans le continum de l'espace temps");
+    }
+
     //theControlledWindow->dropListe->addItem(new QListWidgetItem(s));
     //qDebug()<<s;
     //qDebug()<<theControlledWindow->dropListe->count();
     //theControlledWindow->dropListe->itemAt(theControlledWindow->dropListe->count(),1)->setHidden(true);
+}
+
+bool Controleur::verifierSiPasDeBoucle(Item * elem, Item * ref)
+{
+
+
+    QList<Item *>::iterator it;
+    QList<Item *> * maListe = elem->getPreconditions();
+    //if(elem->getType() == "liste") maListe =((Liste *)elem)->getPreconditions();
+    //if(elem->getType() == "ensemble") maListe =((Ensemble *)elem)->getPreconditions();
+
+    bool retour = true;
+
+    if(!maListe->empty())
+    {
+        //Item * testI = ((Item*)*(maListe->begin()));
+        //QMessageBox::warning(this->theControlledWindow->vue,"1","2");
+        for(it = maListe->begin(); it != maListe->end(); ++it)
+        {
+            Item * currentItem = ((Item*)*it);
+            if(currentItem==ref) retour = false;
+            if(currentItem->getType()=="ensemble" || currentItem->getType() == "liste" )
+            {
+                retour = retour && verifierSiPasDeBoucle(currentItem, ref);
+            }
+        }
+    }
+
+
+    return retour;
 }
 
 void Controleur::addTacheApresTache(Item *test)
@@ -609,6 +695,16 @@ void Controleur::convertOldUUIDToNewItems(Item * rootLoading,QMap<QString, QStri
             QList<Item * > * preconditionsWithNewUUID = new QList<Item * >();
             QList<QString>::iterator itUUID;
             qDebug()<<currentItem->getNom();
+
+            if(currentItem->associeUUID != "" && currentItem->associeUUID != NULL)
+            {
+                if((correspondances->contains(currentItem->associeUUID)))
+                {
+                    //qDebug()<<*correspondances->find(currentItem->associeUUID);
+                    currentItem->setAssocie(getItemWithUUID(((QString)*correspondances->find(currentItem->associeUUID)),rootElem));
+                }
+            }
+
             for(itUUID = OLDUUIDList->begin(); itUUID != OLDUUIDList->end(); ++itUUID)
             {
                 QString currentOLDUUID = ((QString)*itUUID);
@@ -650,6 +746,8 @@ Item * Controleur::loadRecurXml(QDomElement rootXml,Item * rootLoading,QMap<QStr
         {
             newItem = new Ensemble("",QDate::fromString(rootXml.attribute(QString("date"))),rootXml.attribute(QString("description")),rootLoading);
         }
+
+        newItem->associeUUID = rootXml.attribute(QString("associe"));
 
         newItem->setVisible(rootXml.attribute(QString("visible"))=="0"?false:true);
         newItem->setType(rootXml.attribute(QString("type")));
@@ -726,6 +824,7 @@ QDomElement Controleur::creeXmlItem(Item * itemPh,QDomDocument * xml)
     item.setAttribute("choixDate",itemPh->getChoixDate());
     item.setAttribute("date",itemPh->getDate().toString(Qt::ISODate));
     item.setAttribute("dateR",int(itemPh->getDateR()));
+    if(itemPh->getAssocie()!=NULL) item.setAttribute("associe",itemPh->getAssocie()->getUID().toString());
 
     if(itemPh->getAssocie()!=NULL) item.setAttribute("itemAssocie",itemPh->getAssocie()->getUID().toString());
     item.setAttribute("UID",itemPh->getUID().toString());

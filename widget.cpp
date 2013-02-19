@@ -404,19 +404,61 @@ void Widget::mouseDoubleClickEvent(QMouseEvent *event)
     qDebug()<<"Double clic gauche !";
     if(event->button()==Qt::LeftButton && this->imageOf->getType()!="tache")
     {
-
         this->imageOf->setVisible(!this->imageOf->getVisible());
         controler->setSelectedItem(imageOf);
         controler->callRefreshWithoutMoveScreen();
+
     }
     else if(event->button() == Qt::LeftButton && type==Widget::ELEMENT)
     {
+        if(this->currentPercent==0)
+        {
+            //vérifier qu'il existe des préconditions valides.
+            QString retour = verifierPreconditions(this->imageOf);
+            if(retour!=NULL) QMessageBox::warning(this,"Hop hop hop !","Vous avez oublié au moins une précondition : "+retour);
+        }
         this->currentPercent=this->currentPercent==0?100:0;
         this->setPercent(this->currentPercent);
         ((Tache*)this->imageOf)->setPercentage(currentPercent);
         controler->setSelectedItem(imageOf);
         controler->callRefreshWithoutMoveScreen();
     }
+}
+
+QString Widget::verifierPreconditions(Item * ref)
+{
+
+
+    QList<Item *>::iterator it;
+    QList<Item *> * maListe = ref->getPreconditions();
+    //if(elem->getType() == "liste") maListe =((Liste *)elem)->getPreconditions();
+    //if(elem->getType() == "ensemble") maListe =((Ensemble *)elem)->getPreconditions();
+
+    QString retour = NULL;
+
+    if(!maListe->empty())
+    {
+        //Item * testI = ((Item*)*(maListe->begin()));
+        //QMessageBox::warning(this->theControlledWindow->vue,"1","2");
+        for(it = maListe->begin(); it != maListe->end(); ++it)
+        {
+            Item * currentItem = ((Item*)*it);
+            if(currentItem->getType()=="tache")
+            {
+                if(((Tache*)currentItem)->getPercentage()!=100) return currentItem->getNom();
+                return NULL;
+            }
+            if(currentItem->getType()=="ensemble" || currentItem->getType() == "liste" )
+            {
+                QString tempR = verifierPreconditions(currentItem);
+                retour = tempR==NULL?retour:tempR;
+            }
+
+        }
+    }
+
+
+    return retour;
 }
 
 void Widget::mouseReleaseEvent(QMouseEvent *event)

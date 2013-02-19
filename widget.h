@@ -54,6 +54,7 @@ public:
 
     explicit Widget(Controleur *control, Item * caller, QWidget *parent = 0);
     ~Widget();
+    QString verifierPreconditions(Item *ref);
 protected:
     //void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);

@@ -51,10 +51,13 @@ public:
     QStringList * listeTemplate;
     void refresh(Item * centerOn);
 
+    bool verifierSiPasDeBoucle(Item *elem, Item *ref);
+    bool isNotDependantOf(Item *item);
 private:
     Item * selectedItem;
     MainWindow * theControlledWindow;
     QStringList * malisteuid;
+
 signals:
 public slots:
     void addEnsemble();

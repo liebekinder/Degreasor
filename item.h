@@ -61,6 +61,7 @@ public:
 
     static void getComboBox(QComboBox *c);
     static DateRelative getComboBoxFromText(QString s);
+    QString associeUUID;
 private:
     bool visible;
     QString nom_;

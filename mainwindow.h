@@ -56,6 +56,8 @@ public:
 
     ~MainWindow();
     
+    myWidget * vue;
+
 private:
 
     QVBoxLayout * dropListeL;
@@ -72,7 +74,7 @@ private:
     QVBoxLayout * upperPaneL;
     QWidget * lowerPane;
     QHBoxLayout * lowerPaneL;
-    myWidget * vue;
+
     QVBoxLayout * vueL;
     QWidget * info;
     QVBoxLayout * infoL;

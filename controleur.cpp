@@ -521,7 +521,7 @@ bool Controleur::verifierSiPasDeBoucle(Item * elem, Item * ref)
     //if(elem->getType() == "liste") maListe =((Liste *)elem)->getPreconditions();
     //if(elem->getType() == "ensemble") maListe =((Ensemble *)elem)->getPreconditions();
 
-    bool retour = true;
+    bool retour = elem!=ref;
 
     if(!maListe->empty())
     {
@@ -531,10 +531,9 @@ bool Controleur::verifierSiPasDeBoucle(Item * elem, Item * ref)
         {
             Item * currentItem = ((Item*)*it);
             if(currentItem==ref) retour = false;
-            if(currentItem->getType()=="ensemble" || currentItem->getType() == "liste" )
-            {
-                retour = retour && verifierSiPasDeBoucle(currentItem, ref);
-            }
+            retour = retour && verifierSiPasDeBoucle(currentItem, ref);
+
+
         }
     }
 

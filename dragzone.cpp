@@ -71,21 +71,21 @@ void DragZone::paintEvent(QPaintEvent *event)
     painter.setRenderHint(QPainter::Antialiasing, true);
     QPixmap px;
 
-    if(parent->getImage()->getVisible())
+    if(parent->getImage()->getType()!="tache")
     {
-        if(parent->getImage()->getType()=="tache")
+        if(parent->getImage()->getVisible())
         {
-            px.load(":/images/grabIcon.png");
+            px.load(":/images/grabIconMoins.png");
         }
         else
         {
-            px.load(":/images/grabIconMoins.png");
+            px.load(":/images/grabIconPlus.png");
         }
 
     }
     else
     {
-        px.load(":/images/grabIconPlus.png");
+        px.load(":/images/grabIcon.png");
     }
     px=px.scaledToHeight(px.size().height()*parent->size().height()/500.,Qt::SmoothTransformation);
     painter.drawPixmap(QPoint(this->size().width()/2.,18*parent->size().height()/500.),px,px.rect());

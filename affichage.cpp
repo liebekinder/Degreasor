@@ -90,7 +90,8 @@ int Affichage::process(Item * monSet, QGridLayout * layout, Controleur * ctrl, I
 myWidget * Affichage::getScrollArea(Item * root_, Controleur *ctrl, Item *centerOn)
 {
 
-
+    //étape obligée....
+    ctrl->saveToXml("main.xml",ctrl->getRoot());
 
     vue = new myWidget(ctrl);
     vue->setFrameShape(QFrame::NoFrame);

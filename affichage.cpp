@@ -30,7 +30,7 @@ int Affichage::process(Item * monSet, QGridLayout * layout, Controleur * ctrl, I
         counter++;
         Item * currentItem = ((Item*)*it);
 
-        qDebug()<<"add to screen "+currentItem->getNom();
+        //qDebug()<<"add to screen "+currentItem->getNom();
         //qDebug()<<(afficher==true?1:0);
 
 
@@ -45,7 +45,10 @@ int Affichage::process(Item * monSet, QGridLayout * layout, Controleur * ctrl, I
             {
                 this->centerOn = tempW;
             }
+            //Problème??
+            qDebug()<<currentItem->getDate().toString();
             tempW->setDate(currentItem->getDate());
+
             tempW->setDescription(currentItem->getDescription());
             tempW->setTitre(currentItem->getNom());
             tempW->setEntete(monSet->getType()=="ensemble"?0:counter-1);

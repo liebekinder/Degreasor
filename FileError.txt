@@ -17,3 +17,5 @@ Load et vérif des templates... a faire
 KKKILLLLLLLLLLL the PLLLLLUUUUSSSS !!!!!
 
 QString s = QFileDialog::getOpenFileName(this,"ouvrir test",QString(),"fichier AppliQuest (*.apq)");
+
+XML pas de sauvegarde systématique des dates.

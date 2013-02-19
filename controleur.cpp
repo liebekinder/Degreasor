@@ -73,10 +73,6 @@ void Controleur::refreshRightPanel(Item * wi, bool b)
         if(wi->getChoixDate()) theControlledWindow->cb1->setChecked(true);
         else theControlledWindow->cb2->setChecked(true);
         //date
-        if(!wi->getChoixDate())
-        {
-            theControlledWindow->de->setDate(daysToRealDate(wi));
-        }
         theControlledWindow->de->setDisabled(false);
         theControlledWindow->de->setDate(wi->getDate());
         theControlledWindow->cbb1->setDisabled(false);
@@ -125,6 +121,12 @@ void Controleur::refreshRightPanel(Item * wi, bool b)
 void Controleur::saveRightPanel(Item * wi)
 {
     wi->setNom(theControlledWindow->le1->text());
+
+    if(!wi->getChoixDate())
+    {
+        theControlledWindow->de->setDate(daysToRealDate(wi));
+    }
+
     if(theControlledWindow->cb1->isChecked())
     {
         wi->setChoixDate(true);

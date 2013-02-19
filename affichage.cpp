@@ -48,7 +48,7 @@ int Affichage::process(Item * monSet, QGridLayout * layout, Controleur * ctrl, I
             tempW->setDate(currentItem->getDate());
             tempW->setDescription(currentItem->getDescription());
             tempW->setTitre(currentItem->getNom());
-            tempW->setEntete(monSet->getType()=="ensemble"?0:counter);
+            tempW->setEntete(monSet->getType()=="ensemble"?0:counter-1);
 
             if(currentItem->getType() == "tache")
             {

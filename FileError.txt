@@ -17,6 +17,4 @@ reduire la main, le +/- ?
 
 //////
 Template :  à ajouter : choix du nom.
-
-
-A faire : un supprimé avec gestion des liens à supprimmer !
+Et pt un supprimer !

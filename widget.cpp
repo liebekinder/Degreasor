@@ -64,6 +64,8 @@ Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
     connect(this, SIGNAL(addListeApresTacheSignal(Item *)), controler, SLOT(addListeApresTache(Item *)));
     connect(this, SIGNAL(addEnsembleApresTacheSignal(Item *)), controler, SLOT(addEnsembleApresTache(Item *)));
 
+    //connect(this, SIGNAL(addNewTemplate(Item *)),controler,SLOT(addNewTemplateC(Item *)));
+
     chiffre = new entete(0,0,this);
     chiffre->installEventFilter(this);
 
@@ -540,6 +542,7 @@ void Widget::exportTemplate()
 void Widget::templateTest(int i)
 {
     qDebug()<<i;
+    //emit addNewTemplate(this->imageOf);
 }
 
 void Widget::addTacheALaSuiteDeTache()

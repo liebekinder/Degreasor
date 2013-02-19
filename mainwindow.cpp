@@ -219,7 +219,7 @@ void MainWindow::refresh(Item * centerOn)
 
     stackedWidget->removeWidget(vue);
 
-    delete vue;
+    //delete vue;
     vue = affichage->getScrollArea(controler->getRoot(), controler, centerOn);
 
     stackedWidget->addWidget(vue);

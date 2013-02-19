@@ -26,18 +26,20 @@ void myWidget::mouseReleaseEvent(QMouseEvent *event)
                 QMenu * a14 = a1->addMenu("Ajout à partir d'un &template");
                 //a13->setStatusTip("export de l'item vers un template");
 
-                    QAction * a141 = a14->addAction("template &1");
-                    connect(a141,SIGNAL(triggered()),controler,SLOT(addTache()));
 
-                    QAction * a142 = a14->addAction("template &2");
-                    connect(a142,SIGNAL(triggered()),controler,SLOT(addTache()));
+                mapper = new QSignalMapper(this);
 
-                    QAction * a143 = a14->addAction("template &3");
-                    connect(a143,SIGNAL(triggered()),controler,SLOT(addTache()));
+                for(int i = 0;i<controler->listeTemplate->count();i++)
+                {
+                    QAction * tempAction = a14->addAction(controler->listeTemplate->at(i));
+                    mapper->setMapping(tempAction, i);
+                    // Associate the toggled signal to map slot from the mapper
+                    // (it does not matter if we don't use the bool parameter from the signal)
+                    connect(tempAction, SIGNAL(triggered()), mapper, SLOT(map()));
+                }
 
-                    a141->setDisabled(true);
-                    a142->setDisabled(true);
-                    a143->setDisabled(true);
+                connect(mapper, SIGNAL(mapped(int)), this, SLOT(templateTest(int)));
+                if(controler->listeTemplate->count()==0) a14->setDisabled(true);
 
             QMenu * a2 = m->addMenu("Ajouter &dans...");
                 //a2->setStatusTip("ajouter un item après l'item selectionné");
@@ -47,6 +49,8 @@ void myWidget::mouseReleaseEvent(QMouseEvent *event)
             QAction * a3 = m->addAction("&Export vers template...");
                 //a3->setStatusTip("export de l'item vers un template");
                 a3->setDisabled(true);
+
+
 
             m->addSeparator();
             m->addSeparator();
@@ -62,6 +66,33 @@ void myWidget::mouseReleaseEvent(QMouseEvent *event)
 
     }
     return;
+}
+
+void myWidget::templateTest(int i)
+{
+    Item * yeah = controler->chargerXml(QDir::currentPath()+"/templates/"+controler->listeTemplate->at(i),true);
+
+    qDebug() << "ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt"+yeah->getNom();
+    //((Ensemble*)root_)->ajoutItem(yeah);
+    if(yeah!=NULL)
+    {
+        ((Ensemble*) controler->getRoot())->ajoutItem(yeah);
+        //((Ensemble*)controler->getRoot())->ajoutItem(yeah);
+
+        controler->setSelectedItem(yeah);
+        controler->refresh(yeah);
+        //controler->setRoot(yeah);
+        //Controleur::parseAndAddAfter(root_, test ,yeah);
+        qDebug()<<"test->getNom()";
+        //controler->callRefreshWithoutMoveScreen();
+
+
+        //Item * futurRoot = controler->chargerXml(QDir::currentPath()+"/templates/"+controler->listeTemplate->at(i));
+        //if(futurRoot!=NULL) controler->setRoot(futurRoot);
+        //controler->callRefreshWithoutMoveScreen();
+        qDebug()<<i;
+    }
+    //emit addNewTemplate(this->imageOf);
 }
 
 void myWidget::deleteThis()

@@ -563,8 +563,8 @@ void Widget::templateTest(int i)
             //((Ensemble*)controler->getRoot())->ajoutItem(yeah);
 
         }
-        controler->setSelectedItem(controler->getRoot());
-        controler->callRefreshWithoutMoveScreen();
+        controler->setSelectedItem(yeah);
+        controler->refresh(yeah);
         //controler->setRoot(yeah);
         //Controleur::parseAndAddAfter(root_, test ,yeah);
         qDebug()<<"test->getNom()";

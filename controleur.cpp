@@ -160,6 +160,11 @@ void Controleur::listerTemplate()
 
 }
 
+void Controleur::refresh(Item *centerOn)
+{
+    theControlledWindow->refresh(centerOn);
+}
+
 
 void Controleur::videCombo(QComboBox * c){
     for(int i=c->count()-1; i>=0;--i){

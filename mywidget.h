@@ -7,6 +7,7 @@
 #include <QMenu>
 #include <QAction>
 #include <QScrollArea>
+#include <QSignalMapper>
 
 #include "controleur.h"
 
@@ -15,6 +16,7 @@ class myWidget : public QScrollArea
     Q_OBJECT
 
 private:
+    QSignalMapper * mapper;
     Controleur * controler;
 public:
     explicit myWidget(Controleur * control, QWidget *parent = 0);
@@ -22,6 +24,7 @@ public:
     void mouseDoubleClickEvent(QMouseEvent *event);
 public slots:
     void deleteThis();
+    void templateTest(int);
     
 signals:
     void add();

@@ -122,6 +122,7 @@ MainWindow::MainWindow(QWidget *parent) :
     upperPaneL->setAlignment(Qt::AlignHCenter);
     upperPaneT->setFont(QFont("Courrier", 20, 1));
 
+    controler->refreshRightPanel(NULL, true);
 
     //actions
 

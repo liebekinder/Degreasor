@@ -37,17 +37,25 @@ void Controleur::refreshRightPanel(Item * wi, bool b)
 
     if(b){
         //nom
+        theControlledWindow->le1->setDisabled(true);
+        theControlledWindow->te->setDisabled(true);
+        theControlledWindow->dropListe->setDisabled(true);
+        theControlledWindow->widg->setDisabled(true);
         theControlledWindow->le1->setText("");
 
         //choix de la date
-        theControlledWindow->cb1->setChecked(true);
+        theControlledWindow->cb1->setDisabled(true);
+        theControlledWindow->cb2->setDisabled(true);
         //date
+        theControlledWindow->de->setDisabled(true);
         theControlledWindow->de->setDate(QDate::currentDate());
         theControlledWindow->cbb1->setCurrentIndex(0);
+        theControlledWindow->cbb1->setDisabled(true);
         if(((Ensemble *)root_)->getNotreListe()->size() != 0)
         {
             theControlledWindow->cbb2->setCurrentIndex(0);
         }
+        theControlledWindow->cbb2->setDisabled(true);
         //description
         theControlledWindow->te->setText("");
 
@@ -55,8 +63,13 @@ void Controleur::refreshRightPanel(Item * wi, bool b)
         theControlledWindow->b2->setDisabled(true);
     }
     else{
-
+        theControlledWindow->le1->setDisabled(false);
+        theControlledWindow->te->setDisabled(false);
+        theControlledWindow->dropListe->setDisabled(false);
+        theControlledWindow->widg->setDisabled(false);
         //choix de la date
+        theControlledWindow->cb1->setDisabled(false);
+        theControlledWindow->cb2->setDisabled(false);
         if(wi->getChoixDate()) theControlledWindow->cb1->setChecked(true);
         else theControlledWindow->cb2->setChecked(true);
         //date
@@ -64,8 +77,10 @@ void Controleur::refreshRightPanel(Item * wi, bool b)
         {
             theControlledWindow->de->setDate(daysToRealDate(wi));
         }
-
-
+        theControlledWindow->de->setDisabled(false);
+        theControlledWindow->de->setDate(wi->getDate());
+        theControlledWindow->cbb1->setDisabled(false);
+        theControlledWindow->cbb2->setDisabled(false);
         theControlledWindow->cbb1->setCurrentText(wi->getAssocie()->getDateRString(wi->getDateR()));
         if(((Ensemble *)root_)->getNotreListe()->size() != 0)
         {

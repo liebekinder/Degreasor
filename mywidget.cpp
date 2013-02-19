@@ -54,10 +54,26 @@ void myWidget::mouseReleaseEvent(QMouseEvent *event)
 
             m->addSeparator();
             m->addSeparator();
-            QAction * a4 = m->addAction("Supprimer");
-                //a3->setStatusTip("export de l'item vers un template");
-                //a3->setDisabled(true);
-                connect(a4,SIGNAL(triggered()),this,SLOT(deleteThis()));
+            QMenu * a4 = m->addMenu("Supprimer");
+
+                QAction *a41 = a4->addAction("Supprimer Tout...");
+                    connect(a41,SIGNAL(triggered()),this,SLOT(deleteThis()));
+                    QMenu * a42 = a4->addMenu("supprimer Template...");
+
+                    mapper3 = new QSignalMapper(this);
+
+                    for(int b = 0;b<controler->listeTemplate->count();b++)
+                    {
+                        QAction * actionTemplate = a42->addAction(controler->listeTemplate->at(b));
+                        mapper3->setMapping(actionTemplate, b);
+                        // Associate the toggled signal to map slot from the mapper
+                        // (it does not matter if we don't use the bool parameter from the signal)
+                        connect(actionTemplate, SIGNAL(triggered()), mapper3, SLOT(map()));
+                    }
+
+                    connect(mapper3, SIGNAL(mapped(int)), this, SLOT(templateTest3(int)));
+
+                    if(controler->listeTemplate->count()==0) a42->setDisabled(true);
 
 
         m->popup(event->globalPos());
@@ -74,28 +90,25 @@ void myWidget::mouseReleaseEvent(QMouseEvent *event)
 void myWidget::templateTest(int i)
 {
     Item * yeah = controler->chargerXml(QDir::currentPath()+"/templates/"+controler->listeTemplate->at(i),true);
-
-    qDebug() << "ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt"+yeah->getNom();
-    //((Ensemble*)root_)->ajoutItem(yeah);
     if(yeah!=NULL)
     {
         ((Ensemble*) controler->getRoot())->ajoutItem(yeah);
-        //((Ensemble*)controler->getRoot())->ajoutItem(yeah);
 
         controler->setSelectedItem(yeah);
         controler->refresh(yeah);
-        //controler->setRoot(yeah);
-        //Controleur::parseAndAddAfter(root_, test ,yeah);
-        qDebug()<<"test->getNom()";
-        //controler->callRefreshWithoutMoveScreen();
-
-
-        //Item * futurRoot = controler->chargerXml(QDir::currentPath()+"/templates/"+controler->listeTemplate->at(i));
-        //if(futurRoot!=NULL) controler->setRoot(futurRoot);
-        //controler->callRefreshWithoutMoveScreen();
         qDebug()<<i;
     }
-    //emit addNewTemplate(this->imageOf);
+}
+
+void myWidget::templateTest3(int i)
+{
+    qDebug() << "suppression template";
+
+    QDir dir = QDir::currentPath()+"/templates";
+    qDebug()<< dir.path()+"/"+controler->listeTemplate->at(i);
+    dir.remove(dir.path()+"/"+controler->listeTemplate->at(i));
+    controler->listerTemplate();
+    controler->callRefreshWithoutMoveScreen();
 }
 
 void myWidget::toutReduire(Item * itemC)

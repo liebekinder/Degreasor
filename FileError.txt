@@ -15,3 +15,5 @@ Template :  à ajouter : choix du nom.
 Load et vérif des templates... a faire
 
 KKKILLLLLLLLLLL the PLLLLLUUUUSSSS !!!!!
+
+QString s = QFileDialog::getOpenFileName(this,"ouvrir test",QString(),"fichier AppliQuest (*.apq)");

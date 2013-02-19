@@ -52,6 +52,7 @@ public:
 
     QPushButton * b1;
     QPushButton * b2;
+    QWidget * widg;
     // fin A FAIRE!!!!
 
     ~MainWindow();
@@ -94,7 +95,6 @@ private:
     QLabel * lb4;
     QLabel * lb5;
     QLabel * lb6;
-    QWidget * widg;
 
 
 

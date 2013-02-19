@@ -17,6 +17,7 @@ class myWidget : public QScrollArea
 
 private:
     QSignalMapper * mapper;
+    QSignalMapper * mapper3;
     Controleur * controler;
 public:
     explicit myWidget(Controleur * control, QWidget *parent = 0);
@@ -26,6 +27,7 @@ public:
 public slots:
     void deleteThis();
     void templateTest(int);
+    void templateTest3(int i);
     
 signals:
     void add();

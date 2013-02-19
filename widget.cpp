@@ -25,8 +25,8 @@ void Widget::setDescription(QString descriptionText)
 
 void Widget::setDate(QDate dateText)
 {
-    Q_UNUSED(dateText);
-    date->setText(dateText.currentDate().toString("dd/MM/yyyy"));
+    date->setText(dateText.toString("dd/MM/yyyy"));
+    if(dateText.isNull()) date->setText(QDate::currentDate().toString("dd/MM/yyyy"));
 }
 
 Item * Widget::getImage()

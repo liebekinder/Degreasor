@@ -75,7 +75,19 @@ void Controleur::refreshRightPanel(Item * wi, bool b)
         //date
         theControlledWindow->de->setDisabled(false);
 
-        theControlledWindow->de->setDate(wi->getDate());
+        if(wi->getDate().toString(Qt::ISODate)!="")
+        {
+            theControlledWindow->de->setDate(wi->getDate());
+        }
+        else
+        {
+            theControlledWindow->de->setDate(QDate::currentDate());
+        }
+
+        qDebug()<<"iodshdiofsdiohhpifdhihidfpodsf"+wi->getDate().toString(Qt::ISODate);
+
+
+
 
         theControlledWindow->cbb1->setDisabled(false);
         theControlledWindow->cbb2->setDisabled(false);
@@ -136,9 +148,13 @@ void Controleur::saveRightPanel(Item * wi)
     }
     else
     {
+        wi->setDate(daysToRealDate(wi));
+        qDebug()<<"qsfdsdffdqfqfdd"+wi->getDate().toString(Qt::ISODate);
         wi->setChoixDate(false);
         theControlledWindow->de->setDate(daysToRealDate(wi));
         wi->setDateR(wi->getComboBoxFromText(theControlledWindow->cbb1->currentText()));
+
+        //qDebug()<<"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"+
 
         QVariant v = theControlledWindow->cbb2->itemData(theControlledWindow->cbb2->currentIndex());
         //méthode de récupération de l'item via le quuid du qvariant
@@ -165,7 +181,7 @@ void Controleur::saveRightPanel(Item * wi)
     qDebug()<<precond->size();
     wi->setPreconditions(precond);
 
-
+    refreshRightPanel(wi);
     callRefreshWithoutMoveScreen();
 }
 
@@ -790,16 +806,21 @@ Item * Controleur::loadRecurXml(QDomElement rootXml,Item * rootLoading,QMap<QStr
 
         if(rootXml.attribute(QString("type"))=="tache")
         {
-            newItem = new Tache("",QDate::fromString(rootXml.attribute(QString("date"))),rootXml.attribute(QString("description")),rootLoading);
+            newItem = new Tache("",QDate::fromString(rootXml.attribute(QString("date")),Qt::ISODate),rootXml.attribute(QString("description")),rootLoading);
         }
         else if(rootXml.attribute(QString("type"))=="liste")
         {
-            newItem = new Liste("",QDate::fromString(rootXml.attribute(QString("date"))),rootXml.attribute(QString("description")),rootLoading);
+            newItem = new Liste("",QDate::fromString(rootXml.attribute(QString("date")),Qt::ISODate),rootXml.attribute(QString("description")),rootLoading);
         }
         else
         {
-            newItem = new Ensemble("",QDate::fromString(rootXml.attribute(QString("date"))),rootXml.attribute(QString("description")),rootLoading);
+            newItem = new Ensemble("",QDate::fromString(rootXml.attribute(QString("date")),Qt::ISODate),rootXml.attribute(QString("description")),rootLoading);
         }
+
+        //newItem->setDate();
+        //qDebug()<<"fdioqiohhioqfdiohdfhiohidqfqf@@@";
+        //qDebug()<<rootXml.attribute(QString("date"));
+        //qDebug() <<QDate::fromString(rootXml.attribute(QString("date")),Qt::ISODate);
 
         newItem->associeUUID = rootXml.attribute(QString("associe"));
 
@@ -876,7 +897,8 @@ QDomElement Controleur::creeXmlItem(Item * itemPh,QDomDocument * xml)
     item.setAttribute("type",itemPh->getType());
     item.setAttribute("visible",itemPh->getVisible());
     item.setAttribute("choixDate",itemPh->getChoixDate());
-    item.setAttribute("date",itemPh->getDate().toString(Qt::ISODate));
+    item.setAttribute("date",QString(itemPh->getDate().toString(Qt::ISODate)));
+
     item.setAttribute("dateR",int(itemPh->getDateR()));
     if(itemPh->getAssocie()!=NULL) item.setAttribute("associe",itemPh->getAssocie()->getUID().toString());
 

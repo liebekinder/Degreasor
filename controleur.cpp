@@ -818,6 +818,7 @@ Item * Controleur::loadRecurXml(QDomElement rootXml,Item * rootLoading,QMap<QStr
         if(rootXml.attribute(QString("type"))=="tache")
         {
             newItem = new Tache("",QDate::fromString(rootXml.attribute(QString("date")),Qt::ISODate),rootXml.attribute(QString("description")),rootLoading);
+            ((Tache*)newItem)->setPercentage(rootXml.attribute(QString("percent")).toInt());
         }
         else if(rootXml.attribute(QString("type"))=="liste")
         {
@@ -916,6 +917,7 @@ QDomElement Controleur::creeXmlItem(Item * itemPh,QDomDocument * xml)
     if(itemPh->getAssocie()!=NULL) item.setAttribute("itemAssocie",itemPh->getAssocie()->getUID().toString());
     item.setAttribute("UID",itemPh->getUID().toString());
     item.setAttribute("parent",itemPh->getParent()->getUID().toString());
+    if(itemPh->getType()=="tache") item.setAttribute("percent",QString::number((((Tache *)itemPh)->getPercentage())));
 
     QDomElement name= xml->createElement("name");
     name.appendChild(xml->createTextNode(itemPh->getNom()));

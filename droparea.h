@@ -4,6 +4,12 @@
 #include <QWidget>
 #include <QDebug>
 #include <QListWidget>
+#include <QDrag>
+#include <QDragEnterEvent>
+#include <QDragMoveEvent>
+#include <QDragLeaveEvent>
+#include <QMimeData>
+
 
 QT_BEGIN_NAMESPACE
 class QDragEnterEvent;

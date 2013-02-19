@@ -1,7 +1,6 @@
 #include "droparea.h"
 
 #include "item.h"
-#include <QtWidgets>
 
 DropArea::DropArea(QWidget *parent) :
     QWidget(parent)

@@ -547,6 +547,7 @@ void Widget::exportTemplate()
 void Widget::templateTest(int i)
 {
     Item * yeah = controler->chargerXml(QDir::currentPath()+"/templates/"+controler->listeTemplate->at(i),true);
+
     qDebug() << "ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt"+yeah->getNom();
     //((Ensemble*)root_)->ajoutItem(yeah);
     if(yeah!=NULL)
@@ -575,9 +576,6 @@ void Widget::templateTest(int i)
         //controler->callRefreshWithoutMoveScreen();
         qDebug()<<i;
     }
-
-
-
     //emit addNewTemplate(this->imageOf);
 }
 

@@ -43,7 +43,7 @@ void Ensemble::ajoutItem(Item *it, Item *db)
         if(notreListe_->at(i)->getUID() == iddb)
         {
             trouve = true;
-            notreListe_->insert(i,db);
+            notreListe_->insert(i,it);
         }
         ++i;
     }

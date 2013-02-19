@@ -242,7 +242,7 @@ void MainWindow::refresh(Item * centerOn)
 
 void MainWindow::callRefreshWithoutMoveScreen()
 {
-    qDebug()<<"refresh sans move";
+    qDebug()<<"refresh2";
 
     stackedWidget->removeWidget(vue);
 
@@ -257,6 +257,7 @@ void MainWindow::callRefreshWithoutMoveScreen()
 
     vue->verticalScrollBar()->setValue(cPosy>0?cPosy:0);
     vue->horizontalScrollBar()->setValue(cPosx>0?cPosx:0);
+    qDebug()<<"fin refresh";
 
 }
 

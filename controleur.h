@@ -16,6 +16,7 @@
 #include "item.h"
 #include "tache.h"
 #include "liste.h"
+class Affichage;
 
 
 class MainWindow;
@@ -27,6 +28,7 @@ class Controleur : public QObject
 
 public:
     Item * getRoot();
+    Affichage * getAffichage();
     void setRoot(Item * root);
     Item * getSelectedItem();
     void setSelectedItem(Item *wi);
@@ -55,6 +57,7 @@ public:
     bool isNotDependantOf(Item *item);
     QDate daysToRealDate(Item *item);
 private:
+    Affichage * affichage;
     Item * selectedItem;
     MainWindow * theControlledWindow;
     QStringList * malisteuid;

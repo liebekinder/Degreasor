@@ -1,6 +1,7 @@
 #include "controleur.h"
 #include "mainwindow.h"
 #include <QMessageBox>
+#include "affichage.h"
 
 
 Controleur::Controleur(MainWindow * theControlledWindow,QObject *parent) :
@@ -9,6 +10,7 @@ Controleur::Controleur(MainWindow * theControlledWindow,QObject *parent) :
     root_ = new Ensemble(true);
     selectedItem = root_;
     this->theControlledWindow = theControlledWindow;
+    this->affichage =new Affichage();
     //root_ = new Ensemble("nom", QDate::currentDate(),"bla", NULL);
     //qDebug()<< Item::TwoDaysAfter;
     malisteuid = new QStringList();
@@ -129,6 +131,7 @@ void Controleur::refreshRightPanel(Item * wi, bool b)
         theControlledWindow->b1->setDisabled(false);
         theControlledWindow->b2->setDisabled(false);
     }
+    callRefreshWithoutMoveScreen();
 
 }
 
@@ -191,7 +194,6 @@ void Controleur::saveRightPanel(Item * wi)
     wi->setPreconditions(precond);
 
     refreshRightPanel(wi);
-    callRefreshWithoutMoveScreen();
 }
 
 Item * Controleur::getItemWithUUID(QString uid, Item * item)
@@ -240,7 +242,8 @@ void Controleur::listerTemplate()
 
 void Controleur::refresh(Item *centerOn)
 {
-    theControlledWindow->refresh(centerOn);
+    saveToXml("main.xml",getRoot());
+    theControlledWindow->refresh1(centerOn);
 }
 
 
@@ -370,7 +373,7 @@ void Controleur::addEnsembleApres()
     ((Ensemble *)root_)->ajoutItem(yeah);
     this->setSelectedItem(yeah);
     qDebug()<<"ajout détecté! Ensemble avant";
-    theControlledWindow->refresh(yeah);
+    this->refresh(yeah);
 }
 
 void Controleur::addListeApres()
@@ -379,7 +382,7 @@ void Controleur::addListeApres()
     ((Ensemble *)root_)->ajoutItem(yeah);
     this->setSelectedItem(yeah);
     qDebug()<<"ajout détecté!";
-    theControlledWindow->refresh(yeah);
+    this->refresh(yeah);
 }
 
 void Controleur::addTacheApres()
@@ -388,7 +391,7 @@ void Controleur::addTacheApres()
     ((Ensemble *)root_)->ajoutItem(yeah);
     this->setSelectedItem(yeah);
     qDebug()<<"ajout détecté!";
-    theControlledWindow->refresh(yeah);
+    this->refresh(yeah);
 
 }
 
@@ -411,7 +414,7 @@ void Controleur::addTacheALaSuiteDeTache(Item *test)
     qDebug()<<"test->getNom()";
     this->setSelectedItem(yeah);
 
-    theControlledWindow->refresh(yeah);
+    this->refresh(yeah);
 }
 
 void Controleur::addListeALaSuiteDeTache(Item *test)
@@ -432,7 +435,7 @@ void Controleur::addListeALaSuiteDeTache(Item *test)
     qDebug()<<"test->getNom()";
     this->setSelectedItem(yeah);
 
-    theControlledWindow->refresh(yeah);
+    this->refresh(yeah);
 }
 
 void Controleur::addEnsembleALaSuiteDeTache(Item *test)
@@ -453,7 +456,7 @@ void Controleur::addEnsembleALaSuiteDeTache(Item *test)
     qDebug()<<"test->getNom()";
     this->setSelectedItem(yeah);
 
-    theControlledWindow->refresh(yeah);
+    this->refresh(yeah);
 }
 
 void Controleur::cancelModification()
@@ -562,7 +565,7 @@ void Controleur::addTacheApresTache(Item *test)
     qDebug()<<"test->getNom()";
     this->setSelectedItem(yeah);
 
-    theControlledWindow->refresh(yeah);
+    this->refresh(yeah);
 }
 
 void Controleur::addListeApresTache(Item *test)
@@ -585,7 +588,7 @@ void Controleur::addListeApresTache(Item *test)
     qDebug()<<"test->getNom()";
     this->setSelectedItem(yeah);
 
-    theControlledWindow->refresh(yeah);
+    this->refresh(yeah);
 }
 
 void Controleur::addEnsembleApresTache(Item *test)
@@ -608,7 +611,7 @@ void Controleur::addEnsembleApresTache(Item *test)
     qDebug()<<"test->getNom()";
     this->setSelectedItem(yeah);
 
-    theControlledWindow->refresh(yeah);
+    this->refresh(yeah);
 }
 
 void Controleur::addEnsemble()
@@ -631,6 +634,11 @@ Item * Controleur::getRoot()
     return root_;
 }
 
+Affichage *Controleur::getAffichage()
+{
+    return this->affichage;
+}
+
 void Controleur::setRoot(Item * root)
 {
     root_=root;
@@ -638,7 +646,8 @@ void Controleur::setRoot(Item * root)
 
 void Controleur::callRefreshWithoutMoveScreen()
 {
-    theControlledWindow->callRefreshWithoutMoveScreen();
+    saveToXml("main.xml",getRoot());
+    theControlledWindow->callRefreshWithoutMoveScreen1();
 }
 
 bool Controleur::saveToXml(QString path,Item * racine,Item * deleteItem ,bool templateItem)

@@ -34,3 +34,4 @@ erreur sur le cycle
 
 Pas d'itemassocié sur les listes ?! rechargement foiré !
 
+affichage : partie du controleur : recalcule la date des widgets.... et passer controler via controler dans mainw....

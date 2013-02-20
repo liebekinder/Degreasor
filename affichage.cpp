@@ -13,6 +13,9 @@ Widget * Affichage::getCenterElem()
 int Affichage::process(Item * monSet, QGridLayout * layout, Controleur * ctrl, Item * centerOn, bool afficher)
 {
     //monSet = new Ensemble("Racine", QDate::currentDate(), "La racine de nos problèmes");
+    //Réactualisation des items
+
+
 
     Item * root;
     if(monSet->getType()=="ensemble") root = ((Ensemble *)monSet);
@@ -29,6 +32,8 @@ int Affichage::process(Item * monSet, QGridLayout * layout, Controleur * ctrl, I
         x++;
         counter++;
         Item * currentItem = ((Item*)*it);
+
+        currentItem->setDate(ctrl->daysToRealDate(currentItem));
 
         //qDebug()<<"add to screen "+currentItem->getNom();
         //qDebug()<<(afficher==true?1:0);
@@ -93,8 +98,6 @@ int Affichage::process(Item * monSet, QGridLayout * layout, Controleur * ctrl, I
 myWidget * Affichage::getScrollArea(Item * root_, Controleur *ctrl, Item *centerOn)
 {
 
-    //étape obligée....
-    ctrl->saveToXml("main.xml",ctrl->getRoot());
 
     vue = new myWidget(ctrl);
     vue->setFrameShape(QFrame::NoFrame);
@@ -121,6 +124,9 @@ myWidget * Affichage::getScrollArea(Item * root_, Controleur *ctrl, Item *center
     //vue->setLayout(centralLO);
     //vue->setBackgroundRole(QPalette::Light);
     //vue->setStyleSheet("background-color:white;");
+
+
+
     return vue;
 
 }

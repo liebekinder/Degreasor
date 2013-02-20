@@ -36,10 +36,10 @@ class MainWindow : public QMainWindow
     Q_OBJECT
     
 public:
-    void callRefreshWithoutMoveScreen();
+    void callRefreshWithoutMoveScreen1();
     MainWindow(QWidget *parent = 0);
     MainWindow(bool b, QWidget *parent = 0);
-    void refresh(Item *centerOn = NULL);
+    void refresh1(Item *centerOn = NULL);
     //get et set à FAIRE!!!!!
     QLineEdit * le1;
     QRadioButton * cb1;
@@ -63,7 +63,6 @@ private:
 
     QVBoxLayout * dropListeL;
 
-    Affichage * affichage;
     QStackedWidget *stackedWidget;
     Controleur * controler;
     QWidget * central;

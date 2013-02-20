@@ -163,7 +163,7 @@ void Controleur::saveRightPanel(Item * wi)
 
         qDebug()<<"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&";
         QDate date = daysToRealDate(wi);
-
+        qDebug()<<"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&";
        theControlledWindow->de->setDate(date);
 
         //méthode de récupération de l'item via le quuid du qvariant
@@ -305,7 +305,7 @@ bool Controleur::isNotDependantOf(Item * item)
 QDate Controleur::daysToRealDate(Item * item)
 {
 
-    if(item->getChoixDate())
+    if(item->getChoixDate() || item->getAssocie()==NULL)
     {
         qDebug()<<"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+item->getNom();
         return item->getDate().isNull()?QDate::currentDate():item->getDate();
@@ -767,7 +767,7 @@ void Controleur::convertOldUUIDToNewItems(Item * rootLoading,QMap<QString, QStri
         qDebug()<<"un tour!... done!";
         Item * currentItem = ((Item*)*it);
 
-        if(currentItem->getType() == "tache")
+        if(true)//currentItem->getType() == "tache")
         {
             //conversion
             qDebug()<<currentItem->getNom();
@@ -782,6 +782,7 @@ void Controleur::convertOldUUIDToNewItems(Item * rootLoading,QMap<QString, QStri
                 {
                     //qDebug()<<*correspondances->find(currentItem->associeUUID);
                     currentItem->setAssocie(getItemWithUUID(((QString)*correspondances->find(currentItem->associeUUID)),rootElem));
+                    qDebug() <<"diohofdsohifdshiofsdhiihofdsiohdfshiofdshiihdfsihhifdsiohdfs+"+currentItem->getNom()+"   djjdjdjjd  "+currentItem->getAssocie()->getNom();
                 }
             }
 

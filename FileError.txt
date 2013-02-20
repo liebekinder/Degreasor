@@ -28,6 +28,9 @@ Ajouter sauvegarde session.
 Le bouton sauvegarder : trop chiant !
 +- le clic sur la main sélectionne quand même
 
+
 bug ajout template sur le même élément
 erreur sur le cycle
->>>>>>> correction
+
+Pas d'itemassocié sur les listes ?! rechargement foiré !
+

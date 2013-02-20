@@ -32,7 +32,7 @@ public:
     void setRoot(Item * root);
     Item * getSelectedItem();
     void setSelectedItem(Item *wi);
-    void callRefreshWithoutMoveScreen();
+    void callRefreshWithoutMoveScreen(bool save = true);
     void refreshRightPanel(Item *wi, bool b = false);
     //void parseAndAddAfter(Item * currentList, Item *elementPere, Item * elementToAdd);
     explicit Controleur(MainWindow *theControlledWindow, QObject *parent = 0);
@@ -53,14 +53,49 @@ public:
     QStringList * listeTemplate;
     void refresh(Item * centerOn);
 
+    void loadImages();
+    QPixmap getPixmapForDeselectedTask();
+    QPixmap getPixmapForSelectedTask();
+    QPixmap getPixmapForDeselectedTaskValidated();
+    QPixmap getPixmapForSelectedTaskValidated();
+
+    QPixmap getPixmapForDeselectedList();
+    QPixmap getPixmapForSelectedList();
+
+    QPixmap getPixmapMain();
+    QPixmap getPixmapPlusBlanc();
+    QPixmap getPixmapPlusNoir();
+    QPixmap getPixmapMoinsBlanc();
+    QPixmap getPixmapMoinsNoir();
+
+
     bool verifierSiPasDeBoucle(Item *elem, Item *ref);
     bool isNotDependantOf(Item *item);
     QDate daysToRealDate(Item *item);
+    int getWidgetHeight();
+    QPixmap resize(QPixmap px, double scale);
 private:
     Affichage * affichage;
     Item * selectedItem;
     MainWindow * theControlledWindow;
     QStringList * malisteuid;
+
+    QPixmap pixmapForDeselectedTask;
+    QPixmap pixmapForSelectedTask;
+    QPixmap pixmapForDeselectedTaskValidated;
+    QPixmap pixmapForSelectedTaskValidated;
+
+    QPixmap pixmapForDeselectedList;
+    QPixmap pixmapForSelectedList;
+
+    QPixmap pixmapMain;
+    QPixmap pixmapPlusBlanc;
+    QPixmap pixmapPlusNoir;
+    QPixmap pixmapMoinsBlanc;
+    QPixmap pixmapMoinsNoir;
+
+    int widgetHeight;
+
 
 signals:
 public slots:

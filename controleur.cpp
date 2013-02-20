@@ -7,6 +7,9 @@
 Controleur::Controleur(MainWindow * theControlledWindow,QObject *parent) :
     QObject(parent)
 {
+    widgetHeight = 50;
+    loadImages();
+
     root_ = new Ensemble(true);
     selectedItem = root_;
     this->theControlledWindow = theControlledWindow;
@@ -247,6 +250,8 @@ void Controleur::refresh(Item *centerOn)
 }
 
 
+
+
 void Controleur::videCombo(QComboBox * c){
     for(int i=c->count()-1; i>=0;--i){
         c->removeItem(i);
@@ -319,6 +324,11 @@ QDate Controleur::daysToRealDate(Item * item)
     retour = retour.addDays(int(item->getDateR()));
     //QMessageBox::warning(this->theControlledWindow->vue,item->getNom(),retour.toString(Qt::ISODate));
     return retour;
+}
+
+int Controleur::getWidgetHeight()
+{
+    return widgetHeight;
 }
 
 
@@ -644,9 +654,9 @@ void Controleur::setRoot(Item * root)
     root_=root;
 }
 
-void Controleur::callRefreshWithoutMoveScreen()
+void Controleur::callRefreshWithoutMoveScreen(bool save)
 {
-    saveToXml("main.xml",getRoot());
+    if(save) saveToXml("main.xml",getRoot());
     theControlledWindow->callRefreshWithoutMoveScreen1();
 }
 
@@ -997,4 +1007,83 @@ void Controleur::parseToXml(Item * item, QDomElement currentNode,QDomDocument * 
     }
 }
 
+
+QPixmap Controleur::getPixmapForDeselectedTask()
+{
+    return pixmapForDeselectedTask;
+}
+
+QPixmap Controleur::getPixmapForSelectedTask()
+{
+    return pixmapForSelectedTask;
+}
+
+QPixmap Controleur::getPixmapForDeselectedTaskValidated()
+{
+    return pixmapForDeselectedTaskValidated;
+}
+
+QPixmap Controleur::getPixmapForSelectedTaskValidated()
+{
+    return pixmapForSelectedTaskValidated;
+}
+
+QPixmap Controleur::getPixmapForDeselectedList()
+{
+    return pixmapForDeselectedList;
+}
+
+
+QPixmap Controleur::getPixmapForSelectedList()
+{
+    return pixmapForSelectedList;
+}
+
+QPixmap Controleur::getPixmapMain()
+{
+    return pixmapMain;
+}
+QPixmap Controleur::getPixmapPlusBlanc()
+{
+    return pixmapPlusBlanc;
+}
+QPixmap Controleur::getPixmapPlusNoir()
+{
+    return pixmapPlusNoir;
+}
+QPixmap Controleur::getPixmapMoinsBlanc()
+{
+    return pixmapMoinsBlanc;
+}
+QPixmap Controleur::getPixmapMoinsNoir()
+{
+    return pixmapMoinsNoir;
+}
+
+
+
+void Controleur::loadImages()
+{
+    pixmapForDeselectedTask = resize(QPixmap(":/images/fondCourantElemDeselect.png"),widgetHeight/308.);
+    pixmapForSelectedTask = resize(QPixmap(":/images/fondCourantElemDeselectS.png"),widgetHeight/308.);
+    pixmapForDeselectedTaskValidated = resize(QPixmap(":/images/fondCourantElemSelect.png"),widgetHeight/308.);
+    pixmapForSelectedTaskValidated = resize(QPixmap(":/images/fondCourantElemSelectS.png"),widgetHeight/308.);
+
+    pixmapForSelectedList = resize(QPixmap(":/images/fondCourantListeS.png"),widgetHeight/308.);
+    pixmapForDeselectedList = resize(QPixmap(":/images/fondCourantListe.png"),widgetHeight/308.);
+
+    pixmapMain = resize(QPixmap(":/images/grabIcon.png"),widgetHeight/500.);
+
+    pixmapPlusBlanc = resize(QPixmap(":/images/Plus.png"),widgetHeight/500.);
+    pixmapPlusNoir = resize(QPixmap(":/images/PlusS.png"),widgetHeight/500.);
+    pixmapMoinsBlanc = resize(QPixmap(":/images/Moins.png"),widgetHeight/500.);
+    pixmapMoinsNoir = resize(QPixmap(":/images/MoinsS.png"),widgetHeight/500.);
+
+
+}
+
+QPixmap Controleur::resize(QPixmap px, double scale)
+{
+    return px.scaledToHeight(px.size().height()*scale,Qt::SmoothTransformation);
+}
 

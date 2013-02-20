@@ -45,7 +45,6 @@ void entete::paintEvent(QPaintEvent *event)
 
     QPen myPen(Qt::black, 1);
 
-
     //plages de couleurs pour la barre de progression
     int rouge[20] = {241,255,255,255,255,255,255,255,255,252,227,227,190,146,146,57,57,22,51};
     int vert[20] = {0,55,101,101,169,169,216,229,229,255,255,255,255,255,255,255,255,233,204};
@@ -121,12 +120,12 @@ void entete::paintEvent(QPaintEvent *event)
         {
             if(papa->getControleur()->getSelectedItem()==papa->getImage())
             {
-                px.load(":/images/Moins.png");
+                px=papa->getControleur()->getPixmapPlusBlanc();
 
             }
             else
             {
-                px.load(":/images/MoinsS.png");
+                px=papa->getControleur()->getPixmapPlusNoir();
 
             }
 
@@ -137,17 +136,17 @@ void entete::paintEvent(QPaintEvent *event)
         {
             if(papa->getControleur()->getSelectedItem()==papa->getImage())
             {
-                px.load(":/images/Plus.png");
+                px=papa->getControleur()->getPixmapMoinsBlanc();
 
             }
             else
             {
-                px.load(":/images/PlusS.png");
+                px=papa->getControleur()->getPixmapMoinsNoir();
 
             }
         }
 
-        px=px.scaledToHeight(px.size().height()*papa->size().height()/500.,Qt::SmoothTransformation);
+        //px=px.scaledToHeight(px.size().height()*papa->size().height()/500.,Qt::SmoothTransformation);
         painter.drawPixmap(QPoint(this->size().width()/2.-px.size().width()/2.,5*papa->size().height()/50.),px,px.rect());
     }
 

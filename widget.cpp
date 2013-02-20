@@ -215,22 +215,22 @@ void Widget::paintEvent(QPaintEvent *event)
 
             if(((Tache*)this->imageOf)->getPercentage()==100)
             {
-                 px.load(":/images/fondCourantElemSelectS.png");
+                 px=controler->getPixmapForSelectedTaskValidated();
             }
             else
             {
-                 px.load(":/images/fondCourantElemDeselectS.png");
+                 px=controler->getPixmapForSelectedTask();
             }
         }
         else
         {
             if(((Tache*)this->imageOf)->getPercentage()==100)
             {
-                 px.load(":/images/fondCourantElemSelect.png");
+                 px=controler->getPixmapForDeselectedTaskValidated();
             }
             else
             {
-                 px.load(":/images/fondCourantElemDeselect.png");
+                 px=controler->getPixmapForDeselectedTask();
             }
         }
     }
@@ -238,16 +238,16 @@ void Widget::paintEvent(QPaintEvent *event)
     {
         if(imageOf==controler->getSelectedItem())
         {
-            px.load(":/images/fondCourantListeS.png");
+            px=controler->getPixmapForSelectedList();
         }
         else
         {
-            px.load(":/images/fondCourantListe.png");
+            px=controler->getPixmapForDeselectedList();
         }
     }
 
 
-    px=px.scaledToHeight(this->size().height()*px.size().height()/308.,Qt::SmoothTransformation);
+    //px=px.scaledToHeight(this->size().height()*px.size().height()/308.,Qt::SmoothTransformation);
 
     painter.drawPixmap(px.rect(),px);
     ////////////////////
@@ -428,7 +428,7 @@ void Widget::mouseDoubleClickEvent(QMouseEvent *event)
         this->setPercent(this->currentPercent);
         ((Tache*)this->imageOf)->setPercentage(currentPercent);
         controler->setSelectedItem(imageOf);
-        controler->callRefreshWithoutMoveScreen();
+        controler->callRefreshWithoutMoveScreen(false);
     }
 }
 

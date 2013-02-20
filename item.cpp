@@ -13,6 +13,7 @@ Item::Item(Item *conteneur, QObject *parent) :
     itemAssocie_=NULL;
     precondition_ = new QList<Item * >();
     //qDebug()<<UID.toString();
+    percentage = 0;
 }
 
 Item::Item(bool root, QObject *parent) :
@@ -27,6 +28,7 @@ Item::Item(bool root, QObject *parent) :
     UID = QUuid::createUuid();
     itemAssocie_=NULL;
     precondition_ = new QList<Item * >();
+    percentage = 0;
 }
 
 Item::Item(QString nom, QDate date, QString description, Item *conteneur, QObject *parent) :
@@ -42,6 +44,7 @@ Item::Item(QString nom, QDate date, QString description, Item *conteneur, QObjec
     UID = QUuid::createUuid();
     itemAssocie_=NULL;
     precondition_ = new QList<Item * >();
+    percentage = 0;
     //qDebug()<<UID.toString();
 }
 
@@ -244,4 +247,14 @@ void Item::setVue(QWidget *v)
 void Item::setParent(Item *p)
 {
     parent_ = p;
+}
+
+int Item::getPercentage()
+{
+    return percentage;
+}
+
+void Item::setPercentage(int perc)
+{
+    this->percentage = perc;
 }

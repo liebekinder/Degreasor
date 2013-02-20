@@ -33,6 +33,8 @@ public:
     QString getType();
 
     //accesseur
+    int getPercentage();
+    void setPercentage(int perc);
     bool getVisible();
     void setVisible(bool b);
     bool getChoixDate();
@@ -63,6 +65,7 @@ public:
     static DateRelative getComboBoxFromText(QString s);
     QString associeUUID;
 private:
+    int percentage;
     bool visible;
     QString nom_;
     bool choixDate_;

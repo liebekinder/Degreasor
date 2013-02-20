@@ -457,6 +457,7 @@ QString Widget::verifierPreconditions(Item * ref)
             }
             if(currentItem->getType()=="ensemble" || currentItem->getType() == "liste" )
             {
+                if(currentItem->getPercentage()!=100) retour= currentItem->getNom();
                 QString tempR = verifierPreconditions(currentItem);
                 retour = tempR==NULL?retour:tempR;
             }

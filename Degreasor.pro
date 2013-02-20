@@ -12,33 +12,40 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = Degreasor
 TEMPLATE = app
 
+INCLUDEPATH += . \
+    Controler \
+    View \
+    Core \
+    View/MainWindow \
+    View/Widget
+
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    mywidget.cpp \
-    controleur.cpp \
-    item.cpp \
-    ensemble.cpp \
-    liste.cpp \
-    tache.cpp \
-    widget.cpp \
-    entete.cpp \
-    affichage.cpp \
-    droparea.cpp \
-    dragzone.cpp
+        View/MainWindow/mainwindow.cpp \
+    View/MainWindow/mywidget.cpp \
+    Core/item.cpp \
+    Core/ensemble.cpp \
+    Core/liste.cpp \
+    Core/tache.cpp \
+    View/Widget/widget.cpp \
+    View/Widget/entete.cpp \
+    View/MainWindow/droparea.cpp \
+    View/Widget/dragzone.cpp \
+    Controler/controleur.cpp \
+    Controler/affichage.cpp
 
-HEADERS  += mainwindow.h \
-    mywidget.h \
-    controleur.h \
-    item.h \
-    ensemble.h \
-    liste.h \
-    tache.h \
-    widget.h \
-    entete.h \
-    affichage.h \
-    droparea.h \
-    dragzone.h
+HEADERS  += View/MainWindow/mainwindow.h \
+    View/MainWindow/mywidget.h \
+    Core/item.h \
+    Core/ensemble.h \
+    Core/liste.h \
+    Core/tache.h \
+    View/Widget/widget.h \
+    View/Widget/entete.h \
+    View/MainWindow/droparea.h \
+    View/Widget/dragzone.h \
+    Controler/controleur.h \
+    Controler/affichage.h
 
 FORMS    +=
 

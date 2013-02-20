@@ -32,9 +32,9 @@ private:
     int x;
     int y;
 signals:
-    
+
 public slots:
-    
+
 };
 
 #endif // AFFICHAGE_H

@@ -120,12 +120,12 @@ void entete::paintEvent(QPaintEvent *event)
         {
             if(papa->getControleur()->getSelectedItem()==papa->getImage())
             {
-                px=papa->getControleur()->getPixmapPlusBlanc();
+                px=papa->getControleur()->getPixmapMoinsBlanc();
 
             }
             else
             {
-                px=papa->getControleur()->getPixmapPlusNoir();
+                px=papa->getControleur()->getPixmapMoinsNoir();
 
             }
 
@@ -136,14 +136,15 @@ void entete::paintEvent(QPaintEvent *event)
         {
             if(papa->getControleur()->getSelectedItem()==papa->getImage())
             {
-                px=papa->getControleur()->getPixmapMoinsBlanc();
+                px=papa->getControleur()->getPixmapPlusBlanc();
 
             }
             else
             {
-                px=papa->getControleur()->getPixmapMoinsNoir();
+                px=papa->getControleur()->getPixmapPlusNoir();
 
             }
+
         }
 
         //px=px.scaledToHeight(px.size().height()*papa->size().height()/500.,Qt::SmoothTransformation);

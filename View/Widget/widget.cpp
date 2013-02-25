@@ -55,7 +55,7 @@ Widget::Widget(Controleur *ctrl, Item *caller, QWidget *parent) :
     this->controler = ctrl;
     this->setFixedSize(0,50);
     //this->setFixedWidth(500*this->size().height()/100.);
-    this->setFixedWidth(500*this->size().height()/100.*1.3);
+    this->setFixedWidth(490*this->size().height()/100.*1.3);
 
     connect(this, SIGNAL(addTacheALaSuiteDeTacheSignal(Item *)), controler, SLOT(addTacheALaSuiteDeTache(Item *)));
     connect(this, SIGNAL(addListeALaSuiteDeTacheSignal(Item *)), controler, SLOT(addListeALaSuiteDeTache(Item *)));

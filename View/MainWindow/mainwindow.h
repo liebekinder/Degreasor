@@ -8,7 +8,7 @@
 #include <QHBoxLayout>
 #include <QGridLayout>
 #include <QMenu>
-#include <Qlabel>
+#include <QLabel>
 #include <QDate>
 #include <QGroupBox>
 #include <QCheckBox>

@@ -62,8 +62,10 @@ public:
     QList<QString>* getPrecondSS();
 
     static void getComboBox(QComboBox *c);
+
     static DateRelative getComboBoxFromText(QString s);
     QString associeUUID;
+
 private:
     int percentage;
     bool visible;
